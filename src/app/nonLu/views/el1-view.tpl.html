@@ -1,0 +1,20 @@
+<section class="canevas">
+
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2><span translate="view.title"></span></h2>
+        </div>
+    </md-toolbar>
+
+    <div ng-hide="allLiens.items[0]" class="errormessage warning" translate="list.empty"></div>
+
+    <md-list>
+        <md-list-item class="md-3-line" ng-repeat="lien in allLiens.items | orderBy: order ">
+            <!-- img ng-src="{{item.face}}?{{$index}}" class="md-avatar" alt="{{item.who}}" / -->
+            <div class="md-list-item-text" layout="column">
+                {{lien.url  }}
+            </div>
+        </md-list-item>
+    </md-list>
+
+</section>

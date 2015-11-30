@@ -1,0 +1,53 @@
+{
+    "action" : {
+        "actions" : "Actions",
+        "cancel" : "Annuler",
+        "confirm" : "Confirmer",
+        "delete" : "Supprimer",
+        "new" : "Nouveau",
+        "edit" : "Modifier",
+        "validate" : "Valider",
+        "view" : "Visualiser"
+    },
+    "boolean" : {
+        "true"  : "Oui",
+        "false" : "Non",
+        "empty" : "N/A"
+    },
+    "enum" : {
+        "empty" : "Non renseigné"
+    },
+    "form" : {
+        "mandatory" : "obligatoire",
+        "empty" : "Non renseigné",
+        "min" : "min",
+        "max" : "max"
+    },
+    "list" : {
+        "empty" : "Liste vide"
+    },
+    "tab" : {
+      "nonLu" : "Non lu",
+      "biblio" : "Biblio",
+      "cercle" : "Cercle"
+    },
+    "menu" : {
+        "title" : "Menu",
+        "home" : "Accueil", 
+        "login" : "Login",
+        "logout" : "Logout"
+    },
+    "message" : {
+        "update" : "objet mis à jour !",
+        "confirmSuppr" : "Etes - vous sûr de vouloir supprimer cet objet ?"
+    },
+    "validation" : {
+        "mandatory" : "Element obligatoire",
+        "min" : "Element doit être supérieur à {{valeur}}",
+        "max" : "Element doit être inférieur à {{valeur}}",
+        "longeur" : "Element doit être inférieur à {{valeur}}",
+        "pattern" :  "Element ne respecte pas le pattern {{valeur}} ",
+        "email" : "Element ne respecte pas le pattern d&quot;un email",
+        "number" : "Element doit être un entier"
+    }
+}

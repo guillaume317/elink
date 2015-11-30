@@ -1,0 +1,14 @@
+{
+    "view" : {
+        "title" : "view",
+        
+        "Lien" : {
+                      "lu" : "lu",
+              "private" : "private",
+              "url" : "url",
+
+    
+                "last" : ""
+        }
+    }
+}

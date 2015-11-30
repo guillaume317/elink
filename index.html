@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr" >
+    <head>
+        <title>elink</title>
+
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-language" content="fr">
+        <meta name="description" content="">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+        <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+
+        <!-- charte -->
+        
+        <link rel="stylesheet" href="./bower_components/angular-material/angular-material.css"/>
+
+        <link rel="stylesheet" href="./src/css/app.css"/>
+    </head>
+
+    <body ng-app="elinkApp" ng-controller="LoginCtrl" layout="row">
+    
+        <div flex layout="column">
+
+            <md-toolbar class="md-menu-toolbar">
+                <div layout="row">
+                    <md-toolbar-filler>
+                    </md-toolbar-filler>
+                    <div flex="auto">
+                        <h2 class="md-toolbar-tools">elink</h2>
+                        <md-menu-bar>
+                            <md-menu>
+                                <md-button ng-click="$mdOpenMenu()" aria-hidden="true">
+                                    <span translate="menu.title" /> <span class="caret"></span>
+                                </md-button>
+                                <md-menu-content>
+                                    <md-menu-item>
+                                        <md-button  ui-sref="home" translate="menu.home" aria-label="{{'menu.home' | translate}}" ></md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </md-menu-bar>
+                    </div>
+                    <div flex="initial">
+                        <!-- LOGIN / LOGOUT -->
+                        <md-menu>
+                            <md-button class="md-icon-button" ng-click="$mdOpenMenu()">
+                                <ng-md-icon icon="account_box" size="40"></ng-md-icon>
+                            </md-button>
+                            <md-menu-content>
+                                <md-menu-item ng-show="!user">
+                                    <md-button aria-label="{{'menu.login' | translate}}" href="#/showLogin" translate="menu.login"></md-button>
+                                </md-menu-item>
+                                <md-menu-item ng-show="user" >
+                                    <md-button aria-label="{{'menu.logout' | translate}}" ng-click="logout()" translate="menu.logout"></md-button>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+                        <div>{{user.name}}</div>
+                    </div>
+                </div>
+            </md-toolbar>
+
+            <md-tabs md-stretch-tabs
+                     md-selected="selectedIndex">
+                <md-tab aria-label="{{'tab.nonLu' | translate}}" >{{'tab.nonLu' | translate}}</md-tab>
+                <md-tab aria-label="{{'tab.biblio' | translate}}">{{'tab.biblio' | translate}}</md-tab>
+                <md-tab aria-label="{{'tab.cercle' | translate}}">{{'tab.cercle' | translate}}</md-tab>
+            </md-tabs>
+
+            <md-content flex id="content" ui-view="main">
+            </md-content>
+
+        </div>
+    
+
+        <!-- third party -->
+
+        <script src="./bower_components/jquery/dist/jquery.min.js"></script>
+
+        <script src="./bower_components/angular/angular.js"></script>
+        
+        <script src="./bower_components/angular-animate/angular-animate.js"></script>
+        <script src="./bower_components/angular-aria/angular-aria.js"></script>
+        <script src="./bower_components/angular-cookies/angular-cookies.js"></script>
+        <script src="./bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+        <script src="./bower_components/angular-messages/angular-messages.js"></script>
+        <script src="./bower_components/angular-translate/angular-translate.js"></script>
+        <script src="./bower_components/messageformat/messageformat.js"></script>
+        <script src="./bower_components/messageformat/locale/fr.js"></script>
+        <script src="./bower_components/angular-translate-interpolation-messageformat/angular-translate-interpolation-messageformat.js"></script>
+        <script src="./bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
+        <script src="./bower_components/angular-translate-loader-partial/angular-translate-loader-partial.js"></script>
+        <script src="./bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+
+            <!-- charte -->
+        
+        <script src="./bower_components/angular-material/angular-material.js"></script>
+        <script src="./bower_components/angular-material-icons/angular-material-icons.js" ></script>
+
+
+        <!-- Socle -->
+
+        <script src="./bower_components/ng-browser-info/dist/ngBrowserInfo.js"></script>
+        <script src="./bower_components/ngstorage/ngStorage.js"></script>
+
+        <!-- Appli -->
+
+        <script src="./src/model/user.model.js"></script>
+        <script src="./src/model/env.model.js"></script>
+        <script src="./src/model/lien.model.js"></script>
+        <script src="./src/model/equipage.model.js"></script>
+
+
+        <script src="./src/services/auth.service.js"></script>
+        <script src="./src/services/commons.js"></script>
+        <script src="./src/services/lien.service.js"></script>
+        <script src="./src/services/equipage.service.js"></script>
+
+        <script src="./src/app/accueil/el1-module-accueil.js"></script>
+        <script src="./src/app/error/el1-module-error.js"></script>
+        <script src="./src/app/login/el1-module-login.js"></script>
+
+        <!-- onglet biblio -->
+        <script src="./src/app/bibli/el1-module-bibli.js"></script>
+        <script src="./src/app/bibli/views/el1-controller-view.js"></script>
+        <!-- onglet nonlu -->
+        <script src="./src/app/nonLu/el1-module-nonLu.js"></script>
+        <script src="./src/app/nonLu/views/el1-controller-view.js"></script>
+        <!-- onglet cercle -->
+        <script src="./src/app/cercle/el1-module-cercle.js"></script>
+        <script src="./src/app/cercle/views/el1-controller-view.js"></script>
+        <!-- formulaire partage -->
+        <script src="./src/app/share/el1-module-share.js"></script>
+        <script src="./src/app/share/views/el1-controller-create.js"></script>
+        <!-- gestion cercle/equipe -->
+        <script src="./src/app/equipe/el1-module-equipe.js"></script>
+        <script src="./src/app/equipe/views/el1-controller-gestion.js"></script>
+
+        <script src="./src/app/app.js"></script>
+        <script src="./src/interceptor/auth.interceptor.js"></script>
+        <script src="./src/interceptor/errorhandler.interceptor.js"></script>
+        <script src="./src/components/authority.directive.js"></script>
+        <script src="./src/components/alert/alert.directive.js"></script>
+        <script src="./src/components/alert/alert.service.js"></script>
+    
+
+    </body>
+</html>

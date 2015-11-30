@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr" >
+    <head>
+        <title>elink</title>
+
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-language" content="fr">
+        <meta name="description" content="">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+        <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+
+        <link rel="stylesheet" href="./dist/elink.css"/>
+
+    </head>
+
+    <body ng-app="elinkApp" ng-controller="AccueilController as ac" >
+
+        <div class="container" id="central">
+            <nav class="navbar navbar-default navbar-fixed-top">
+                <div class="container" ng-controller="LoginCtrl">
+                    <p ng-show="user" class="navbar-text">Welcome {{user.name}}</p>
+
+                    <a href="#/showLogin" ng-show="!user" class="btn btn-default navbar-right">login</a>
+                    <a href="" ng-click="logout()" ng-show="user"  class="btn btn-default navbar-right" >logout</a>
+                </div>
+            </nav>
+
+            <div class="row">
+                <div id="contenu" class="col-md-12">
+
+                    <div class="row">
+                        <!-- CONTENU -->
+                        <div id="content" ui-view="main">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <script src="./dist/elink-vendor.js"></script>
+        <script src="./dist/templates-views.js"></script>
+        <script src="./dist/elink.min.js"></script>
+
+    </body>
+</html>

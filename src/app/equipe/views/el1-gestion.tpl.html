@@ -1,0 +1,41 @@
+
+<section class="canevas">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2><span translate="gestion.title"></span></h2>
+        </div>
+    </md-toolbar>
+
+    <form name="currentForm">
+        <cdc-alert-error></cdc-alert-error>
+            <!-- Attributs -->
+            
+                      <div layout="row">
+                        <md-input-container flex="grow">
+                            <label translate="gestion.Equipage.label"></label>
+                            
+                            <input name="label" type="text"  ng-model="currentEquipage.label" >
+                            <div ng-messages="currentForm.label.$error" multiple  role="alert">
+                            </div>
+
+                        </md-input-container>
+                      </div>
+
+
+            <!-- Associations OneToOne -->
+
+            
+
+
+            
+
+            <!-- Associations select box -->
+
+        <div layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+            <md-button class="md-raised md-primary" ng-click="validate()" aria-label="{{'action.validate' | translate}}" translate="action.validate"></md-button>
+            <md-button class="md-raised" aria-label="{{'action.cancel' | translate}}" translate="action.cancel"></md-button>
+        </div>
+
+    </form>
+
+</section>

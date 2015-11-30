@@ -1,0 +1,575 @@
+{
+  "generator-icdc": {
+    "modele": {
+      "model": {
+        "entities": [
+          {
+            "entity": [
+              {
+                "$": {
+                  "name": "Categorie",
+                  "persistant": "true",
+                  "versionne": "true",
+                  "abstract": "false",
+                  "leaf": "false",
+                  "mappingORM": "default",
+                  "cacheable": "false",
+                  "resource": "false",
+                  "resourceOperations": "R"
+                },
+                "id": [
+                  ""
+                ],
+                "attr": [
+                  {
+                    "$": {
+                      "identifiant": "false",
+                      "name": "label",
+                      "type": "String",
+                      "searchDisplay": "both",
+                      "searchType": "Original",
+                      "alwaysDisplay": "true",
+                      "editable": "true",
+                      "persistant": "true",
+                      "pkfk": "none",
+                      "nameInModel": "label",
+                      "scope": "public",
+                      "identifiantSubstitution": "false"
+                    },
+                    "contraints": [
+                      {
+                        "$": {
+                          "obligatoire": "false",
+                          "unique": "false"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "association": [
+                  {
+                    "$": {
+                      "name": "liens",
+                      "type": "OneToMany",
+                      "obligatoire": "false",
+                      "reverseMandatory": "false",
+                      "inverse": "categorie",
+                      "entityTo": "Lien",
+                      "cascade": "true",
+                      "composite": "false",
+                      "partOfId": "false",
+                      "reversePartOfId": "false",
+                      "persistant": "true",
+                      "persistAsComponent": "false",
+                      "expand": "no"
+                    }
+                  }
+                ]
+              },
+              {
+                "$": {
+                  "name": "Equipage",
+                  "persistant": "true",
+                  "versionne": "true",
+                  "abstract": "false",
+                  "leaf": "false",
+                  "mappingORM": "default",
+                  "cacheable": "false",
+                  "resource": "false",
+                  "resourceOperations": "R"
+                },
+                "id": [
+                  ""
+                ],
+                "attr": [
+                  {
+                    "$": {
+                      "identifiant": "false",
+                      "name": "label",
+                      "type": "String",
+                      "searchDisplay": "both",
+                      "searchType": "Original",
+                      "alwaysDisplay": "true",
+                      "editable": "true",
+                      "persistant": "true",
+                      "pkfk": "none",
+                      "nameInModel": "label",
+                      "scope": "public",
+                      "identifiantSubstitution": "false"
+                    },
+                    "contraints": [
+                      {
+                        "$": {
+                          "obligatoire": "false",
+                          "unique": "false"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "association": [
+                  {
+                    "$": {
+                      "name": "personne",
+                      "type": "OneToOne",
+                      "obligatoire": "true",
+                      "entityTo": "Personne",
+                      "cascade": "true",
+                      "composite": "false",
+                      "partOfId": "false",
+                      "reversePartOfId": "false",
+                      "persistant": "true",
+                      "persistAsComponent": "false",
+                      "expand": "no"
+                    }
+                  },
+                  {
+                    "$": {
+                      "name": "lien",
+                      "type": "OneToOne",
+                      "obligatoire": "true",
+                      "entityTo": "Lien",
+                      "cascade": "true",
+                      "composite": "false",
+                      "partOfId": "false",
+                      "reversePartOfId": "false",
+                      "persistant": "true",
+                      "persistAsComponent": "false",
+                      "expand": "no"
+                    }
+                  }
+                ]
+              },
+              {
+                "$": {
+                  "name": "Lien",
+                  "persistant": "true",
+                  "versionne": "true",
+                  "abstract": "false",
+                  "leaf": "false",
+                  "mappingORM": "default",
+                  "cacheable": "false",
+                  "resource": "false",
+                  "resourceOperations": "R"
+                },
+                "id": [
+                  ""
+                ],
+                "attr": [
+                  {
+                    "$": {
+                      "identifiant": "false",
+                      "name": "lu",
+                      "type": "Boolean",
+                      "searchDisplay": "both",
+                      "searchType": "Original",
+                      "alwaysDisplay": "true",
+                      "editable": "true",
+                      "persistant": "true",
+                      "pkfk": "none",
+                      "nameInModel": "lu",
+                      "scope": "public",
+                      "identifiantSubstitution": "false"
+                    },
+                    "contraints": [
+                      {
+                        "$": {
+                          "obligatoire": "false",
+                          "unique": "false"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "$": {
+                      "identifiant": "false",
+                      "name": "private",
+                      "type": "Boolean",
+                      "searchDisplay": "both",
+                      "searchType": "Original",
+                      "alwaysDisplay": "true",
+                      "editable": "true",
+                      "persistant": "true",
+                      "pkfk": "none",
+                      "nameInModel": "private",
+                      "scope": "public",
+                      "identifiantSubstitution": "false"
+                    },
+                    "contraints": [
+                      {
+                        "$": {
+                          "obligatoire": "false",
+                          "unique": "false"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "$": {
+                      "identifiant": "false",
+                      "name": "url",
+                      "type": "String",
+                      "searchDisplay": "both",
+                      "searchType": "Original",
+                      "alwaysDisplay": "true",
+                      "editable": "true",
+                      "persistant": "true",
+                      "pkfk": "none",
+                      "nameInModel": "url",
+                      "scope": "public",
+                      "identifiantSubstitution": "false"
+                    },
+                    "contraints": [
+                      {
+                        "$": {
+                          "obligatoire": "false",
+                          "unique": "false"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "association": [
+                  {
+                    "$": {
+                      "name": "tag",
+                      "type": "OneToOne",
+                      "obligatoire": "true",
+                      "entityTo": "Tag",
+                      "cascade": "true",
+                      "composite": "false",
+                      "partOfId": "false",
+                      "reversePartOfId": "false",
+                      "persistant": "true",
+                      "persistAsComponent": "false",
+                      "expand": "no"
+                    }
+                  },
+                  {
+                    "$": {
+                      "name": "categorie",
+                      "type": "ManyToOne",
+                      "obligatoire": "false",
+                      "entityTo": "Categorie",
+                      "cascade": "true",
+                      "composite": "false",
+                      "partOfId": "false",
+                      "reversePartOfId": "false",
+                      "persistant": "true",
+                      "persistAsComponent": "false",
+                      "expand": "no"
+                    }
+                  },
+                  {
+                    "$": {
+                      "name": "equipage",
+                      "type": "OneToOne",
+                      "obligatoire": "true",
+                      "inverse": "lien",
+                      "entityTo": "Equipage",
+                      "cascade": "true",
+                      "composite": "false",
+                      "partOfId": "false",
+                      "reversePartOfId": "false",
+                      "persistant": "true",
+                      "persistAsComponent": "false",
+                      "expand": "no"
+                    }
+                  }
+                ]
+              },
+              {
+                "$": {
+                  "name": "Personne",
+                  "persistant": "true",
+                  "versionne": "true",
+                  "abstract": "false",
+                  "leaf": "false",
+                  "mappingORM": "default",
+                  "cacheable": "false",
+                  "resource": "false",
+                  "resourceOperations": "R"
+                },
+                "id": [
+                  ""
+                ],
+                "attr": [
+                  {
+                    "$": {
+                      "identifiant": "false",
+                      "name": "email",
+                      "type": "String",
+                      "searchDisplay": "both",
+                      "searchType": "Original",
+                      "alwaysDisplay": "true",
+                      "editable": "true",
+                      "persistant": "true",
+                      "pkfk": "none",
+                      "nameInModel": "email",
+                      "scope": "public",
+                      "identifiantSubstitution": "false"
+                    },
+                    "contraints": [
+                      {
+                        "$": {
+                          "obligatoire": "false",
+                          "unique": "false"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "$": {
+                      "identifiant": "false",
+                      "name": "nom",
+                      "type": "String",
+                      "searchDisplay": "both",
+                      "searchType": "Original",
+                      "alwaysDisplay": "true",
+                      "editable": "true",
+                      "persistant": "true",
+                      "pkfk": "none",
+                      "nameInModel": "nom",
+                      "scope": "public",
+                      "identifiantSubstitution": "false"
+                    },
+                    "contraints": [
+                      {
+                        "$": {
+                          "obligatoire": "false",
+                          "unique": "false"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "$": {
+                      "identifiant": "false",
+                      "name": "prenom",
+                      "type": "String",
+                      "searchDisplay": "both",
+                      "searchType": "Original",
+                      "alwaysDisplay": "true",
+                      "editable": "true",
+                      "persistant": "true",
+                      "pkfk": "none",
+                      "nameInModel": "prenom",
+                      "scope": "public",
+                      "identifiantSubstitution": "false"
+                    },
+                    "contraints": [
+                      {
+                        "$": {
+                          "obligatoire": "false",
+                          "unique": "false"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "association": [
+                  {
+                    "$": {
+                      "name": "equipage",
+                      "type": "OneToOne",
+                      "obligatoire": "true",
+                      "inverse": "personne",
+                      "entityTo": "Equipage",
+                      "cascade": "true",
+                      "composite": "false",
+                      "partOfId": "false",
+                      "reversePartOfId": "false",
+                      "persistant": "true",
+                      "persistAsComponent": "false",
+                      "expand": "no"
+                    }
+                  }
+                ]
+              },
+              {
+                "$": {
+                  "name": "Tag",
+                  "persistant": "true",
+                  "versionne": "true",
+                  "abstract": "false",
+                  "leaf": "false",
+                  "mappingORM": "default",
+                  "cacheable": "false",
+                  "resource": "false",
+                  "resourceOperations": "R"
+                },
+                "id": [
+                  ""
+                ],
+                "attr": [
+                  {
+                    "$": {
+                      "identifiant": "false",
+                      "name": "label",
+                      "type": "String",
+                      "searchDisplay": "both",
+                      "searchType": "Original",
+                      "alwaysDisplay": "true",
+                      "editable": "true",
+                      "persistant": "true",
+                      "pkfk": "none",
+                      "nameInModel": "label",
+                      "scope": "public",
+                      "identifiantSubstitution": "false"
+                    },
+                    "contraints": [
+                      {
+                        "$": {
+                          "obligatoire": "false",
+                          "unique": "false"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "association": [
+                  {
+                    "$": {
+                      "name": "lien",
+                      "type": "OneToOne",
+                      "obligatoire": "true",
+                      "inverse": "tag",
+                      "entityTo": "Lien",
+                      "cascade": "true",
+                      "composite": "false",
+                      "partOfId": "false",
+                      "reversePartOfId": "false",
+                      "persistant": "true",
+                      "persistAsComponent": "false",
+                      "expand": "no"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "resources": [
+          ""
+        ],
+        "packages": [
+          {
+            "package": [
+              {
+                "$": {
+                  "name": "default"
+                },
+                "services": [
+                  ""
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "appName": "elink",
+    "codeApp": "el1",
+    "appCode": "el1",
+    "appType": "angular",
+    "dslFile": "C:/Local/test/elinkAtelier/modele/dsl-model-elinkRest.xml",
+    "isModelDriven": true,
+    "baseURL": "http://localhost:8080/banconet/api/v1",
+    "charte": "material",
+    "modelesGeneres": [
+      "Lien",
+      "Tag",
+      "Categorie",
+      "Equipage",
+      "Personne"
+    ],
+    "servicesGeneres": [
+      "Lien",
+      "Equipage"
+    ],
+    "scenariosGeneres": [
+      {
+        "name": "bibli",
+        "edittable": false,
+        "views": [
+          {
+            "viewName": "view",
+            "isCrud": true,
+            "viewType": "list",
+            "viewEntity": "Lien",
+            "viewAtts": [
+              "lu",
+              "private",
+              "url"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "nonLu",
+        "edittable": false,
+        "views": [
+          {
+            "viewName": "view",
+            "isCrud": true,
+            "viewType": "list",
+            "viewEntity": "Lien",
+            "viewAtts": [
+              "lu",
+              "private",
+              "url"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "share",
+        "edittable": false,
+        "views": [
+          {
+            "viewName": "create",
+            "isCrud": true,
+            "viewType": "edit",
+            "viewEntity": "Lien",
+            "viewAtts": [
+              "private",
+              "url"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "equipe",
+        "edittable": false,
+        "views": [
+          {
+            "viewName": "gestion",
+            "isCrud": true,
+            "viewType": "edit",
+            "viewEntity": "Equipage",
+            "viewAtts": [
+              "label"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "cercle",
+        "edittable": false,
+        "views": [
+          {
+            "viewName": "view",
+            "isCrud": true,
+            "viewType": "list",
+            "viewEntity": "Lien",
+            "viewAtts": [
+              "lu",
+              "private",
+              "url"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+    "login" : {
+        "title" : "Connectez - vous :",
+        "failed" :  {
+            "strong" : "Echec de l'authentification",
+            "msg" : "Vérifier vos identifiants"
+        },
+        "username" : "Login",
+        "password" : "Mot de passe"
+    }
+}
