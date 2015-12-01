@@ -1,0 +1,59 @@
+
+<section class="canevas">
+
+    <div class="login">
+        <md-card>
+
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2><span translate="create.title"></span></h2>
+                </div>
+            </md-toolbar>
+
+            <form name="currentForm">
+                <cdc-alert-error></cdc-alert-error>
+
+                <div layout="row">
+                    <md-input-container flex="grow">
+                        <label translate="share.title"></label>
+                        <input name="title" type="text"  ng-model="share.title" >
+                    </md-input-container>
+                </div>
+
+                <div layout="row">
+                    <md-input-container flex="grow">
+                        <label translate="share.teasing"></label>
+                        <input name="title" type="text"  ng-model="share.teasin" >
+                    </md-input-container>
+                </div>
+
+                <div layout="row">
+                    <md-input-container flex="grow">
+                        <label translate="share.category"></label>
+                        <md-select ng-model="filter.category">
+                            <md-option ng-repeat="cat in categories" value="{{cat}}">
+                                {{cat}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+                <div layout="row">
+                    <label translate="create.Lien.private" flex="10"></label>
+                    <md-input-container flex>
+                        <md-radio-group ng-model="currentLien.private" layout="row" layout-align="start center">
+                            <md-radio-button value="true"> <span translate="boolean.true"/> </md-radio-button>
+                            <md-radio-button value="false"> <span translate="boolean.false"/> </md-radio-button>
+                        </md-radio-group>
+                    </md-input-container>
+                </div>
+
+                <div layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                    <md-button class="md-raised md-primary" ng-click="validate()" aria-label="{{'action.validate' | translate}}" translate="action.validate"></md-button>
+                    <md-button class="md-raised" aria-label="{{'action.cancel' | translate}}" translate="action.cancel"></md-button>
+                </div>
+
+            </form>
+        </md-card>
+    </div>
+</section>

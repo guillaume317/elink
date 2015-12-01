@@ -16,7 +16,14 @@
                     templateUrl: 'src/app/cercle/views/el1-view.tpl.html',
                     resolve: {
                         allLiens : function($log, LiensService, $stateParams) {
-                            return LiensService.findLiensByCriterias();
+                            var cercles= LiensService.findMyCercles();
+                            return LiensService.findTeamLinks(cercles[0]);
+                        },
+                        allCategories : function($log, LiensService, $stateParams) {
+                            return LiensService.findCategories();
+                        },
+                        allMyCercles : function($log, LiensService, $stateParams) {
+                            return LiensService.findMyCercles();
                         }
                     }
                 }

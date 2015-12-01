@@ -2,12 +2,26 @@
   "view" : {
     "title" : "view",
 
+    "action" : {
+      "delete" : "Supprimer",
+      "unread" : "Placer dans \" Non Lu \" ",
+      "read" : "Placer dans \" Biblio \" ",
+      "share" : "Partager"
+    },
+
     "error" : {
       "url" : "Mauvais format d'url"
     } ,
 
     "nouveauLien" : {
       "title" : "Ajouter un nouveau lien"
+    },
+
+    "share" : {
+        "form" : "Partage du lien",
+        "title" : "Titre",
+        "teasing" : "Teasing",
+        "category" : "Catégorie"
     },
 
     "Lien" : {

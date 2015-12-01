@@ -24,10 +24,10 @@ angular.module('el1.accueil', [ 'ui.router' ])
         $scope.$watch('selectedIndex', function(current, old) {
             switch (current) {
                 case 0:
-                    $state.go('nonLu-view');
+                    $state.go('bibli-nonLu');
                     break;
                 case 1:
-                    $state.go('bibli-view');
+                    $state.go('bibli-lu');
                     break;
                 case 2:
                     $state.go("cercle-view");
