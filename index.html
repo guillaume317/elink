@@ -19,61 +19,39 @@
         <link rel="stylesheet" href="./src/css/app.css"/>
     </head>
 
-    <body ng-app="elinkApp" ng-controller="LoginCtrl" layout="row">
-    
-        <div flex layout="column">
+    <body ng-app="elinkApp" ng-controller="AccueilController" >
+        <div layout="row">
+            <div flex="auto">
+                <md-tabs md-stretch-tabs
+                         md-selected="selectedIndex">
+                    <md-tab aria-label="{{'tab.nonLu' | translate}}" >{{'tab.nonLu' | translate}}</md-tab>
+                    <md-tab aria-label="{{'tab.biblio' | translate}}">{{'tab.biblio' | translate}}</md-tab>
+                    <md-tab aria-label="{{'tab.cercle' | translate}}">{{'tab.cercle' | translate}}</md-tab>
+                </md-tabs>
+            </div>
+            <div flex="initial" ng-cloak>
+                <md-button aria-label="{{'menu.nouveauLien' | translate}}" ng-show="user" class="md-icon-button" ng-click="nouveauLien()">
+                    <md-tooltip>{{'menu.nouveauLien' | translate}}</md-tooltip>
+                    <ng-md-icon icon="playlist_add" size="30"></ng-md-icon>
+                </md-button>
+                <md-button aria-label="{{'menu.admin' | translate}}" class="md-icon-button" ng-show="isAdmin()" ng-click="admin()">
+                    <md-tooltip>{{'menu.admin' | translate}}</md-tooltip>
+                    <ng-md-icon icon="settings_applications" size="30"></ng-md-icon>
+                </md-button>
+                <md-button aria-label="{{'menu.logout' | translate}}" class="md-icon-button" ng-show="user" ng-click="logout()">
+                    <md-tooltip>{{'menu.logout' | translate}}</md-tooltip>
+                    <ng-md-icon icon="logout" size="30"></ng-md-icon>
+                </md-button>
+                <md-button aria-label="{{'menu.login' | translate}}" class="md-icon-button" ng-show="!user" href="#/showLogin">
+                    <md-tooltip>{{'menu.login' | translate}}</md-tooltip>
+                    <ng-md-icon icon="login" size="30"></ng-md-icon>
+                </md-button>
 
-            <md-toolbar class="md-menu-toolbar">
-                <div layout="row">
-                    <md-toolbar-filler>
-                    </md-toolbar-filler>
-                    <div flex="auto">
-                        <h2 class="md-toolbar-tools">elink</h2>
-                        <md-menu-bar>
-                            <md-menu>
-                                <md-button ng-click="$mdOpenMenu()" aria-hidden="true">
-                                    <span translate="menu.title" /> <span class="caret"></span>
-                                </md-button>
-                                <md-menu-content>
-                                    <md-menu-item>
-                                        <md-button  ui-sref="home" translate="menu.home" aria-label="{{'menu.home' | translate}}" ></md-button>
-                                    </md-menu-item>
-                                </md-menu-content>
-                            </md-menu>
-                        </md-menu-bar>
-                    </div>
-                    <div flex="initial">
-                        <!-- LOGIN / LOGOUT -->
-                        <md-menu>
-                            <md-button class="md-icon-button" ng-click="$mdOpenMenu()">
-                                <ng-md-icon icon="account_box" size="40"></ng-md-icon>
-                            </md-button>
-                            <md-menu-content>
-                                <md-menu-item ng-show="!user">
-                                    <md-button aria-label="{{'menu.login' | translate}}" href="#/showLogin" translate="menu.login"></md-button>
-                                </md-menu-item>
-                                <md-menu-item ng-show="user" >
-                                    <md-button aria-label="{{'menu.logout' | translate}}" ng-click="logout()" translate="menu.logout"></md-button>
-                                </md-menu-item>
-                            </md-menu-content>
-                        </md-menu>
-                        <div>{{user.name}}</div>
-                    </div>
-                </div>
-            </md-toolbar>
-
-            <md-tabs md-stretch-tabs
-                     md-selected="selectedIndex">
-                <md-tab aria-label="{{'tab.nonLu' | translate}}" >{{'tab.nonLu' | translate}}</md-tab>
-                <md-tab aria-label="{{'tab.biblio' | translate}}">{{'tab.biblio' | translate}}</md-tab>
-                <md-tab aria-label="{{'tab.cercle' | translate}}">{{'tab.cercle' | translate}}</md-tab>
-            </md-tabs>
-
-            <md-content flex id="content" ui-view="main">
-            </md-content>
-
+            </div>
         </div>
-    
+
+        <md-content flex id="content" ui-view="main">
+        </md-content>
 
         <!-- third party -->
 
@@ -134,6 +112,9 @@
         <!-- formulaire partage -->
         <script src="./src/app/share/el1-module-share.js"></script>
         <script src="./src/app/share/views/el1-controller-create.js"></script>
+        <!-- formulaire nouveau lien -->
+        <script src="./src/app/nouveauLien/el1-module-nouveauLien.js"></script>
+        <script src="./src/app/nouveauLien/views/el1-controller-view.js"></script>
         <!-- gestion cercle/equipe -->
         <script src="./src/app/equipe/el1-module-equipe.js"></script>
         <script src="./src/app/equipe/views/el1-controller-gestion.js"></script>

@@ -1,4 +1,7 @@
 {
+    "error": {
+        "serverNotReachable" : "serveur indisponible"
+    },
     "action" : {
         "actions" : "Actions",
         "cancel" : "Annuler",
@@ -35,7 +38,9 @@
         "title" : "Menu",
         "home" : "Accueil", 
         "login" : "Login",
-        "logout" : "Logout"
+        "logout" : "Logout",
+        "nouveauLien" : "ajouter un nouveau lien",
+        "admin" : "gestion des cercles"
     },
     "message" : {
         "update" : "objet mis à jour !",

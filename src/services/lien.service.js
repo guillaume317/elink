@@ -27,27 +27,6 @@
                     throw erreur;
                 });
             },
-            findLienById : function(id, expand) {
-                if (! id)
-                    throw new Error("ID can not be empty ");
-                var url = Env.backend() + "/liens/" + id;
-                return $http.get(url, {params : {expand : expand} } ).then(function (response) {
-                    return (new LienModel(response.data))
-                }, function (erreur) {
-                    throw erreur;
-                });
-            },
-            updateLien : function (aLienModel) {
-                //if (! id)
-                //    throw new Error("ID can not be empty ");
-                var url = Env.backend() + "/liens/" + aLienModel.ident;
-                return $http.post(url, aLienModel).then(function (response) {
-                    //
-                    return response.status;
-                }, function (erreur) {
-                    throw erreur;
-                });
-            },
             createLien : function (aLienModel) {
                 var url = Env.backend() + "/liens";
                 return $http.put(url, aLienModel).then(function (response) {

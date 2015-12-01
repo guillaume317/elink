@@ -569,6 +569,23 @@
             ]
           }
         ]
+      },
+      {
+        "name": "nouveauLien",
+        "edittable": false,
+        "views": [
+          {
+            "viewName": "view",
+            "isCrud": true,
+            "viewType": "edit",
+            "viewEntity": "Lien",
+            "viewAtts": [
+              "lu",
+              "private",
+              "url"
+            ]
+          }
+        ]
       }
     ]
   }

@@ -3,21 +3,16 @@
     'use strict';
     module.config(function ($stateProvider) {
 
-        
-
-        $stateProvider.state('cercle-view', {
-            url: '/cercle/view',
+        $stateProvider.state('nouveauLien-view', {
+            url: '/nouveauLien/view',
             data : {
-                    title :"view"
+                title :"view"
             },
             views: {
                 "main": {
-                    controller: 'cercleController',
-                    templateUrl: 'src/app/cercle/views/el1-view.tpl.html',
+                    controller: 'nouveauLienController',
+                    templateUrl: 'src/app/nouveauLien/views/el1-view.tpl.html',
                     resolve: {
-                        allLiens : function($log, LiensService, $stateParams) {
-                            return LiensService.findLiensByCriterias();
-                        }
                     }
                 }
             },
@@ -30,9 +25,8 @@
             }
         });
 
-
         
 
     });
 
-}(angular.module('el1.cercle', [ 'ngMaterial', 'ui.router', 'el1.services.commun', 'el1.model' ] )));
+}(angular.module('el1.nouveauLien', [ 'ngMaterial', 'ui.router', 'el1.services.commun', 'el1.model' ] )));

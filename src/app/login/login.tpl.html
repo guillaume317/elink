@@ -12,7 +12,7 @@
                 <strong translate="login.failed.strong"></strong> <span translate="login.failed.msg"></span>
             </div>
 
-            <form role="form" ng-submit="login()">
+            <form role="form" ng-submit="login()" layout="column">
                 <md-input-container flex>
                     <label for="username" translate="login.username"></label>
                     <input type="text" id="username" ng-model="credentials.username"/>

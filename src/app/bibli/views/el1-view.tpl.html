@@ -13,6 +13,7 @@
             <!-- img ng-src="{{item.face}}?{{$index}}" class="md-avatar" alt="{{item.who}}" / -->
             <div class="md-list-item-text" layout="column">
                 {{lien.url  }}
+                <md-icon md-svg-icon="communication:messenger" ng-click="doSecondaryAction($event)" aria-label="Open Chat" class="md-secondary md-hue-3" ng-class="{'md-primary': person.newMessage}"></md-icon>
             </div>
         </md-list-item>
     </md-list>

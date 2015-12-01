@@ -23,11 +23,15 @@ angular.module('elinkApp')
 					var cleanHttpErrorListener = $rootScope.$on('httpError', function (event, httpResponse) {
 					    var i;
 					    event.stopPropagation();
+						console.log(httpResponse.status)
 					    switch (httpResponse.status) {
 					        // connection refused, server not reachable
-					        case 0:
+					        case -1:
 					            addErrorAlert("Server not reachable",'error.serverNotReachable');
 					            break;
+							case 0:
+								addErrorAlert("Server not reachable",'error.serverNotReachable');
+								break;
 
 					        case 400:
 					            if (httpResponse.data && httpResponse.data.fieldErrors) {

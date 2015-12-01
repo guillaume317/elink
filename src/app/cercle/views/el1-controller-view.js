@@ -2,16 +2,16 @@
 
     angular
         .module('el1.cercle')
-        .controller('viewController', [
+        .controller('cercleController', [
             '$log', '$scope', '$state',
             'LiensService',
             'allLiens',
-            ViewController
+            CercleController
             ]);
 
     /**
      */
-    function ViewController($log, $scope, $state, LiensService, allLiens ) {
+    function CercleController($log, $scope, $state, LiensService, allLiens ) {
         $scope.allLiens= allLiens;
     }
 

@@ -18,6 +18,41 @@ angular.module('el1.accueil', [ 'ui.router' ])
         });
 
     })
-    .controller('AccueilController', function($rootScope, $scope, $http, $location) {
+    .controller('AccueilController', function($rootScope, $scope, $http, $location, Env, $state, AuthService) {
+        $scope.selectedIndex = 0;
+        $scope.isAdmin= Env.isAdmin;
+        $scope.$watch('selectedIndex', function(current, old) {
+            switch (current) {
+                case 0:
+                    $state.go('nonLu-view');
+                    break;
+                case 1:
+                    $state.go('bibli-view');
+                    break;
+                case 2:
+                    $state.go("cercle-view");
+                    break;
+            }
+        });
+
+        $scope.admin = function() {
+            $state.go('equipe-gestion');
+        }
+
+        $scope.nouveauLien = function() {
+            $state.go('nouveauLien-view');
+        }
+
+        $scope.logout = function() {
+            AuthService.logout().then (function() {
+                $scope.authenticationError = false;
+                $rootScope.user= undefined;
+                localStorageService.set('user', undefined);
+                $location.path("/");
+            }, function(erreur) {
+                console.log(erreur);
+                $scope.authenticationError = true;
+            });
+        }
 
     });

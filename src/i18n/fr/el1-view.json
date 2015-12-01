@@ -1,14 +1,21 @@
 {
-    "view" : {
-        "title" : "view",
-        
-        "Lien" : {
-                      "lu" : "lu",
-              "private" : "private",
-              "url" : "url",
+  "view" : {
+    "title" : "view",
 
-    
-                "last" : ""
-        }
+    "error" : {
+      "url" : "Mauvais format d'url"
+    } ,
+
+    "nouveauLien" : {
+      "title" : "Ajouter un nouveau lien"
+    },
+
+    "Lien" : {
+      "nonLu" : "Non lu",
+      "biblio" : "Biblio",
+      "lu" : "lu",
+      "private" : "private",
+      "url" : "url"
     }
+  }
 }

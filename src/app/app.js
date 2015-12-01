@@ -1,7 +1,7 @@
 angular
-    .module('elinkApp', ['ngCookies', 'ngMessages', 'LocalStorageModule', 'ngMaterial', 'ngMdIcons',  'ui.router.state', 'ui.router', 'pascalprecht.translate', 'el1.model', 'el1.services.commun', 'el1.accueil', 'el1.login', 'el1.bibli', 'el1.nonLu', 'el1.share', 'el1.cercle', 'el1.error'])
+    .module('elinkApp', ['ngCookies', 'ngMessages', 'LocalStorageModule', 'ngMaterial', 'ngMdIcons',  'ui.router.state', 'ui.router', 'pascalprecht.translate', 'el1.model', 'el1.services.commun', 'el1.accueil', 'el1.bibli', 'el1.nonLu', 'el1.nouveauLien', 'el1.login', 'el1.share', 'el1.cercle', 'el1.error'])
 
-        .run(function ($rootScope, $location, $window, $http, $state, $translate, $cookies, Env, AuthService, localStorageService) {
+        .run(function ($rootScope, $location, $window, $http, $state, $translate, $cookies, Env, AuthService, UserModel, localStorageService) {
             $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
                 $rootScope.toState = toState;
                 $rootScope.toStateParams = toStateParams;
@@ -42,9 +42,14 @@ angular
             });
 
             // En cas de F5, stocker / replace les élements entre les scopes et le localstorage
-
-            $rootScope.user= localStorageService.get('user');
-            Env.setUser(localStorageService.get('user'));
+            if (Env.isMock()) {
+                var mockUser= new UserModel();
+                $rootScope.user = mockUser;
+                Env.setUser(mockUser);
+            } else {
+                $rootScope.user = localStorageService.get('user');
+                Env.setUser(localStorageService.get('user'));
+            }
 
     })
     .config(function($stateProvider, $urlRouterProvider, $httpProvider, $translateProvider , $mdThemingProvider, $mdDateLocaleProvider ){

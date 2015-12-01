@@ -20,6 +20,9 @@ angular.module('el1.model')
             isAuthenticated: function () {
                 return _user !== null;
             },
+            isAdmin: function () {
+                return _user !== null && _user.admin;
+            },
             isMock: function() {
                 return true;
             }
