@@ -37,7 +37,12 @@
         };
 
         $scope.share= function(ev, aLienModel) {
-            $scope.categories= LiensService.findCategories();
+            $scope.categories= [];
+            //$scope.categories=LiensService.findCategories();
+            // features/feature-01-oauth
+            LiensService.findCategories().then(function(categories) {
+                $scope.categories=categories;
+            });
 
             $mdDialog.show({
                 controller: ShareController,

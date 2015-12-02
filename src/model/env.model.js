@@ -2,14 +2,18 @@
 angular.module('el1.model')
 
     .factory('Env', function Env() {
-        var _backend, _user;
+        var _backend, _user, _backendfirebase;
 
         return {
             init: function (data) {
                 _backend = data.backend;
+                _backendfirebase = data.backendfirebase;
             },
             backend: function() {
                 return _backend;
+            },
+            backendfirebase : function() {
+                return _backendfirebase;
             },
             setUser: function(user) {
                 _user= user;

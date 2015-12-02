@@ -1,3 +1,4 @@
 {
-    "backend": "http://localhost:8080/banconet/api/v1"
+    "backend": "http://localhost:8080/banconet/api/v1",
+    "backendfirebase": "https://elink.firebaseio.com/"
 }

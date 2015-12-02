@@ -1,0 +1,31 @@
+PUT https://elink.firebaseio.com/.json
+{
+    "CCMT": {
+        "created": 1449069115325,
+        "user": "mg"
+    },
+    "DevOps": {
+        "created": 1449069115325,
+        "user": "mg"
+    },
+    "Mobile": {
+        "created": 1449069115325,
+        "user": "mg"
+    },
+    "Devoxx": {
+        "created": 1449069115325,
+        "user": "mg"
+    }
+
+
+}
+
+POST https://elink.firebaseio.com/cercles/CCMT/links.json
+{
+"id":"4",
+"url":"http://www.google.fr",
+"title":"google",
+"teasing":"A LIRE !!",
+"sharedBy":"Arthur",
+"category":"divers"
+}
