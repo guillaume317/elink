@@ -13,7 +13,7 @@
             <div flex="initial" layout="row">
                 <md-button class="md-icon-button" ng-click="delete(lien)" aria-label="{{'view.action.delete' | translate}}"><ng-md-icon icon="delete" size="30" ></ng-md-icon> <md-tooltip>{{'view.action.delete' | translate}}</md-tooltip></md-button>
                 <md-button class="md-icon-button" ng-click="read(lien)" aria-label="{{'view.action.read' | translate}}"><ng-md-icon icon="archive" size="30" ></ng-md-icon> <md-tooltip>{{'view.action.read' | translate}}</md-tooltip></md-button>
-                <md-button class="md-icon-button" ng-click="share($event, lien)" flex-sm="100" flex-md="100" flex-gt-md="auto" aria-label="{{'view.action.share' | translate}}"><ng-md-icon icon="share" size="30" ></ng-md-icon> <md-tooltip>{{'view.action.share' | translate}}</md-tooltip></md-button>
+                <md-button class="md-icon-button" ng-show="canShare()" ng-click="share($event, lien)" flex-sm="100" flex-md="100" flex-gt-md="auto" aria-label="{{'view.action.share' | translate}}"><ng-md-icon icon="share" size="30" ></ng-md-icon> <md-tooltip>{{'view.action.share' | translate}}</md-tooltip></md-button>
             </div>
         </md-list-item>
     </md-list>

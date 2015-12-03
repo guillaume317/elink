@@ -9,8 +9,17 @@
       "share" : "Partager"
     },
 
+    "cercle" : {
+        "toutes" : "Toutes les catégories"
+    },
+
+    "message" : {
+        "shareLink" : "Lien partagé !"
+    },
+
     "error" : {
-      "url" : "Mauvais format d'url"
+      "url" : "Mauvais format d'url",
+      "required" : "Champs obligatoire"
     } ,
 
     "nouveauLien" : {
@@ -21,7 +30,8 @@
         "form" : "Partage du lien",
         "title" : "Titre",
         "teasing" : "Teasing",
-        "category" : "Cat�gorie"
+        "category" : "Catégorie",
+        "cercle" : "Cercle"
     },
 
     "Lien" : {

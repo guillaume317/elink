@@ -3,7 +3,7 @@ angular.module('el1.model')
     .factory('PersonneModel', function () {
         // constructor
         function PersonneModel(data) {
-            angular.copy(data, this); 
+            angular.copy(data, this);
             this.toString = function toString() {
                 return " " + this.email + " " + this.nom + " " + this.prenom +  " ";
             }

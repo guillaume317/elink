@@ -1,21 +1,25 @@
 <section class="canevas">
 
     <md-toolbar>
-        <div class="md-toolbar-tools">
+        <div class="md-toolbar-tools" layout-align="space-around center">
+
             <md-select ng-model="filter.category">
-                <md-option value="">Toutes</md-option>
+                <md-option value="">{{'view.cercle.toutes' | translate}}</md-option>
                 <md-option ng-repeat="cat in categories" value="{{cat}}">
                     {{cat}}
                 </md-option>
             </md-select>
 
-            <md-select ng-model="cercle" ng-click="changeCercle()">
+            <md-select ng-model="cercle" ng-click="changeCercle(cercle)">
                 <md-option ng-repeat="aCercle in cercles" value="{{aCercle}}">
                     {{aCercle}}
                 </md-option>
             </md-select>
         </div>
-    </md-toolbar>
+      </md-toolbar>
+
+
+    <md-divider></md-divider>
 
     <div ng-hide="allLiens.items[0]" class="errormessage warning" translate="list.empty"></div>
 

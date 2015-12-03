@@ -1,24 +1,24 @@
 angular.module('el1.model')
 
-    .factory('EquipageModel', function () {
+    .factory('CercleModel', function () {
         // constructor
-        function EquipageModel(data) {
+        function CercleModel(data) {
             angular.copy(data, this); 
             this.toString = function toString() {
                 return " " + this.label +  " ";
             }
         }
-        return EquipageModel;
+        return CercleModel;
     })
 
-    .factory('EquipagesModel', [ 'EquipageModel', function (EquipageModel) {
+    .factory('CerclesModel', [ 'CercleModel', function (CercleModel) {
         // constructor
-        function EquipagesModel(data) {
+        function CerclesModel(data) {
             this.items = new Array(data.length);
             for (var i in data) {
-                this.items[i] = new EquipageModel(data[i]);
+                this.items[i] = new CercleModel(data[i]);
             }
         }
 
-        return EquipagesModel;
+        return CerclesModel;
     }]);

@@ -2,12 +2,12 @@
     'use strict';
 
     angular.module('el1.services.commun')
-        .service('LiensService', ['$q', '$http', 'LiensModel', 'LienModel', 'EquipagesModel', 'commonsService', 'Env', '$firebaseArray', LiensService]);
+        .service('LiensService', ['$q', '$http', 'LiensModel', 'LienModel', 'commonsService', 'Env', '$firebaseArray', LiensService]);
 
     /**
      *
      */
-    function LiensService($q, $http, LiensModel, LienModel, EquipagesModel, commonsService, Env, $firebaseArray){
+    function LiensService($q, $http, LiensModel, LienModel, commonsService, Env, $firebaseArray){
 
         return {
             /* Tous mes liens (read / unread) */
@@ -36,8 +36,8 @@
             /* Tous les liens du cercle passé en parametre */
             findTeamLinks : function(cercle) {
                 if ( Env.isMock() ) {
-
-                    /**
+					
+					/**
                     var link1 = {"id": "4", "url": "http://www.google.fr", "title" : "google", "teasing" : "A LIRE !!", "sharedBy" : "Arthur", "category" : "divers" };
                     var link2 = {"id": "5", "url": "http://www.yahoo.fr" , "title" : "yahoo", "teasing" : "A LIRE !!", "sharedBy" : "Arthur", "category" : "divers"};
                     var link3 = {"id": "6", "url": "https://material.angularjs.org/" , "title" : "material", "teasing" : "A LIRE !!", "sharedBy" : "Arthur", "category" : "veille"};
@@ -46,7 +46,6 @@
                     array.push(link1);
                     array.push(link2);
                     array.push(link3);
-
                     return new LiensModel(array);*/
 
                     // features/feature-01-oauth
@@ -160,6 +159,9 @@
                 }, function (erreur) {
                     throw erreur;
                 });
+            },
+            shareLien : function(aLienModel) {
+
             }
         };
 

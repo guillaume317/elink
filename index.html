@@ -19,7 +19,7 @@
         <link rel="stylesheet" href="./src/css/app.css"/>
     </head>
 
-    <body ng-app="elinkApp" ng-controller="AccueilController" >
+    <body ng-app="elinkApp" ng-controller="toolbarController" >
         <div layout="row">
             <div flex="auto">
                 <md-tabs md-stretch-tabs
@@ -30,11 +30,11 @@
                 </md-tabs>
             </div>
             <div flex="initial" ng-cloak>
-                <md-button aria-label="{{'menu.nouveauLien' | translate}}" ng-show="user" class="md-icon-button" ng-click="nouveauLien()">
+                <md-button aria-label="{{'menu.nouveauLien' | translate}}" ng-show="user" class="md-icon-button" ng-click="nouveauLien($event)">
                     <md-tooltip>{{'menu.nouveauLien' | translate}}</md-tooltip>
                     <ng-md-icon icon="playlist_add" size="30"></ng-md-icon>
                 </md-button>
-                <md-button aria-label="{{'menu.admin' | translate}}" class="md-icon-button" ng-show="isAdmin()" ng-click="admin()">
+                <md-button aria-label="{{'menu.admin' | translate}}" class="md-icon-button" ng-show="user" ng-click="admin()">
                     <md-tooltip>{{'menu.admin' | translate}}</md-tooltip>
                     <ng-md-icon icon="settings_applications" size="30"></ng-md-icon>
                 </md-button>
@@ -90,15 +90,18 @@
         <script src="./src/model/user.model.js"></script>
         <script src="./src/model/env.model.js"></script>
         <script src="./src/model/lien.model.js"></script>
-        <script src="./src/model/equipage.model.js"></script>
+        <script src="./src/model/personne.model.js"></script>
+        <script src="./src/model/cercle.model.js"></script>
 
 
         <script src="./src/services/auth.service.js"></script>
         <script src="./src/services/commons.js"></script>
         <script src="./src/services/lien.service.js"></script>
-        <script src="./src/services/equipage.service.js"></script>
+        <script src="./src/services/gestion.service.js"></script>
 
         <script src="./src/app/accueil/el1-module-accueil.js"></script>
+        <script src="./src/app/accueil/views/el1-controller-toolbar.js"></script>
+
         <script src="./src/app/error/el1-module-error.js"></script>
         <script src="./src/app/login/el1-module-login.js"></script>
 
@@ -108,12 +111,9 @@
         <!-- onglet cercle -->
         <script src="./src/app/cercle/el1-module-cercle.js"></script>
         <script src="./src/app/cercle/views/el1-controller-view.js"></script>
-        <!-- formulaire nouveau lien -->
-        <script src="./src/app/nouveauLien/el1-module-nouveauLien.js"></script>
-        <script src="./src/app/nouveauLien/views/el1-controller-view.js"></script>
         <!-- gestion cercle/equipe -->
-        <script src="./src/app/equipe/el1-module-equipe.js"></script>
-        <script src="./src/app/equipe/views/el1-controller-gestion.js"></script>
+        <script src="src/app/gestionCercles/el1-module-gestion.js"></script>
+        <script src="src/app/gestionCercles/views/el1-controller-gestion.js"></script>
 
         <script src="./src/app/app.js"></script>
         <script src="./src/interceptor/auth.interceptor.js"></script>

@@ -6,7 +6,7 @@
             '$log', '$scope', '$state',
             'LienModel',
             'LiensService',
-            'allLiens',
+            'allLiens', 'allCategories', 'allMyCercles',
             '$mdDialog', '$mdMedia',
             BibliController
             ])
@@ -20,20 +20,50 @@
 
     /**
      */
-    function BibliController($log, $scope, $state, LienModel, LiensService, allLiens, $mdDialog, $mdMedia ) {
+    function BibliController($log, $scope, $state, LienModel, LiensService, allLiens, allCategories, allMyCercles, $mdDialog, $mdMedia ) {
         $scope.customFullscreen = $mdMedia('sm');
         $scope.allLiens= allLiens;
+        $scope.canShare= function() {
+            return allMyCercles && allMyCercles[0];
+        };
 
         $scope.delete= function(aLienModel) {
-            LiensService.deleteLien(aLienModel);
+            LiensService.deleteLien(aLienModel).then(
+                function (status) {
+                    if (status == 201) {
+                        // TODO supprimer element du tableau $scope.allLiens.
+                    }
+                }, function (error) {
+                    //
+                    $log.error(error);
+                }
+            );
         };
 
         $scope.unread= function(aLienModel) {
-            LiensService.markAsUnread(aLienModel);
+            LiensService.markAsUnread(aLienModel).then(
+                function (status) {
+                    if (status == 201){
+                        // TODO modif du lien en local
+                    }
+                }, function (error) {
+                    //
+                    $log.error(error);
+                }
+            );
         };
 
         $scope.read= function(aLienModel) {
-            LiensService.markAsRead(aLienModel);
+            LiensService.markAsRead(aLienModel).then(
+                function (status) {
+                    if (status == 201) {
+                        // TODO modif du lien en local
+                    }
+                }, function (error) {
+                    //
+                    $log.error(error);
+                }
+            );
         };
 
         $scope.share= function(ev, aLienModel) {
@@ -49,13 +79,18 @@
                 templateUrl: 'src/app/bibli/views/el1-share.tpl.html',
                 parent: angular.element(document.body),
                 targetEvent: ev,
+                locals: {
+                    link: aLienModel,
+                    allCategories: allCategories,
+                    allMyCercles: allMyCercles
+                },
                 clickOutsideToClose:true,
                 fullscreen: $mdMedia('sm') && $scope.customFullscreen
             })
-                .then(function(answer) {
-                    $scope.status = 'You said the information was "' + answer + '".';
+                .then(function(shareLink) {
+                    // valider
                 }, function() {
-                    $scope.status = 'You cancelled the dialog.';
+                    // cancel
                 });
 
             $scope.$watch(function() {
@@ -70,15 +105,40 @@
 
     /**
      */
-    function ShareController($log, $scope, $state, LienModel, LiensService, $mdDialog, $mdMedia ) {
+    function ShareController($log, $scope, $state, LienModel, LiensService, link, allCategories, allMyCercles, $mdDialog, $mdMedia ) {
+        $scope.link= link;
+        $scope.shareLink= new LienModel();
+        $scope.shareLink.cercle= allMyCercles[0];
+        $scope.shareLink.category= allCategories[0];
+
+        $scope.categories= allCategories;
+        $scope.cercles= allMyCercles;
+
         $scope.hide = function() {
             $mdDialog.hide();
         };
         $scope.cancel = function() {
             $mdDialog.cancel();
         };
-        $scope.answer = function(answer) {
-            $mdDialog.hide(answer);
+        $scope.validate = function(shareLink) {
+            if ($scope.currentForm.$valid) {
+                shareLink.url = link.url;
+
+                LiensService.shareLien(shareLink).then(
+                    function (status) {
+                        $log.debug("share " + shareLink.title + " return : " + status);
+                        if (status == 201)
+                            AlertService.success($translate.instant('view.message.shareLink'));
+                        // $state.go();
+
+                        $mdDialog.hide(shareLink);
+                    }, function (error) {
+                        //
+                        $log.error(error);
+                    }
+                );
+
+            }
         };
     }
 

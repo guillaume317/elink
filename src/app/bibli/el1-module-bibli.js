@@ -15,6 +15,12 @@
                     resolve: {
                         allLiens : function($log, LiensService, $stateParams) {
                             return LiensService.findMyLinks(true);
+                        },
+                        allCategories : function($log, LiensService, $stateParams) {
+                            return LiensService.findCategories();
+                        },
+                        allMyCercles : function($log, LiensService, $stateParams) {
+                            return LiensService.findMyCercles();
                         }
                     }
                 }
@@ -40,6 +46,12 @@
                     resolve: {
                         allLiens : function($log, LiensService, $stateParams) {
                             return LiensService.findMyLinks(false);
+                        },
+                        allCategories : function($log, LiensService, $stateParams) {
+                            return LiensService.findCategories();
+                        },
+                        allMyCercles : function($log, LiensService, $stateParams) {
+                            return LiensService.findMyCercles();
                         }
                     }
                 }

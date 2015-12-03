@@ -1,36 +1,38 @@
 
-<section class="canevas">
+<md-dialog aria-label="{{'view.share.form' | translate}}" ng-cloak flex="50">
 
-    <div class="login">
-        <md-card>
+    <form name="currentForm">
 
-            <md-toolbar>
-                <div class="md-toolbar-tools">
-                    <h2><span translate="create.title"></span></h2>
-                </div>
-            </md-toolbar>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2><span translate="view.share.form"></span> {{ link.title }}</h2>
+            </div>
+        </md-toolbar>
 
-            <form name="currentForm">
+        <md-dialog-content>
+            <div class="md-dialog-content">
+
                 <cdc-alert-error></cdc-alert-error>
 
                 <div layout="row">
                     <md-input-container flex="grow">
-                        <label translate="share.title"></label>
-                        <input name="title" type="text"  ng-model="share.title" >
+                        <label translate="view.share.title"></label>
+                        <input name="title" type="text" ng-model="shareLink.title" required>
+                        <div role="alert"><span class="error" ng-show="currentForm.title.$error.required"> <span translate="view.error.required"/></span></div>
                     </md-input-container>
                 </div>
 
                 <div layout="row">
                     <md-input-container flex="grow">
-                        <label translate="share.teasing"></label>
-                        <input name="title" type="text"  ng-model="share.teasin" >
+                        <label translate="view.share.teasing"></label>
+                        <textarea name="teasing" rows="10" cols="50"  ng-model="shareLink.teasing"></textarea>
                     </md-input-container>
                 </div>
 
                 <div layout="row">
                     <md-input-container flex="grow">
-                        <label translate="share.category"></label>
-                        <md-select ng-model="filter.category">
+                        <label translate="view.share.category"></label>
+                        <md-select ng-model="shareLink.category">
                             <md-option ng-repeat="cat in categories" value="{{cat}}">
                                 {{cat}}
                             </md-option>
@@ -39,7 +41,19 @@
                 </div>
 
                 <div layout="row">
-                    <label translate="create.Lien.private" flex="10"></label>
+                    <md-input-container flex="grow">
+                        <label translate="view.share.cercle"></label>
+                        <md-select ng-model="shareLink.cercle">
+                            <md-option ng-repeat="cercle in cercles" value="{{cercle}}">
+                                {{cercle}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+                <!-- si on a le temps de faire le partage global
+                <div layout="row">
+                    <label translate="view.Lien.private" flex="10"></label>
                     <md-input-container flex>
                         <md-radio-group ng-model="currentLien.private" layout="row" layout-align="start center">
                             <md-radio-button value="true"> <span translate="boolean.true"/> </md-radio-button>
@@ -47,13 +61,17 @@
                         </md-radio-group>
                     </md-input-container>
                 </div>
+                -->
 
-                <div layout="row" layout-sm="column" layout-align="center center" layout-wrap>
-                    <md-button class="md-raised md-primary" ng-click="validate()" aria-label="{{'action.validate' | translate}}" translate="action.validate"></md-button>
-                    <md-button class="md-raised" aria-label="{{'action.cancel' | translate}}" translate="action.cancel"></md-button>
-                </div>
+            </div>
+        </md-dialog-content>
 
-            </form>
-        </md-card>
-    </div>
-</section>
+        <md-dialog-actions layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                <md-button class="md-raised md-primary" ng-click="validate(shareLink)" aria-label="{{'action.validate' | translate}}" translate="action.validate"></md-button>
+                <md-button class="md-raised" ng-click="cancel()" aria-label="{{'action.cancel' | translate}}" translate="action.cancel"></md-button>
+        </md-dialog-actions>
+
+    </form>
+
+
+</md-dialog>

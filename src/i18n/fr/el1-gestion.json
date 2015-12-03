@@ -1,16 +1,35 @@
 {
     "gestion" : {
         "title" : "gestion",
-        
-        "Equipage" : {
-                      "label" : "label",
 
-    
-        
-    
-        
-    
-                "last" : ""
+        "action" : {
+            "nouveauCercle" : "Nouveau cercle",
+            "invite" : "Lancer",
+            "accept" : "Accepter"
+        },
+
+        "error" : {
+          "required" : "Champs obligatoire"
+        } ,
+
+        "dashboard" : {
+            "invite" : "Inviter",
+            "invitations" : "Mes invitations en attente",
+            "personnes" : "Personnes du cercle"
+        },
+
+        "message" : {
+          "inviter" : "Invitation envoyée",
+          "accepterInvitation" : "Invitation acceptée"
+        },
+
+        "nouveauCercle" : {
+            "title" : "Nouveau cercle"
+        },
+
+        "Cercle" : {
+            "label" : "Nom"
         }
+
     }
 }

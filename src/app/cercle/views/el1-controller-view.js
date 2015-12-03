@@ -9,7 +9,8 @@
             'allCategories',
             'allMyCercles',
             CercleController
-            ]);
+            ])
+    ;
 
     /**
      */
