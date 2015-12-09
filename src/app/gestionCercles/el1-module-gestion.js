@@ -15,17 +15,27 @@
                     controller: 'gestionController',
                     templateUrl: 'src/app/gestionCercles/views/el1-gestion.tpl.html',
                     resolve: {
-                        personnes : function($log, GestionService, LiensService, $stateParams) {
-                            var cercles= LiensService.findMyCercles();
-                            return GestionService.findPersonnesByCercle(cercles[0]);
-                          //  return [];
+                        personnesDuCercle : function($log, $rootScope, GestionService, UsersManager, LiensService, $stateParams) {
+                            //Recherches des cercles sont je suis membre
+                            //Pour le premier d'entre eux, je recherche les personnes de ce cercle.
+                            return UsersManager.findCerclesByUser($rootScope.userConnected.$id)
+                                .then (function(cerclesIndex) {
+                                    if (cerclesIndex && cerclesIndex.length > 0) {
+                                        return GestionService.findPersonnesByCercle(cerclesIndex[0]);
+                                    } else {
+                                        return [];
+                                    }
+                            });
+                            //return GestionService.findPersonnesByCercle(cercles[0]);
                         },
-                        mesInvitations : function($log, GestionService, Env, $stateParams) {
-                            return GestionService.findInvitationsByUser(Env.getUser());
-                            //return [];
+                        mesInvitations : function($log, $rootScope, UsersManager, GestionService, Env, $stateParams) {
+                            //Recherche des cercles sont je ne suis pas encore membre
+                            return UsersManager.findInvitationsByUser($rootScope.userConnected.$id);
                         },
-                        cercles : function($log, LiensService, $stateParams) {
-                            return LiensService.findMyCercles();
+                        mesCercles : function($log, $rootScope, UsersManager, LiensService, $stateParams) {
+                            //Recherche des cercles dont je suis membre
+                            return UsersManager.findCerclesByUser($rootScope.userConnected.$id);
+                            //return LiensService.findMyCercles();
                         },
                     }
                 }

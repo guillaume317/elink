@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body ng-app="cercleApp">
+
+<div ng-controller="CerclesCtrl">
+    <div>
+        <ul>
+            <li ng-repeat="cercle in cercles">{{cercle.$id}} - {{cercle.description}} - {{cercle.created}} -
+                {{cercle.user}}
+                <ul>
+                    <li ng-repeat="member in cercle.members track by $index">{{member}}</li>
+                </ul>
+        </ul>
+    </div>
+
+    <div>
+        <h3>Ajouter un cercle</h3>
+
+        <form ng-submit="addCercle()">
+            <label>Nom :</label>
+            <input type="text" ng-model="cercle.name">
+            <label>Description :</label>
+            <input type="text" ng-model="cercle.description">
+
+            <button type="submit">Enregistrer</button>
+        </form>
+    </div>
+
+    <div>
+        <h3>Supprimer un cercle</h3>
+
+        <form ng-submit="removeCercle()">
+            <label>Nom :</label>
+            <input type="text" ng-model="cercle.nameToRemove">
+            <button type="submit">Supprimer</button>
+        </form>
+    </div>
+
+</div>
+
+<!-- $id is a special meta variable containing the object's key in our Firebase database.
+In this case, it would be "physicsmarie" -->
+
+<!-- div ng-controller="CercleCtrl">
+<h3>Edit {{ cercle.$id }}</h3>
+
+<form ng-submit="saveCercle()">
+    <label>User :</label>
+    <input type="text" ng-model="cercle.user">
+
+    <label>Date :</label>
+    <input type="text" ng-model="cercle.created">
+
+    <button type="submit">Save Changes</button>
+</form>
+
+<ul>
+    <li ng-repeat="link in cercle.links">{{link.title}} - {{link.category}}</li>
+</ul>
+</div -->
+
+<!--div ng-controller="LinksCtrl">
+    <form ng-submit="addLink()">
+        <label>Titre :</label>
+        <input type="text" ng-model="alink.title">
+
+        <label>Categorie :</label>
+        <input type="text" ng-model="alink.category">
+
+        <button type="submit">Save Changes</button>
+    </form>
+    <ul>
+        <li ng-repeat="link in links">{{link.title}} - {{link.category}}
+            <button ng-click="links.$remove(link)">x</button>
+        </li>
+    </ul>
+</div -->
+
+<script src="./bower_components/angular/angular.js"></script>
+<script src="./bower_components/firebase/firebase.js"></script>
+<script src="./bower_components/angularfire/dist/angularfire.js"></script>
+
+<script src="testFire.js"></script>
+
+</body>
+</html>
