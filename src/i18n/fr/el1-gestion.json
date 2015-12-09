@@ -28,7 +28,8 @@
         },
 
         "Cercle" : {
-            "label" : "Nom"
+            "label" : "Nom",
+            "description" : "Description"
         }
 
     }

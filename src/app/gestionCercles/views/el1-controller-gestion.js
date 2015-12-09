@@ -3,11 +3,11 @@
     angular
         .module('el1.gestion')
         .controller('gestionController', [
-            '$log', '$scope', '$state',
+            '$log', '$scope', '$rootScope', '$state',
             'AlertService', '$translate',
-            'GestionService',
+            'GestionService', 'UsersManager',
             'CercleModel',
-            'mesInvitations', 'personnes', 'cercles',
+            'mesInvitations', 'personnesDuCercle', 'mesCercles',
             '$mdDialog', '$mdMedia',
             GestionController
         ])
@@ -22,12 +22,15 @@
 
     /**
      */
-    function GestionController($log, $scope, $state, AlertService, $translate, GestionService, CercleModel, mesInvitations, personnes, cercles, $mdDialog, $mdMedia ) {
+    function GestionController($log, $scope, $rootScope, $state, AlertService, $translate, GestionService, UsersManager, CercleModel, mesInvitations, personnesDuCercle, mesCercles, $mdDialog, $mdMedia ) {
+
         $scope.mesInvitations= mesInvitations;
-        $scope.personnes= personnes;
-        $scope.cercles= cercles;
-        if (cercles[0])
-            $scope.cercle= cercles[0];
+        $scope.personnes= personnesDuCercle;
+        $scope.cercles= mesCercles;
+
+        if (mesCercles[0]) {
+            $scope.selectedCercle = mesCercles[0];
+        }
 
         $scope.nouveauCercle = function(ev) {
 
@@ -41,7 +44,7 @@
                 clickOutsideToClose:true,
                 fullscreen: $mdMedia('sm') && $scope.customFullscreen
             })
-                .then(function(shareLink) {
+                .then(function(buttonNumber) {
                     // valider
                 }, function() {
                     // cancel
@@ -55,47 +58,44 @@
 
         };
 
-
-        $scope.changeCercle= function(cercle) {
-            GestionService.findPersonnesByCercle(cercle).then(
-                function (status) {
-                    $log.debug("findPersonnesByCercle return : " + status);
-                    if (status == 201) {
-                        AlertService.success($translate.instant('gestion.message.inviter'));
-
-                    }
-                }, function (error) {
-                    //
+        $scope.changeCercle= function(cercleSelected) {
+            //Changement de cercle
+            //==> récupération des personnes du cercle choisi
+            GestionService.findPersonnesByCercle(cercleSelected)
+                .then(function (personnes) {
+                    $scope.selectedCercle = cercleSelected;
+                    $scope.personnes = personnes;
+                })
+                .catch(function (error) {
                     $log.error(error);
-                }
-            );
-
+                })
         }
 
         $scope.inviter= function(invite) {
-            GestionService.inviter(invite).then(
-                function (status) {
-                    $log.debug("inviter return : " + status);
-                    if (status == 201)
+        //L'utilisateur connecté invite un utilisateur à rejoindre le cercle sélectionné
+            UsersManager.inviter(invite, $scope.selectedCercle.$id)
+                .then(function (username) {
+                        $scope.invitation="";
                         AlertService.success($translate.instant('gestion.message.inviter'));
-                }, function (error) {
-                    //
+                })
+                .catch (function (error) {
                     $log.error(error);
-                }
-            );
+                })
         }
 
         $scope.accepterInvitation= function(invitation) {
-            GestionService.accepterInvitation(invitation).then(
-                function (status) {
-                    $log.debug("accepterInvitation  return : " + status);
-                    if (status == 201)
-                        AlertService.success($translate.instant('gestion.message.accepterInvitation'));
-                }, function (error) {
-                    //
+            // Si l'utilisateur connecté accepte l'invitation
+            // ==> Ajout du cercle au niveau du user.
+            // ==> Ajout de l'utilisateur au niveau des membres du cercle
+            // ==> Suppression de l'invitation en attente
+            // ==> Recharcher la liste ?
+            GestionService.accepterInvitation($rootScope.userConnected.$id, invitation.$id)
+                .then(function(cerclename) {
+                    AlertService.success($translate.instant('gestion.message.accepterInvitation'));
+                })
+                .catch(function(error) {
                     $log.error(error);
-                }
-            );
+                });
         }
 
     }
@@ -116,15 +116,9 @@
         $scope.validate= function(currentCercle) {
             if ($scope.currentForm.$valid) {
                 GestionService.createCercle(currentCercle).then(
-                    function (status) {
-                        $log.debug("validate return : " + status);
-                        if (status == 201 )
-                            AlertService.success($translate.instant('message.update'));
-                        // $state.go();
-
-                        $mdDialog.hide(shareLink);
+                    function (cerclename) {
+                        $mdDialog.hide("0");
                     }, function (error) {
-                        //
                         $log.error(error);
                     }
                 );

@@ -20,6 +20,12 @@
                         <input name="label" type="text" ng-model="currentCercle.label" required>
                         <div role="alert"><span class="error" ng-show="currentForm.label.$error.required"> <span translate="gestion.error.required"/></span></div>
                     </md-input-container>
+                    <md-input-container flex="grow">
+                        <label translate="gestion.Cercle.description"></label>
+                        <input name="description" type="text" ng-model="currentCercle.description" required>
+                        <div role="alert"><span class="error" ng-show="currentForm.description.$error.required"> <span translate="gestion.error.required"/></span></div>
+                    </md-input-container>
+
                 </div>
 
             </div>

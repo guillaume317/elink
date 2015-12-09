@@ -1,31 +1,92 @@
-PUT https://elink.firebaseio.com/.json
-{
-    "CCMT": {
-        "created": 1449069115325,
-        "user": "mg"
-    },
-    "DevOps": {
-        "created": 1449069115325,
-        "user": "mg"
-    },
-    "Mobile": {
-        "created": 1449069115325,
-        "user": "mg"
-    },
-    "Devoxx": {
-        "created": 1449069115325,
-        "user": "mg"
-    }
+var ref = new Firebase("https://elink.firebaseio.com/")
 
+//Liste des cercles
+var cercleRef = ref.child('cercles');
+
+//Liste des noms des personnes d'un cercle donné cercleName
+var cercleRef = ref.child('cercleMembers/' + cercleName);
+--pour chaque index username obtenu
+    var memberCercleRef = ref.child('users/' + username + '/fullname');
+
+//Liste des cercles d'un user username
+var userRef = ref.child('users/' + username)
+-- pour chaque cercle
+var cercleRef = ref.child('cercles/' + cercleName);
+
+-------------------
+cercles -> (0,n) links
+	  members
+users <-----> cercles
+users -> (0,n) links
+-------------------
+{
+	"cercles": {
+		"CCMT" :{
+			"description" : "CCMT...",
+			"user": "mg",
+			"created" : 121223423423
+			},
+		"DevOps" : {
+			"description" : "DevOps...",
+			"user": "mg",
+			"created" : 121223423423
+		}
+	}
+	"cercleMembers" : {
+		"CCMT" : {
+			"Chombier": true,
+			"Dupont": true,
+			"Matthieu": true,
+			"Guillaume": true
+		},
+		"DevOps" : {
+			"Fabien" : true,
+			"Guillaume": true
+		}
+	}
+	"cercleLinks": {
+		"CCMT" : {
+			"-KEIZAEIKeazeaz" :{
+				"category": "Divers",
+				"title": "yahoo !",
+				"url": "http://yahoo.fr"
+			},
+			"-K4cUaqAfIM9SjJPfHNh" : {
+				"category" : "SearchEngine",
+				"title": "Google"
+				"url" : "http://google.fr"
+			}
+		}
+	},
+	"users" :{
+		"Guillaume" : {
+			"firstname": "Guillaume",
+			"lastname": "Dauvergne",
+		    "fullname": "Guillaume Dauvergne",
+			"cercles": {
+				"CCMT" : true,
+				"DevOps" : true
+			}
+		}
+	},
+	"userLinks" :{
+		"Guillaume" : {
+			-K4cUaqAfIM9SjJPfHNh : {
+				"category" : "SearchEngine",
+				"title": "Google"
+				"url" : "http://google.fr"
+			}
+		}
+	}
 
 }
 
-POST https://elink.firebaseio.com/cercles/CCMT/links.json
-{
-"id":"4",
-"url":"http://www.google.fr",
-"title":"google",
-"teasing":"A LIRE !!",
-"sharedBy":"Arthur",
-"category":"divers"
-}
+-K4cGFb8ts5teWMJq4PC
+ category:
+ title:
+ -K4cUaqAfIM9SjJPfHNh
+ category:
+ title:
+ -K4cUfiJximX9zIIZV6X
+ category:
+ title:

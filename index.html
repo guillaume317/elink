@@ -30,6 +30,7 @@
                 </md-tabs>
             </div>
             <div flex="initial" ng-cloak>
+                {{userConnected.email}}
                 <md-button aria-label="{{'menu.nouveauLien' | translate}}" ng-show="user" class="md-icon-button" ng-click="nouveauLien($event)">
                     <md-tooltip>{{'menu.nouveauLien' | translate}}</md-tooltip>
                     <ng-md-icon icon="playlist_add" size="30"></ng-md-icon>
@@ -98,6 +99,7 @@
         <script src="./src/services/commons.js"></script>
         <script src="./src/services/lien.service.js"></script>
         <script src="./src/services/gestion.service.js"></script>
+        <script src="./src/services/user.service.js"></script>
 
         <script src="./src/app/accueil/el1-module-accueil.js"></script>
         <script src="./src/app/accueil/views/el1-controller-toolbar.js"></script>

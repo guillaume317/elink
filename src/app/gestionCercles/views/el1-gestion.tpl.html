@@ -3,13 +3,19 @@
     <md-toolbar>
         <div class="md-toolbar-tools" layout-align="space-around center">
 
-            <md-select ng-model="cercle" ng-click="changeCercle()">
-                <md-option ng-repeat="cercl in cercles" value="{{cercl}}">
-                    {{cercl}}
-                </md-option>
-            </md-select>
+            <md-input-container>
+                <label style="color: white">Mes cercles</label>
+                <md-select ng-model="selectedCercle" ng-change="changeCercle()"
+                           ng-model-options="{trackBy: '$value.$id'}">
+                    <md-option ng-value="cercl" ng-click="changeCercle(cercl)" ng-repeat="cercl in cercles">
+                        {{cercl.$id}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
 
-            <md-button class="md-raised md-primary" ng-click="nouveauCercle($event)" aria-label="{{'action.validate' | translate}}" translate="gestion.action.nouveauCercle"></md-button>
+            <md-button class="md-raised md-primary" ng-click="nouveauCercle($event)"
+                       aria-label="{{'action.validate' | translate}}"
+                       translate="gestion.action.nouveauCercle"></md-button>
 
         </div>
     </md-toolbar>
@@ -23,20 +29,21 @@
             <input name="invite" type="text" ng-model="invitation">
         </md-input-container>
 
-        <md-button class="md-raised md-primary" ng-click="inviter(invite)" aria-label="{{'gestion.action.validate' | translate}}" translate="gestion.action.invite"></md-button>
+        <md-button class="md-raised md-primary" ng-click="inviter(invitation)"
+                   aria-label="{{'gestion.action.validate' | translate}}" translate="gestion.action.invite"></md-button>
 
     </form>
 
     <md-divider></md-divider>
-    <md-subheader><span translate="gestion.dashboard.personnes"/></md-subheader>
+    <md-subheader><span translate="gestion.dashboard.personnes"/> {{selectedCercle.$id}}</md-subheader>
 
     <div ng-hide="personnes.items[0]" class="errormessage warning" translate="list.empty"></div>
 
     <md-list>
-        <md-list-item ng-repeat="personne in personnes.items | orderBy: order " >
+        <md-list-item ng-repeat="personne in personnes.items | orderBy: fullname">
             <div flex="auto" class="md-list-item-text" layout="column">
-                <div  layout="row">
-                    <span flex="15"><b>{{personne.nom}}</b></span>
+                <div layout="row">
+                    <span flex="15"><b>{{personne.fullname}}</b></span>
                 </div>
             </div>
         </md-list-item>
@@ -48,12 +55,16 @@
     <div ng-hide="mesInvitations[0]" class="errormessage warning" translate="list.empty"></div>
 
     <md-list>
-        <md-list-item ng-repeat="invitation in mesInvitations | orderBy: order " >
+        <md-list-item ng-repeat="invitation in mesInvitations | orderBy: $id ">
             <div flex="auto" class="md-list-item-text" layout="column">
-                {{invitation.cercle}}
+                <strong>{{invitation.$id}}</strong>
             </div>
             <div flex="initial" layout="row">
-                <md-button class="md-icon-button" ng-click="accepterInvitation(invitation)" aria-label="{{'view.action.read' | translate}}"><ng-md-icon icon="thumb_up" size="30" ></ng-md-icon> <md-tooltip>{{'gestion.action.accept' | translate}}</md-tooltip></md-button>
+                <md-button class="md-icon-button" ng-click="accepterInvitation(invitation)"
+                           aria-label="{{'view.action.read' | translate}}">
+                    <ng-md-icon icon="thumb_up" size="30"></ng-md-icon>
+                    <md-tooltip>{{'gestion.action.accept' | translate}}</md-tooltip>
+                </md-button>
             </div>
         </md-list-item>
     </md-list>
