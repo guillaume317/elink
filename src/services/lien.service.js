@@ -220,10 +220,8 @@
                 }, function (erreur) {
                     throw erreur;
                 });
-            },
-            shareLien : function(aLienModel) {
-
             }
+
         };
 
     }
