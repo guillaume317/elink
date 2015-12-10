@@ -18,19 +18,15 @@
 
         $scope.validate= function() {
             if ($scope.currentForm.$valid) {
-                LiensService.createLien($scope.currentLien).then(
-                    function (status) {
+                LiensService.createLien($scope.currentLien)
+                    .then(function (status) {
                         $log.debug("validate return : " + status);
-                        if (status == 201 )
-                            AlertService.success($translate.instant('message.update'));
-                        // $state.go();
-                    }, function (error) {
-                        //
+                    })
+                    .catch (function (error) {
                         $log.error(error);
-                    }
-                );
+                    });
             }
-        }
+        };
 
         $scope.closeAlert = function(index) {
             $scope.alerts.splice(index, 1);

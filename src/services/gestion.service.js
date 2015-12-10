@@ -129,6 +129,36 @@
 
                 return deferred.promise;
 
+            },
+
+            shareLien : function(shareLink, username) {
+
+                var deferred = $q.defer();
+
+                var cercleLinksRef = ref.child('cercleLinks').child(shareLink.cercleName);
+                var cercleLinksIndex = $firebaseArray(cercleLinksRef);
+
+                cercleLinksIndex.$loaded()
+                    .then(function() {
+                        var newCercle = {
+                            title: shareLink.title,
+                            teasing: shareLink.teasing,
+                            createdOn : Firebase.ServerValue.TIMESTAMP,
+                            url : shareLink.url,
+                            category: shareLink.category,
+                            sharedBy: username
+                        };
+                        cercleLinksIndex.$add(newCercle)
+                            .then(function() {
+                                deferred.resolve(newCercle);
+                            })
+                    })
+                    .catch(function(error) {
+                        deferred.reject(error);
+                    });
+
+                return deferred.promise;
+
             }
 
         };
