@@ -2,14 +2,73 @@
     'use strict';
 
     angular.module('el1.services.commun')
-        .service('LiensService', ['$q', '$http', 'LiensModel', 'LienModel', 'commonsService', 'Env', '$firebaseArray', LiensService]);
+        .service('LiensService', ['$q', '$http', 'LiensModel', 'LienModel', 'commonsService', 'Env', '$firebaseArray', '$firebaseObject', LiensService]);
 
     /**
      *
      */
-    function LiensService($q, $http, LiensModel, LienModel, commonsService, Env, $firebaseArray){
+    function LiensService($q, $http, LiensModel, LienModel, commonsService, Env, $firebaseArray, $firebaseObject){
+
+        var ref = new Firebase("https://elink.firebaseio.com/");
 
         return {
+
+            createLinkForUser : function(lien, username) {
+                var deferred = $q.defer();
+
+                var userLinksRef;
+                if (lien.private==="biblio") {
+                    userLinksRef = ref.child('usersLinks').child(username).child('read');
+                } else {
+                    userLinksRef = ref.child('usersLinks').child(username).child('notread');
+                }
+                var userLinks = $firebaseArray(userLinksRef);
+                userLinks.$loaded()
+                    .then(function () {
+                        var newLink = {};
+                        newLink.createdOn = Firebase.ServerValue.TIMESTAMP;
+                        newLink.title = "Titre Ã  rÃ©cupÃ©rer";
+                        newLink.teasing = "Teasing Ã  rÃ©cupÃ©rer !";
+                        newLink.url = lien.url;
+                        userLinks.$add(newLink);
+                        deferred.resolve(newLink);
+                    }).catch(function (error) {
+                        deferred.reject(error);
+                    });
+
+                return deferred.promise;
+            },
+
+            findNotReadLinksByUser : function(username) {
+                var deferred = $q.defer();
+
+                var userLinksNotReadRef = ref.child('usersLinks').child(username).child('notread');
+                var userLinksNotRead = $firebaseArray(userLinksNotReadRef);
+                userLinksNotRead.$loaded()
+                    .then(function () {
+                        deferred.resolve(userLinksNotRead);
+                    }).catch(function (error) {
+                        deferred.reject(error);
+                    });
+
+                return deferred.promise;
+            },
+
+            findReadLinksByUser : function(username) {
+                var deferred = $q.defer();
+
+                var userLinksReadRef = ref.child('usersLinks').child(username).child('read');
+                var userLinksRead = $firebaseArray(userLinksReadRef);
+                userLinksRead.$loaded()
+                    .then(function () {
+                        deferred.resolve(userLinksRead);
+                    }).catch(function (error) {
+                        deferred.reject(error);
+                    });
+
+                return deferred.promise;
+            },
+
             /* Tous mes liens (read / unread) */
              findMyLinks : function(isUnread) {
                if ( Env.isMock() ) {
@@ -33,7 +92,7 @@
                     throw erreur;
                 });
             },
-            /* Tous les liens du cercle passé en parametre */
+            /* Tous les liens du cercle passï¿½ en parametre */
             findTeamLinks : function(cercle) {
                 if ( Env.isMock() ) {
 					
@@ -55,7 +114,7 @@
                     var links = $firebaseArray(ref);
                     links.$loaded().then(
                         function() {
-                            //On itère sur ce dernier pour récupérer la liste
+                            //On itï¿½re sur ce dernier pour rï¿½cupï¿½rer la liste
                             // {$id: "-K4YOLJ9dAboViEfuymG"$priority: nullcategory: "divers"id: "4"sharedBy: "Arthur"teasing: "A LIRE !!"title: "google"url: "http://www.google.fr"}
                             deferred.resolve(new LiensModel(links));
                         }).catch(function(error) {
@@ -89,8 +148,10 @@
                     // features/feature-01-oauth
                     var deferred = $q.defer();
 
+                    //TODO Once() function
                     var ref = new Firebase(Env.backendfirebase() + "categories");
                     var categories = $firebaseArray(ref);
+
                     categories.$loaded().then(
                         function() {
                             //obtention d'un tableau d'objet
@@ -98,7 +159,7 @@
                             //      $id: "0"
                             //      $priority: null
                             //      $value: "devops"
-                            //On itère sur ce dernier pour récupérer la liste
+                            //On itï¿½re sur ce dernier pour rï¿½cupï¿½rer la liste
                             var array = [];
                             categories.forEach(function(obj) {
                                 array.push(obj.$value);
@@ -129,7 +190,7 @@
                             //obtention d'un tableau d'objet
                             // [Object
                             //      $id: "CCMT"
-                            //On itère sur ce dernier pour récupérer la liste
+                            //On itï¿½re sur ce dernier pour rï¿½cupï¿½rer la liste
                             var array = [];
                             cercles.forEach(function(obj) {
                                 array.push(obj.$id);

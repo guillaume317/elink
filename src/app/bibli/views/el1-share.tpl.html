@@ -17,7 +17,7 @@
                 <div layout="row">
                     <md-input-container flex="grow">
                         <label translate="view.share.title"></label>
-                        <input name="title" type="text" ng-model="shareLink.title" required>
+                        <input name="title" type="text" ng-model="shareLink.title" required disabled>
                         <div role="alert"><span class="error" ng-show="currentForm.title.$error.required"> <span translate="view.error.required"/></span></div>
                     </md-input-container>
                 </div>
@@ -25,7 +25,7 @@
                 <div layout="row">
                     <md-input-container flex="grow">
                         <label translate="view.share.teasing"></label>
-                        <textarea name="teasing" rows="10" cols="50"  ng-model="shareLink.teasing"></textarea>
+                        <textarea name="teasing" rows="10" cols="50"  ng-model="shareLink.teasing" disabled></textarea>
                     </md-input-container>
                 </div>
 
@@ -33,7 +33,7 @@
                     <md-input-container flex="grow">
                         <label translate="view.share.category"></label>
                         <md-select ng-model="shareLink.category">
-                            <md-option ng-repeat="cat in categories" value="{{cat}}">
+                            <md-option ng-repeat="cat in allCategories" value="{{cat}}">
                                 {{cat}}
                             </md-option>
                         </md-select>
@@ -44,8 +44,8 @@
                     <md-input-container flex="grow">
                         <label translate="view.share.cercle"></label>
                         <md-select ng-model="shareLink.cercle">
-                            <md-option ng-repeat="cercle in cercles" value="{{cercle}}">
-                                {{cercle}}
+                            <md-option ng-repeat="cercle in allMyCercles" value="{{cercle}}">
+                                {{cercle.$id}}
                             </md-option>
                         </md-select>
                     </md-input-container>

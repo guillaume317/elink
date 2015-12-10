@@ -10,7 +10,7 @@
             '$mdDialog', '$mdMedia',
             ToolbarController
         ]).controller('nouveauLienController', [
-            '$log', '$scope', '$state',
+            '$log', '$scope', '$rootScope', '$state',
             'AlertService', '$translate',
             'LienModel',
             'LiensService',
@@ -42,7 +42,6 @@
         };
 
         $scope.nouveauLien = function(ev) {
-            //$state.go('nouveauLien-view');
 
             // passage en pop up
 
@@ -85,8 +84,8 @@
 
     /**
      */
-    function NouveauLienController($log, $scope, $state, AlertService, $translate, LienModel, LiensService,  $mdDialog, $mdMedia ) {
-        $scope.currentLien= new LienModel();
+    function NouveauLienController($log, $scope, $rootScope, $state, AlertService, $translate, LienModel, LiensService,  $mdDialog, $mdMedia ) {
+        $scope.currentLien= {"url" : "", private: true};
         $scope.alerts = [];
 
         $scope.hide = function() {
@@ -98,16 +97,10 @@
 
         $scope.validate= function() {
             if ($scope.currentForm.$valid) {
-                LiensService.createLien($scope.currentLien).then(
-                    function (status) {
-                        $log.debug("validate return : " + status);
-                        if (status == 201 )
-                            AlertService.success($translate.instant('message.update'));
-                        // $state.go();
-
-                        $mdDialog.hide(shareLink);
+                LiensService.createLinkForUser($scope.currentLien, $rootScope.userConnected.$id)
+                    .then(function (newLink) {
+                        $mdDialog.hide(newLink);
                     }, function (error) {
-                        //
                         $log.error(error);
                     }
                 );

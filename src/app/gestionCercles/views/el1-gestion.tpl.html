@@ -43,7 +43,7 @@
         <md-list-item ng-repeat="personne in personnes.items | orderBy: fullname">
             <div flex="auto" class="md-list-item-text" layout="column">
                 <div layout="row">
-                    <span flex="15"><b>{{personne.fullname}}</b></span>
+                    <span flex="15"><b>{{personne.fullname}} - {{personne.email}}</b></span>
                 </div>
             </div>
         </md-list-item>

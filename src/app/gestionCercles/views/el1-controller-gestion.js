@@ -76,7 +76,7 @@
             UsersManager.inviter(invite, $scope.selectedCercle.$id)
                 .then(function (username) {
                         $scope.invitation="";
-                        AlertService.success($translate.instant('gestion.message.inviter'));
+                        $log.info($translate.instant('gestion.message.inviter'));
                 })
                 .catch (function (error) {
                     $log.error(error);
@@ -91,7 +91,7 @@
             // ==> Recharcher la liste ?
             GestionService.accepterInvitation($rootScope.userConnected.$id, invitation.$id)
                 .then(function(cerclename) {
-                    AlertService.success($translate.instant('gestion.message.accepterInvitation'));
+                    $log.info($translate.instant('gestion.message.accepterInvitation'));
                 })
                 .catch(function(error) {
                     $log.error(error);

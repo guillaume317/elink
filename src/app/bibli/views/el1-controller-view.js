@@ -3,10 +3,9 @@
     angular
         .module('el1.bibli')
         .controller('bibliController', [
-            '$log', '$scope', '$state',
-            'LienModel',
+            '$log', '$scope', '$rootScope', '$state',
             'LiensService',
-            'allLiens', 'allCategories', 'allMyCercles',
+            'liensNonLus', 'liensLus', 'allMyCercles', 'allCategories',
             '$mdDialog', '$mdMedia',
             BibliController
             ])
@@ -20,59 +19,46 @@
 
     /**
      */
-    function BibliController($log, $scope, $state, LienModel, LiensService, allLiens, allCategories, allMyCercles, $mdDialog, $mdMedia ) {
+    function BibliController($log, $scope, $rootScope, $state, LiensService, liensNonLus, liensLus, allMyCercles, allCategories, $mdDialog, $mdMedia ) {
         $scope.customFullscreen = $mdMedia('sm');
-        $scope.allLiens= allLiens;
+        //liens : liens non lus ou biblio selon le cas
+
+        if ($state.current.name === 'bibli-nonLu') {
+            $scope.liens = liensNonLus;
+        } else {
+            $scope.liens = liensLus;
+        }
+
         $scope.canShare= function() {
             return allMyCercles && allMyCercles[0];
         };
 
-        $scope.delete= function(aLienModel) {
-            LiensService.deleteLien(aLienModel).then(
-                function (status) {
-                    if (status == 201) {
-                        // TODO supprimer element du tableau $scope.allLiens.
-                    }
-                }, function (error) {
-                    //
-                    $log.error(error);
-                }
-            );
+        $scope.deleteLink= function(lien) {
+            // $scope.liens est synchronisé avec la base
+            $scope.liens.$remove(lien);
         };
 
-        $scope.unread= function(aLienModel) {
-            LiensService.markAsUnread(aLienModel).then(
-                function (status) {
-                    if (status == 201){
-                        // TODO modif du lien en local
-                    }
-                }, function (error) {
-                    //
-                    $log.error(error);
-                }
-            );
+        $scope.moveTo = function(lien) {
+            //cas des liens non lus
+            if ($state.current.name === 'bibli-nonLu') {
+                //Ajout dans biblio
+                liensLus.$add(lien);
+            } else {
+                //Ajout dans non lus
+                liensNonLus.$add(lien);
+            }
+            //Suppression du lien de la liste
+            $scope.deleteLink(lien);
         };
 
-        $scope.read= function(aLienModel) {
-            LiensService.markAsRead(aLienModel).then(
-                function (status) {
-                    if (status == 201) {
-                        // TODO modif du lien en local
-                    }
-                }, function (error) {
-                    //
-                    $log.error(error);
-                }
-            );
-        };
 
-        $scope.share= function(ev, aLienModel) {
+        $scope.share= function(ev, lien) {
             $scope.categories= [];
             //$scope.categories=LiensService.findCategories();
             // features/feature-01-oauth
-            LiensService.findCategories().then(function(categories) {
+            /**LiensService.findCategories().then(function(categories) {
                 $scope.categories=categories;
-            });
+            });*/
 
             $mdDialog.show({
                 controller: ShareController,
@@ -80,7 +66,7 @@
                 parent: angular.element(document.body),
                 targetEvent: ev,
                 locals: {
-                    link: aLienModel,
+                    shareLink: lien,
                     allCategories: allCategories,
                     allMyCercles: allMyCercles
                 },

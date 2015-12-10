@@ -2,6 +2,23 @@ angular
     .module('elinkApp', ['ngCookies', 'ngMessages', 'LocalStorageModule', 'ngMaterial', 'ngMdIcons',  'ui.router.state', 'ui.router', 'pascalprecht.translate', 'firebase', 'el1.model', 'el1.services.commun', 'el1.accueil', 'el1.bibli', 'el1.login', 'el1.cercle', 'el1.gestion', 'el1.error'])
 
         .run(function ($rootScope, $location, $window, $http, $state, $translate, $cookies, Env, AuthService, UserModel, localStorageService, UsersManager) {
+
+        //Extraction de l'utilisateur connecté / Matthieu par défaut
+        // @Author MG
+        // TODO merger à terme avec la représentation $rootScope.user
+
+            $rootScope.userConnected = {
+                $id: "Matthieu",
+                email: "matthieu.guillemette@caissedesdepots.fr",
+                firstname: "Matthieu",
+                fullname: "Matthieu Guillemette",
+                lastname: "Guillemette"
+            };
+            UsersManager.getUser("Matthieu")
+                .then(function(user) {
+                    $rootScope.userConnected = user;
+            });
+
             $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
                 $rootScope.toState = toState;
                 $rootScope.toStateParams = toStateParams;
@@ -39,15 +56,6 @@ angular
             $http.get('appconf/environment.json').then(function (response) {
                 Env.init(response.data);
                 // AuthService.refreshToken();
-
-                //Extraction de l'utilisateur connecté / Matthieu par défaut
-                // @Author MG
-                // TODO merger à terme avec la représentation $rootScope.user
-                UsersManager.getUser("Matthieu")
-                    .then(function(user) {
-                        $rootScope.userConnected = user;
-                    });
-
             });
 
 

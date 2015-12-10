@@ -13,14 +13,17 @@
                     controller: 'bibliController',
                     templateUrl: 'src/app/bibli/views/el1-nonLu.tpl.html',
                     resolve: {
-                        allLiens : function($log, LiensService, $stateParams) {
-                            return LiensService.findMyLinks(true);
+                        liensNonLus : function($rootScope, LiensService) {
+                            return LiensService.findNotReadLinksByUser($rootScope.userConnected.$id);
                         },
-                        allCategories : function($log, LiensService, $stateParams) {
+                        liensLus : function($rootScope, LiensService) {
+                            return LiensService.findReadLinksByUser($rootScope.userConnected.$id);
+                        },
+                        allMyCercles :  function($rootScope, UsersManager) {
+                            return UsersManager.findCerclesByUser($rootScope.userConnected.$id);
+                        },
+                        allCategories : function(LiensService) {
                             return LiensService.findCategories();
-                        },
-                        allMyCercles : function($log, LiensService, $stateParams) {
-                            return LiensService.findMyCercles();
                         }
                     }
                 }
@@ -44,16 +47,19 @@
                     controller: 'bibliController',
                     templateUrl: 'src/app/bibli/views/el1-lu.tpl.html',
                     resolve: {
-                        allLiens : function($log, LiensService, $stateParams) {
-                            return LiensService.findMyLinks(false);
+                        liensNonLus : function($rootScope, LiensService) {
+                            return LiensService.findNotReadLinksByUser($rootScope.userConnected.$id);
                         },
-                        allCategories : function($log, LiensService, $stateParams) {
+                        liensLus : function($rootScope, LiensService) {
+                            return LiensService.findReadLinksByUser($rootScope.userConnected.$id);
+                        },
+                        allMyCercles :  function($rootScope, UsersManager) {
+                            return UsersManager.findCerclesByUser($rootScope.userConnected.$id);
+                        },
+                        allCategories : function(LiensService) {
                             return LiensService.findCategories();
-                        },
-                        allMyCercles : function($log, LiensService, $stateParams) {
-                            return LiensService.findMyCercles();
                         }
-                    }
+                   }
                 }
             },
             resolve: {
