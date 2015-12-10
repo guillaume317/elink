@@ -2,7 +2,9 @@
     'use strict';
 
     angular.module('el1.services.commun')
-        .service('commonsService', ['$q', '$http', CommonsService]);
+        .service('commonsService', ['$q', '$http', CommonsService])
+        .factory('FBFactory', ['$firebaseAuth', '$firebaseArray', 'FBURL', FBFactory]);
+
 
     /**
      *
@@ -31,6 +33,16 @@
         };
 
     }
+
+    function FBFactory ($firebaseAuth, $firebaseArray, FBURL) {
+
+            return {
+                auth: function() {
+                    var FBRef = new Firebase(FBURL);
+                    return $firebaseAuth(FBRef);
+                }
+            };
+        };
 
 })();
 

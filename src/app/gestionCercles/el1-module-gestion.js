@@ -45,6 +45,9 @@
                     $translatePartialLoader.addPart('commons');
                     $translatePartialLoader.addPart('el1-gestion');
                     return $translate.refresh();
+                }],
+                currentAuth: ['FBFactory', function(FBFactory) {
+                    return FBFactory.auth().$requireAuth();
                 }]
             }
         });

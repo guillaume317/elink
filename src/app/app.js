@@ -71,6 +71,8 @@ angular
 
     })
         .constant('FBURL', 'https://elink.firebaseio.com/')
+        .constant('GOOGLECLIENTID', '1002599169952-4uchnlc7ahm6ng4696p9tgr1adhsiqv5.apps.googleusercontent.com')
+        .constant('GOOGLEAUTHSCOPE', ['email'])
         .config(function($stateProvider, $urlRouterProvider, $httpProvider, $translateProvider , $mdThemingProvider, $mdDateLocaleProvider ){
 
         // URL par défaut

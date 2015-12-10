@@ -39,6 +39,9 @@
                     $translatePartialLoader.addPart('commons');
                     $translatePartialLoader.addPart('el1-view');
                     return $translate.refresh();
+                }],
+                currentAuth: ['FBFactory', function(FBFactory) {
+                    return FBFactory.auth().$requireAuth();
                 }]
             }
         });
