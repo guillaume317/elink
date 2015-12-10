@@ -10,21 +10,30 @@
                 </md-option>
             </md-select>
 
-            <md-select ng-model="cercle" ng-click="changeCercle(cercle)">
+            <md-input-container>
+                <label style="color: white">Mes cercles</label>
+                <md-select ng-model="selectedCercle" ng-change="changeCercle()"
+                           ng-model-options="{trackBy: '$value.$id'}">
+                    <md-option ng-value="cercl" ng-click="changeCercle(cercl)" ng-repeat="cercl in cercles">
+                        {{cercl.$id}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <!--md-select ng-model="cercle" ng-click="changeCercle(cercle)">
                 <md-option ng-repeat="aCercle in cercles" value="{{aCercle}}">
-                    {{aCercle}}
+                    {{aCercle.$id}}
                 </md-option>
-            </md-select>
+            </md-select -->
         </div>
       </md-toolbar>
 
 
     <md-divider></md-divider>
 
-    <div ng-hide="allLiens.items[0]" class="errormessage warning" translate="list.empty"></div>
+    <div ng-hide="allLiens[0]" class="errormessage warning" translate="list.empty"></div>
 
     <md-list>
-        <md-list-item ng-repeat="lien in allLiens.items | filter:filter.category | orderBy: order " >
+        <md-list-item ng-repeat="lien in allLiens | filter:filter.category | orderBy: title " >
             <div flex="auto" class="md-list-item-text" layout="column">
                 <h2>{{lien.title}}</h2>
                 {{lien.teasing}}
@@ -35,7 +44,7 @@
                 </div>
             </div>
             <div flex="initial" layout="row">
-                <md-button class="md-icon-button" ng-click="read(lien)" aria-label="{{'view.action.read' | translate}}"><ng-md-icon icon="archive" size="30" ></ng-md-icon> <md-tooltip>{{'view.action.read' | translate}}</md-tooltip></md-button>
+                <md-button class="md-icon-button" ng-click="moveToBiblio(lien)" aria-label="{{'view.action.read' | translate}}"><ng-md-icon icon="archive" size="30" ></ng-md-icon> <md-tooltip>{{'view.action.read' | translate}}</md-tooltip></md-button>
             </div>
         </md-list-item>
     </md-list>

@@ -3,9 +3,9 @@
     angular
         .module('el1.cercle')
         .controller('cercleController', [
-            '$log', '$scope', '$state',
+            '$log', '$scope', '$rootScope',
             'LiensService',
-            'allLiens',
+            'liens',
             'allCategories',
             'allMyCercles',
             CercleController
@@ -14,19 +14,33 @@
 
     /**
      */
-    function CercleController($log, $scope, $state, LiensService, allLiens, allCategories, allMyCercles ) {
-        $scope.allLiens= allLiens;
+    function CercleController($log, $scope, $rootScope, LiensService, liens, allCategories, allMyCercles) {
+        $scope.allLiens= liens;
         $scope.categories= allCategories;
         $scope.cercles= allMyCercles;
-        $scope.cercle= allMyCercles[0];
         $scope.filter= { "category" : "" };
 
-        $scope.changeCercle= function() {
-
+        if (allMyCercles[0]) {
+            $scope.selectedCercle = allMyCercles[0];
         }
 
-        $scope.read= function(aLienModel) {
-            LiensService.markAsRead(aLienModel);
+
+        $scope.changeCercle= function(cercle) {
+            LiensService.findLinksByCerlceName(cercle.$id)
+                .then(function(links){
+                    $scope.allLiens = links;
+                });
+
+        };
+
+        $scope.moveToBiblio= function(lien) {
+            //On déplace le lien dans biblio
+            //puis on le supprime dans la liste des articles du cercle
+            lien.private = "biblio";
+            LiensService.createLinkForUser(lien, $rootScope.userConnected.$id)
+                .then(function() {
+                    $scope.allLiens.$remove(lien);
+                })
         };
 
     }

@@ -15,19 +15,21 @@
                     controller: 'cercleController',
                     templateUrl: 'src/app/cercle/views/el1-view.tpl.html',
                     resolve: {
-                        allLiens : function($log, LiensService, $stateParams) {
-                            // features/feature-01-oauth
-                            /**var cercles= LiensService.findMyCercles();
-                            return LiensService.findTeamLinks(cercles[0]);*/
-                            return LiensService.findMyCercles().then(function(cercles) {
-                                return LiensService.findTeamLinks(cercles[0]);
-                            });
+                        liens : function($log, $rootScope, LiensService, UsersManager) {
+                            return UsersManager.findCerclesByUser($rootScope.userConnected.$id)
+                                .then(function (cercles) {
+                                    if (cercles.length > 0) {
+                                        return LiensService.findLinksByCerlceName(cercles[0].$id);
+                                    } else {
+                                        return [];
+                                    }
+                                })
                         },
-                        allCategories : function($log, LiensService, $stateParams) {
+                        allMyCercles :  function($rootScope, UsersManager) {
+                            return UsersManager.findCerclesByUser($rootScope.userConnected.$id);
+                        },
+                        allCategories : function(LiensService) {
                             return LiensService.findCategories();
-                        },
-                        allMyCercles : function($log, LiensService, $stateParams) {
-                            return LiensService.findMyCercles();
                         }
                     }
                 }
