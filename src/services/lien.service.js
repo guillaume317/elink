@@ -2,14 +2,14 @@
     'use strict';
 
     angular.module('el1.services.commun')
-        .service('LiensService', ['$q', '$http', 'LiensModel', 'LienModel', 'commonsService', 'Env', '$firebaseArray', '$firebaseObject', LiensService]);
+        .service('LiensService', ['$q', '$http', 'LiensModel', 'LienModel', 'commonsService', 'FBURL', '$firebaseArray', '$firebaseObject', LiensService]);
 
     /**
      *
      */
-    function LiensService($q, $http, LiensModel, LienModel, commonsService, Env, $firebaseArray, $firebaseObject){
+    function LiensService($q, $http, LiensModel, LienModel, commonsService, FBURL, $firebaseArray, $firebaseObject){
 
-        var ref = new Firebase("https://elink.firebaseio.com/");
+        var ref = new Firebase(FBURL);
 
         return {
 

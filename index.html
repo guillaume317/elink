@@ -19,8 +19,8 @@
         <link rel="stylesheet" href="./src/css/app.css"/>
     </head>
 
-    <body ng-app="elinkApp" ng-controller="toolbarController" >
-        <div layout="row">
+    <body ng-app="elinkApp"  >
+        <div layout="row" ng-show="userConnected" ng-controller="toolbarController">
             <div flex="auto">
                 <md-tabs md-stretch-tabs
                          md-selected="selectedIndex">
@@ -30,7 +30,7 @@
                 </md-tabs>
             </div>
             <div flex="initial" ng-cloak>
-               {{userConnected.email}}
+                {{userConnected.email}}
                 <md-button aria-label="{{'menu.nouveauLien' | translate}}" ng-show="user" class="md-icon-button" ng-click="nouveauLien($event)">
                     <md-tooltip>{{'menu.nouveauLien' | translate}}</md-tooltip>
                     <ng-md-icon icon="playlist_add" size="30"></ng-md-icon>

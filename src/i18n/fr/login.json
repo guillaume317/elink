@@ -1,6 +1,6 @@
 {
     "login" : {
-        "title" : "Connectez - vous :",
+        "title" : "Connectez-vous avec Google",
         "failed" :  {
             "strong" : "Echec de l'authentification",
             "msg" : "Vérifier vos identifiants"

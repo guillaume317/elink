@@ -7,13 +7,13 @@ angular
         // @Author MG
         // TODO merger à terme avec la représentation $rootScope.user
 
-            $rootScope.userConnected = {
+            /**$rootScope.userConnected = {
                 $id: "Matthieu",
                 email: "matthieu.guillemette@caissedesdepots.fr",
                 firstname: "Matthieu",
                 fullname: "Matthieu Guillemette",
                 lastname: "Guillemette"
-            };
+            };*/
             UsersManager.getUser("Matthieu")
                 .then(function(user) {
                     $rootScope.userConnected = user;
@@ -70,7 +70,8 @@ angular
             }
 
     })
-    .config(function($stateProvider, $urlRouterProvider, $httpProvider, $translateProvider , $mdThemingProvider, $mdDateLocaleProvider ){
+        .constant('FBURL', 'https://elink.firebaseio.com/')
+        .config(function($stateProvider, $urlRouterProvider, $httpProvider, $translateProvider , $mdThemingProvider, $mdDateLocaleProvider ){
 
         // URL par défaut
 

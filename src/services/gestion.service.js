@@ -2,14 +2,14 @@
     'use strict';
 
     angular.module('el1.services.commun')
-        .service('GestionService', ['$rootScope', '$q', '$http', '$firebaseObject', '$firebaseArray', 'CercleModel', 'PersonnesModel', 'commonsService', 'Env', 'UsersManager', GestionService]);
+        .service('GestionService', ['$rootScope', '$q', '$http', '$firebaseObject', '$firebaseArray', 'CercleModel', 'PersonnesModel', 'commonsService', 'FBURL', 'UsersManager', GestionService]);
 
     /**
      *
      */
-    function GestionService($rootScope, $q, $http, $firebaseObject, $firebaseArray, CercleModel, PersonnesModel, commonsService, Env, UsersManager){
+    function GestionService($rootScope, $q, $http, $firebaseObject, $firebaseArray, CercleModel, PersonnesModel, commonsService, FBURL, UsersManager){
 
-        var ref = new Firebase("https://elink.firebaseio.com/");
+        var ref = new Firebase(FBURL);
 
         function saveCercle (cercleName, cercleDescription, username) {
 

@@ -5,11 +5,11 @@
     'use strict';
 
     angular.module('el1.services.commun')
-        .service('UsersManager', ['$firebaseObject', '$firebaseArray', '$q', 'Env', UsersManager]);
+        .service('UsersManager', ['$firebaseObject', '$firebaseArray', '$q', 'FBURL', UsersManager]);
 
-    function UsersManager ($firebaseObject, $firebaseArray, $q, Env) {
+    function UsersManager ($firebaseObject, $firebaseArray, $q, FBURL) {
 
-        var ref = new Firebase("https://elink.firebaseio.com/");
+        var ref = new Firebase(FBURL);
 
             return {
 
