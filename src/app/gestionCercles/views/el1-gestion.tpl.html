@@ -31,8 +31,10 @@
             <input name="invite" type="text" ng-model="invitation">
         </md-input-container>
 
-        <md-button class="md-raised md-primary" ng-click="inviter(invitation)"
-                   aria-label="{{'gestion.action.validate' | translate}}" translate="gestion.action.invite"></md-button>
+        <!-- translate="gestion.action.invite" -->
+        <md-button class="md-icon-button" aria-label="{{'gestion.action.validate' | translate}}"  style="vertical-align: middle; text-align: center">
+            <ng-md-icon icon="send"  size="30"></ng-md-icon>
+        </md-button>
 
     </form>
 

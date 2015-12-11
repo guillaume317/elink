@@ -8,7 +8,10 @@
             <div flex="auto" class="md-list-item-text" layout="column">
                 <h2>{{lien.title}}</h2>
                 {{lien.teasing}}
-                <a ng-href="{{lien.url}}" target="_blank">{{lien.url}}</a>
+                <div layout="row">
+                    <div hide show-gt-sm  flex="3"><ng-md-icon icon="link"></ng-md-icon></div>
+                    <div flex><a ng-href="{{lien.url}}" target="_blank">{{lien.url}}</a></div>
+                </div>
             </div>
             <div flex="initial" layout="row">
                 <md-button class="md-icon-button" ng-click="deleteLink(lien)" aria-label="{{'view.action.delete' | translate}}"><ng-md-icon icon="delete" size="30" ></ng-md-icon> <md-tooltip>{{'view.action.delete' | translate}}</md-tooltip></md-button>
