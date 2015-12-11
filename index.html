@@ -19,8 +19,9 @@
         <link rel="stylesheet" href="./src/css/app.css"/>
     </head>
 
-    <body ng-app="elinkApp"  >
-        <div layout="row" ng-show="userConnected" ng-controller="toolbarController">
+    <body ng-app="elinkApp" ng-cloak>
+
+        <div layout="row" ng-controller="toolbarController" ng-show="userAuthenticated">
             <div flex="auto">
                 <md-tabs md-stretch-tabs
                          md-selected="selectedIndex">
@@ -30,22 +31,18 @@
                 </md-tabs>
             </div>
             <div flex="initial" ng-cloak>
-                {{userConnected.email}}
-                <md-button aria-label="{{'menu.nouveauLien' | translate}}" ng-show="user" class="md-icon-button" ng-click="nouveauLien($event)">
+                {{userEmail}}
+                <md-button aria-label="{{'menu.nouveauLien' | translate}}" ng-show="userAuthenticated" class="md-icon-button" ng-click="nouveauLien($event)">
                     <md-tooltip>{{'menu.nouveauLien' | translate}}</md-tooltip>
                     <ng-md-icon icon="playlist_add" size="30"></ng-md-icon>
                 </md-button>
-                <md-button aria-label="{{'menu.admin' | translate}}" class="md-icon-button" ng-show="user" ng-click="admin()">
+                <md-button aria-label="{{'menu.admin' | translate}}" class="md-icon-button" ng-show="userAuthenticated" ng-click="admin()">
                     <md-tooltip>{{'menu.admin' | translate}}</md-tooltip>
                     <ng-md-icon icon="settings_applications" size="30"></ng-md-icon>
                 </md-button>
-                <md-button aria-label="{{'menu.logout' | translate}}" class="md-icon-button" ng-show="user" ng-click="logout()">
+                <md-button aria-label="{{'menu.logout' | translate}}" class="md-icon-button" ng-show="userAuthenticated" ng-click="logout()">
                     <md-tooltip>{{'menu.logout' | translate}}</md-tooltip>
                     <ng-md-icon icon="logout" size="30"></ng-md-icon>
-                </md-button>
-                <md-button aria-label="{{'menu.login' | translate}}" class="md-icon-button" ng-show="!user" href="#/showLogin">
-                    <md-tooltip>{{'menu.login' | translate}}</md-tooltip>
-                    <ng-md-icon icon="login" size="30"></ng-md-icon>
                 </md-button>
 
             </div>

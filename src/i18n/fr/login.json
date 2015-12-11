@@ -6,6 +6,7 @@
             "msg" : "Vérifier vos identifiants"
         },
         "username" : "Login",
-        "password" : "Mot de passe"
+        "password" : "Mot de passe",
+        "validate" : "S'authentifier maintenant !"
     }
 }

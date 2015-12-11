@@ -12,17 +12,9 @@
                 <strong translate="login.failed.strong"></strong> <span translate="login.failed.msg"></span>
             </div>
 
-            <form role="form" ng-submit="login()" layout="column">
-                <md-input-container flex>
-                    <label for="username" translate="login.username"></label>
-                    <input type="text" id="username" ng-model="credentials.username"/>
-                </md-input-container>
-                <md-input-container flex>
-                    <label for="password" translate="login.password"></label>
-                    <input type="password"  id="password" ng-model="credentials.password"/>
-                </md-input-container>
-                <div layout="row" layout-sm="column" layout-align="center center" layout-wrap>
-                    <md-button class="md-raised md-primary" translate="action.validate"></md-button>
+            <form role="form" layout="column">
+                   <div layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                    <md-button class="md-raised md-primary" translate="login.validate" ng-click="login()"></md-button>
                 </div>
             </form>
         </md-card>

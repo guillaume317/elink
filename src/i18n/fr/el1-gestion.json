@@ -20,7 +20,9 @@
 
         "message" : {
           "inviter" : "Invitation envoyée",
-          "accepterInvitation" : "Invitation acceptée"
+          "accepterInvitation" : "Invitation acceptée",
+          "empty" : "Pas de cercle",
+          "selectbox": "Mes cercles"
         },
 
         "nouveauCercle" : {
@@ -31,6 +33,5 @@
             "label" : "Nom",
             "description" : "Description"
         }
-
     }
 }

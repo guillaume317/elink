@@ -15,28 +15,29 @@
                     controller: 'gestionController',
                     templateUrl: 'src/app/gestionCercles/views/el1-gestion.tpl.html',
                     resolve: {
-                        personnesDuCercle : function($log, $rootScope, GestionService, UsersManager, LiensService, $stateParams) {
-                            //Recherches des cercles sont je suis membre
-                            //Pour le premier d'entre eux, je recherche les personnes de ce cercle.
-                            return UsersManager.findCerclesByUser($rootScope.userConnected.$id)
-                                .then (function(cerclesIndex) {
-                                    if (cerclesIndex && cerclesIndex.length > 0) {
-                                        return GestionService.findPersonnesByCercle(cerclesIndex[0]);
-                                    } else {
-                                        return [];
-                                    }
-                            });
-                            //return GestionService.findPersonnesByCercle(cercles[0]);
-                        },
-                        mesInvitations : function($log, $rootScope, UsersManager, GestionService, Env, $stateParams) {
-                            //Recherche des cercles sont je ne suis pas encore membre
-                            return UsersManager.findInvitationsByUser($rootScope.userConnected.$id);
-                        },
-                        mesCercles : function($log, $rootScope, UsersManager, LiensService, $stateParams) {
-                            //Recherche des cercles dont je suis membre
-                            return UsersManager.findCerclesByUser($rootScope.userConnected.$id);
-                            //return LiensService.findMyCercles();
-                        },
+                        personnesDuCercle : ['GestionService', 'UsersManager', 'SessionStorage', 'USERFIREBASEPROFILEKEY',
+                            function(GestionService, UsersManager, SessionStorage, USERFIREBASEPROFILEKEY) {
+                                //Recherches des cercles sont je suis membre
+                                //Pour le premier d'entre eux, je recherche les personnes de ce cercle.
+                                return UsersManager.findCerclesByUser(SessionStorage.get(USERFIREBASEPROFILEKEY).uid)
+                                    .then (function(cerclesIndex) {
+                                        if (cerclesIndex && cerclesIndex.length > 0) {
+                                            return GestionService.findPersonnesByCercle(cerclesIndex[0]);
+                                        } else {
+                                            return [];
+                                        }
+                                });
+                        }],
+                        mesInvitations : ['UsersManager', 'SessionStorage', 'USERFIREBASEPROFILEKEY',
+                            function(UsersManager, SessionStorage, USERFIREBASEPROFILEKEY) {
+                                //Recherche des cercles sont je ne suis pas encore membre
+                              return UsersManager.findInvitationsByUser(SessionStorage.get(USERFIREBASEPROFILEKEY).uid);
+                        }],
+                        mesCercles : ['UsersManager', 'SessionStorage', 'USERFIREBASEPROFILEKEY',
+                            function(UsersManager, SessionStorage, USERFIREBASEPROFILEKEY) {
+                              //Recherche des cercles dont je suis membre
+                                return UsersManager.findCerclesByUser(SessionStorage.get(USERFIREBASEPROFILEKEY).uid);
+                        }]
                     }
                 }
             },

@@ -15,22 +15,24 @@
                     controller: 'cercleController',
                     templateUrl: 'src/app/cercle/views/el1-view.tpl.html',
                     resolve: {
-                        liens : function($log, $rootScope, LiensService, UsersManager) {
-                            return UsersManager.findCerclesByUser($rootScope.userConnected.$id)
-                                .then(function (cercles) {
-                                    if (cercles.length > 0) {
-                                        return LiensService.findLinksByCerlceName(cercles[0].$id);
-                                    } else {
-                                        return [];
-                                    }
-                                })
-                        },
-                        allMyCercles :  function($rootScope, UsersManager) {
-                            return UsersManager.findCerclesByUser($rootScope.userConnected.$id);
-                        },
-                        allCategories : function(LiensService) {
+                        liens : ['$log', 'LiensService', 'UsersManager', 'SessionStorage', 'USERFIREBASEPROFILEKEY',
+                            function($log, LiensService, UsersManager, SessionStorage, USERFIREBASEPROFILEKEY) {
+                                return UsersManager.findCerclesByUser(SessionStorage.get(USERFIREBASEPROFILEKEY).uid)
+                                    .then(function (cercles) {
+                                        if (cercles.length > 0) {
+                                            return LiensService.findLinksByCerlceName(cercles[0].$id);
+                                        } else {
+                                            return [];
+                                        }
+                                    })
+                        }],
+                        allMyCercles :  ['UsersManager', 'SessionStorage', 'USERFIREBASEPROFILEKEY',
+                            function(UsersManager, SessionStorage, USERFIREBASEPROFILEKEY) {
+                                return UsersManager.findCerclesByUser(SessionStorage.get(USERFIREBASEPROFILEKEY).uid);
+                        }],
+                        allCategories : ['LiensService', function(LiensService) {
                             return LiensService.findCategories();
-                        }
+                        }]
                     }
                 }
             },

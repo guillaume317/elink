@@ -1,0 +1,13 @@
+- [OK] une fois authentifié :
+-- [OK] vérifier la présence de l'utilisateur dans /users
+--- [OK] si non présent ajout d'un enreg (email, fullname, uid)
+-- [OK] uid devient la clé !
+
+- [Ok] modifier les signatures controller resolver pour y ajouter les paramètres manquants
+
+- réactiver la sécurité
+- Avatar personne connecté
+
+- logout
+
+- thème color

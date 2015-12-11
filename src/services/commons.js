@@ -3,7 +3,9 @@
 
     angular.module('el1.services.commun')
         .service('commonsService', ['$q', '$http', CommonsService])
-        .factory('FBFactory', ['$firebaseAuth', '$firebaseArray', 'FBURL', FBFactory]);
+        .factory('FBFactory', ['$firebaseAuth', '$firebaseArray', 'FBURL', FBFactory])
+        .factory('LocalStorage', [LocalStorage])
+        .factory('SessionStorage', [SessionStorage]);
 
 
     /**
@@ -42,7 +44,41 @@
                     return $firebaseAuth(FBRef);
                 }
             };
+        }
+
+    function LocalStorage() {
+
+        return {
+
+            set: function(key, value) {
+                return localStorage.setItem(key,
+                    JSON.stringify(value));
+            },
+            get: function(key) {
+                return JSON.parse(localStorage.getItem(key));
+            },
+            remove: function(key) {
+                return localStorage.removeItem(key);
+            }
         };
+    }
+
+    function SessionStorage() {
+
+        return {
+
+            set: function(key, value) {
+                return sessionStorage.setItem(key,
+                    JSON.stringify(value));
+            },
+            get: function(key) {
+                return JSON.parse(sessionStorage.getItem(key));
+            },
+            remove: function(key) {
+                return sessionStorage.removeItem(key);
+            }
+        };
+    }
 
 })();
 

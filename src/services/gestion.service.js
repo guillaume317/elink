@@ -2,12 +2,12 @@
     'use strict';
 
     angular.module('el1.services.commun')
-        .service('GestionService', ['$rootScope', '$q', '$http', '$firebaseObject', '$firebaseArray', 'CercleModel', 'PersonnesModel', 'commonsService', 'FBURL', 'UsersManager', GestionService]);
+        .service('GestionService', ['$q', '$firebaseObject', '$firebaseArray', 'PersonnesModel', 'FBURL', 'UsersManager', 'SessionStorage', 'USERFIREBASEPROFILEKEY', GestionService]);
 
     /**
      *
      */
-    function GestionService($rootScope, $q, $http, $firebaseObject, $firebaseArray, CercleModel, PersonnesModel, commonsService, FBURL, UsersManager){
+    function GestionService($q, $firebaseObject, $firebaseArray, PersonnesModel, FBURL, UsersManager, SessionStorage, USERFIREBASEPROFILEKEY) {
 
         var ref = new Firebase(FBURL);
 
@@ -87,12 +87,12 @@
         return {
             createCercle : function (aCercleModel) {
 
-                return saveCercle(aCercleModel.label, aCercleModel.description, $rootScope.userConnected.$id)
+                return saveCercle(aCercleModel.label, aCercleModel.description, SessionStorage.get(USERFIREBASEPROFILEKEY).uid)
                     .then(function(cercle){
-                        return saveCercleMember (cercle.$id, $rootScope.userConnected.$id);
+                        return saveCercleMember (cercle.$id, SessionStorage.get(USERFIREBASEPROFILEKEY).uid);
                     })
                     .then(function(cerclename){
-                        return UsersManager.addCercle($rootScope.userConnected.$id, cerclename)
+                        return UsersManager.addCercle(SessionStorage.get(USERFIREBASEPROFILEKEY).uid, cerclename)
                     });
 
             },

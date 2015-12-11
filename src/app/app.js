@@ -3,22 +3,14 @@ angular
 
         .run(function ($rootScope, $location, $window, $http, $state, $translate, $cookies, Env, AuthService, UserModel, localStorageService, UsersManager) {
 
-        //Extraction de l'utilisateur connecté / Matthieu par défaut
-        // @Author MG
-        // TODO merger à terme avec la représentation $rootScope.user
+            $rootScope.userAuthenticated = false;
 
-            /**$rootScope.userConnected = {
-                $id: "Matthieu",
-                email: "matthieu.guillemette@caissedesdepots.fr",
-                firstname: "Matthieu",
-                fullname: "Matthieu Guillemette",
-                lastname: "Guillemette"
-            };*/
-            UsersManager.getUser("Matthieu")
-                .then(function(user) {
-                    $rootScope.userConnected = user;
+            $rootScope.$on('$stateChangeError',
+                function(event, toState, toParams, fromState, fromParams, error) {
+                    if (error === 'AUTH_REQUIRED') {
+                        $state.go('showLogin');
+                    }
             });
-
             $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
                 $rootScope.toState = toState;
                 $rootScope.toStateParams = toStateParams;
@@ -55,7 +47,6 @@ angular
 
             $http.get('appconf/environment.json').then(function (response) {
                 Env.init(response.data);
-                // AuthService.refreshToken();
             });
 
 
@@ -70,10 +61,16 @@ angular
             }
 
     })
-        .constant('FBURL', 'https://elink.firebaseio.com/')
-        .constant('GOOGLECLIENTID', '1002599169952-4uchnlc7ahm6ng4696p9tgr1adhsiqv5.apps.googleusercontent.com')
-        .constant('GOOGLEAUTHSCOPE', ['email'])
-        .config(function($stateProvider, $urlRouterProvider, $httpProvider, $translateProvider , $mdThemingProvider, $mdDateLocaleProvider ){
+
+    .constant('RESTBACKEND', 'http://localhost:8080/banconet/api/v1')
+
+    .constant('FBURL', 'https://elink.firebaseio.com/')
+
+    .constant('GOOGLEAUTHSCOPE', 'email, profile')
+
+    .constant('USERFIREBASEPROFILEKEY', 'firebase:session::elink')
+
+    .config(function($stateProvider, $urlRouterProvider, $httpProvider, $translateProvider , $mdThemingProvider, $mdDateLocaleProvider ){
 
         // URL par défaut
 
