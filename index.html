@@ -19,9 +19,9 @@
         <link rel="stylesheet" href="./src/css/app.css"/>
     </head>
 
-    <body ng-app="elinkApp" ng-cloak>
+    <body ng-app="elinkApp" ng-controller="toolbarController" ng-cloak>
 
-        <div layout="row" ng-controller="toolbarController" ng-show="userAuthenticated">
+        <div layout="row"  ng-show="userAuthenticated"  ng-cloak>
             <div flex="auto">
                 <md-tabs md-stretch-tabs
                          md-selected="selectedIndex">
@@ -48,7 +48,7 @@
             </div>
         </div>
 
-        <md-content flex id="content" ui-view="main">
+        <md-content flex id="content" ui-view="main"  ng-cloak>
         </md-content>
 
         <!-- third party -->
