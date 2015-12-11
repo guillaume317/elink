@@ -131,7 +131,7 @@
 
             },
 
-            shareLien : function(shareLink, username) {
+            shareLien : function(shareLink, userConnected) {
 
                 var deferred = $q.defer();
 
@@ -146,7 +146,7 @@
                             createdOn : Firebase.ServerValue.TIMESTAMP,
                             url : shareLink.url,
                             category: shareLink.category,
-                            sharedBy: username
+                            sharedBy: userConnected.google.cachedUserProfile.name
                         };
                         cercleLinksIndex.$add(newCercle)
                             .then(function() {

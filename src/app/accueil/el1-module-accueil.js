@@ -13,10 +13,10 @@ angular.module('el1.accueil', [  'ngMaterial', 'ui.router', 'el1.services.commun
             resolve: {
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('commons');
-                }]/**,
+                }],
                 currentAuth: ['FBFactory', function(FBFactory) {
                     return FBFactory.auth().$requireAuth();
-                }]*/
+                }]
             }
         });
 

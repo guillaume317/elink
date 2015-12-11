@@ -4,10 +4,16 @@
 -- [OK] uid devient la clé !
 
 - [Ok] modifier les signatures controller resolver pour y ajouter les paramètres manquants
+- [OK]réactiver la sécurité
+- [OK] logout
 
-- réactiver la sécurité
+- a la creation d'un cercle se positionner dessus (select box)
+- permettre d'acrter une personne d'un cercle (banir)
+- supprimer un cercle dont je suis le propriétaire
+
+
 - Avatar personne connecté
 
-- logout
+
 
 - thème color

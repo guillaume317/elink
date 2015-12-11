@@ -117,7 +117,7 @@
                 //   il est supprimé de read ou notRead
                 //   il est déplacé vers le cercle cible (cercleLinks)
                 //   il est associé à une catégorie (attribut category)
-                GestionService.shareLien(shareLink, SessionStorage.get(USERFIREBASEPROFILEKEY).uid)
+                GestionService.shareLien(shareLink, SessionStorage.get(USERFIREBASEPROFILEKEY))
                     .then(function() {
                         listeLiens.$remove(linkToShare);
                         $mdDialog.hide(shareLink);
