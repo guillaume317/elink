@@ -3,18 +3,20 @@
     angular
         .module('el1.cercle')
         .controller('cercleController', [
-            '$log', '$scope', '$rootScope',
+            '$log', '$scope',
             'LiensService',
             'liens',
             'allCategories',
             'allMyCercles',
+            'SessionStorage',
+            'USERFIREBASEPROFILEKEY',
             CercleController
             ])
     ;
 
     /**
      */
-    function CercleController($log, $scope, $rootScope, LiensService, liens, allCategories, allMyCercles) {
+    function CercleController($log, $scope, LiensService, liens, allCategories, allMyCercles, SessionStorage, USERFIREBASEPROFILEKEY) {
         $scope.allLiens= liens;
         $scope.categories= allCategories;
         $scope.cercles= allMyCercles;
@@ -37,7 +39,7 @@
             //On déplace le lien dans biblio
             //puis on le supprime dans la liste des articles du cercle
             lien.private = "biblio";
-            LiensService.createLinkForUser(lien, $rootScope.userConnected.$id)
+            LiensService.createLinkForUser(lien, SessionStorage.get(USERFIREBASEPROFILEKEY).uid)
                 .then(function() {
                     $scope.allLiens.$remove(lien);
                 })

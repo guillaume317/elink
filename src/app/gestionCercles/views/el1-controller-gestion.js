@@ -3,17 +3,16 @@
     angular
         .module('el1.gestion')
         .controller('gestionController', [
-            '$log', '$scope', '$rootScope', '$state',
-            'AlertService', '$translate',
+            '$log', '$scope',
+            '$translate',
             'GestionService', 'UsersManager',
-            'CercleModel',
             'mesInvitations', 'personnesDuCercle', 'mesCercles',
+            'SessionStorage', 'USERFIREBASEPROFILEKEY',
             '$mdDialog', '$mdMedia',
             GestionController
         ])
         .controller('nouveauCercleController', [
-            '$log', '$scope', '$state',
-            'AlertService', '$translate',
+            '$log', '$scope',
             'GestionService',
             'CercleModel',
             '$mdDialog', '$mdMedia',
@@ -22,7 +21,7 @@
 
     /**
      */
-    function GestionController($log, $scope, $rootScope, $state, AlertService, $translate, GestionService, UsersManager, CercleModel, mesInvitations, personnesDuCercle, mesCercles, $mdDialog, $mdMedia ) {
+    function GestionController($log, $scope, $translate, GestionService, UsersManager, mesInvitations, personnesDuCercle, mesCercles, SessionStorage, USERFIREBASEPROFILEKEY, $mdDialog, $mdMedia ) {
 
         $scope.mesInvitations= mesInvitations;
         $scope.personnes= personnesDuCercle;
@@ -89,7 +88,7 @@
             // ==> Ajout de l'utilisateur au niveau des membres du cercle
             // ==> Suppression de l'invitation en attente
             // ==> Recharcher la liste ?
-            GestionService.accepterInvitation($rootScope.userConnected.$id, invitation.$id)
+            GestionService.accepterInvitation(SessionStorage.get(USERFIREBASEPROFILEKEY).uid, invitation.$id)
                 .then(function(cerclename) {
                     $log.info($translate.instant('gestion.message.accepterInvitation'));
                 })
@@ -102,7 +101,7 @@
 
     /**
      */
-    function NouveauCercleController($log, $scope, $state, AlertService, $translate, GestionService, CercleModel, $mdDialog, $mdMedia) {
+    function NouveauCercleController($log, $scope, GestionService, CercleModel, $mdDialog, $mdMedia) {
         $scope.currentCercle= new CercleModel();
         $scope.alerts = [];
 

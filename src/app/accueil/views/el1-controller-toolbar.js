@@ -3,26 +3,26 @@
     angular
         .module('el1.accueil')
         .controller('toolbarController', [
-            '$log', '$scope', '$state', 'Env',
-            'AlertService', '$translate',
-            'LiensService',
-            'LienModel',
+            '$log', '$scope', '$rootScope', '$state',
+            'AuthService',
             '$mdDialog', '$mdMedia',
             ToolbarController
-        ]).controller('nouveauLienController', [
-            '$log', '$scope', '$rootScope', '$state',
-            'AlertService', '$translate',
-            'LienModel',
-            'LiensService',
+        ])
+        .controller('nouveauLienController', [
+            '$log', '$scope',
+            'LiensService', 'SessionStorage', 'USERFIREBASEPROFILEKEY',
             '$mdDialog', '$mdMedia',
             NouveauLienController
         ]);
 
     /**
      */
-    function ToolbarController($log, $scope, $state, Env, AlertService, $translate, LiensService, LienModel,  $mdDialog, $mdMedia ) {
-        $scope.selectedIndex = 0;
-        $scope.isAdmin= Env.isAdmin;
+    function ToolbarController($log, $scope, $rootScope, $state, AuthService, $mdDialog, $mdMedia ) {
+
+        $scope.selectedIndex=0;
+
+        $scope.isAdmin= true;
+
         $scope.$watch('selectedIndex', function(current, old) {
             switch (current) {
                 case 0:
@@ -70,21 +70,16 @@
         };
 
         $scope.logout = function() {
-            AuthService.logout().then (function() {
-                $scope.authenticationError = false;
-                $rootScope.user= undefined;
-                localStorageService.set('user', undefined);
-                $location.path("/");
-            }, function(erreur) {
-                console.log(erreur);
-                $scope.authenticationError = true;
-            });
+            AuthService.logout();
+            $state.go('showLogin');
+            $rootScope.userAuthenticated = false;
+            //delete $rootScope[userEmail];
         };
     }
 
     /**
      */
-    function NouveauLienController($log, $scope, $rootScope, $state, AlertService, $translate, LienModel, LiensService,  $mdDialog, $mdMedia ) {
+    function NouveauLienController($log, $scope, LiensService, SessionStorage, USERFIREBASEPROFILEKEY, $mdDialog, $mdMedia) {
         $scope.currentLien= {"url" : "", private: true};
         $scope.alerts = [];
 
@@ -97,7 +92,7 @@
 
         $scope.validate= function() {
             if ($scope.currentForm.$valid) {
-                LiensService.createLinkForUser($scope.currentLien, $rootScope.userConnected.$id)
+                LiensService.createLinkForUser($scope.currentLien, SessionStorage.get(USERFIREBASEPROFILEKEY).uid)
                     .then(function (newLink) {
                         $mdDialog.hide(newLink);
                     }, function (error) {

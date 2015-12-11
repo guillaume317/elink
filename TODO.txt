@@ -1,0 +1,19 @@
+- [OK] une fois authentifié :
+-- [OK] vérifier la présence de l'utilisateur dans /users
+--- [OK] si non présent ajout d'un enreg (email, fullname, uid)
+-- [OK] uid devient la clé !
+
+- [Ok] modifier les signatures controller resolver pour y ajouter les paramètres manquants
+- [OK]réactiver la sécurité
+- [OK] logout
+
+- a la creation d'un cercle se positionner dessus (select box)
+- permettre d'acrter une personne d'un cercle (banir)
+- supprimer un cercle dont je suis le propriétaire
+
+
+- Avatar personne connecté
+
+
+
+- thème color

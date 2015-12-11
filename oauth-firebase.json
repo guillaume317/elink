@@ -1,0 +1,16 @@
+{
+  "web": {
+    "client_id": "1070375707109-e5fs59867a7eujpb63c5qj7r3q4s9af3.apps.googleusercontent.com",
+    "project_id": "elinks-1156",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://accounts.google.com/o/oauth2/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_secret": "q3utp_wCu2PwFp_88Xec5tRi",
+    "redirect_uris": [
+      "https://auth.firebase.com/v2/elink/auth/google/callback"
+    ],
+    "javascript_origins": [
+      "https://auth.firebase.com"
+    ]
+  }
+}

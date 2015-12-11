@@ -3,22 +3,24 @@
     angular
         .module('el1.bibli')
         .controller('bibliController', [
-            '$log', '$scope', '$rootScope', '$state',
-            'LiensService',
+            '$log', '$scope', '$state',
             'liensNonLus', 'liensLus', 'allMyCercles', 'allCategories',
             '$mdDialog', '$mdMedia',
             BibliController
             ])
         .controller('shareController', [
-            '$log', '$scope', '$rootScope',
+            '$log', '$scope',
             'GestionService',
+            'linkToShare', 'allCategories', 'allMyCercles', 'listeLiens',
+            'SessionStorage', 'USERFIREBASEPROFILEKEY',
             '$mdDialog', '$mdMedia',
             ShareController
         ]);
 
     /**
      */
-    function BibliController($log, $scope, $rootScope, $state, LiensService, liensNonLus, liensLus, allMyCercles, allCategories, $mdDialog, $mdMedia ) {
+    function BibliController($log, $scope, $state, liensNonLus, liensLus, allMyCercles, allCategories, $mdDialog, $mdMedia ) {
+
         $scope.customFullscreen = $mdMedia('sm');
         //liens : liens non lus ou biblio selon le cas
 
@@ -85,7 +87,7 @@
 
     /**
      */
-    function ShareController($log, $scope, $rootScope, GestionService, linkToShare, allCategories, allMyCercles, listeLiens, $mdDialog, $mdMedia ) {
+    function ShareController($log, $scope, GestionService, linkToShare, allCategories, allMyCercles, listeLiens, SessionStorage, USERFIREBASEPROFILEKEY, $mdDialog, $mdMedia ) {
 
         $scope.categories= allCategories;
         $scope.cercles= allMyCercles;
@@ -115,7 +117,7 @@
                 //   il est supprimé de read ou notRead
                 //   il est déplacé vers le cercle cible (cercleLinks)
                 //   il est associé à une catégorie (attribut category)
-                GestionService.shareLien(shareLink, $rootScope.userConnected.$id)
+                GestionService.shareLien(shareLink, SessionStorage.get(USERFIREBASEPROFILEKEY))
                     .then(function() {
                         listeLiens.$remove(linkToShare);
                         $mdDialog.hide(shareLink);

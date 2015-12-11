@@ -2,14 +2,14 @@
     'use strict';
 
     angular.module('el1.services.commun')
-        .service('GestionService', ['$rootScope', '$q', '$http', '$firebaseObject', '$firebaseArray', 'CercleModel', 'PersonnesModel', 'commonsService', 'Env', 'UsersManager', GestionService]);
+        .service('GestionService', ['$q', '$firebaseObject', '$firebaseArray', 'PersonnesModel', 'FBURL', 'UsersManager', 'SessionStorage', 'USERFIREBASEPROFILEKEY', GestionService]);
 
     /**
      *
      */
-    function GestionService($rootScope, $q, $http, $firebaseObject, $firebaseArray, CercleModel, PersonnesModel, commonsService, Env, UsersManager){
+    function GestionService($q, $firebaseObject, $firebaseArray, PersonnesModel, FBURL, UsersManager, SessionStorage, USERFIREBASEPROFILEKEY) {
 
-        var ref = new Firebase("https://elink.firebaseio.com/");
+        var ref = new Firebase(FBURL);
 
         function saveCercle (cercleName, cercleDescription, username) {
 
@@ -87,12 +87,12 @@
         return {
             createCercle : function (aCercleModel) {
 
-                return saveCercle(aCercleModel.label, aCercleModel.description, $rootScope.userConnected.$id)
+                return saveCercle(aCercleModel.label, aCercleModel.description, SessionStorage.get(USERFIREBASEPROFILEKEY).uid)
                     .then(function(cercle){
-                        return saveCercleMember (cercle.$id, $rootScope.userConnected.$id);
+                        return saveCercleMember (cercle.$id, SessionStorage.get(USERFIREBASEPROFILEKEY).uid);
                     })
                     .then(function(cerclename){
-                        return UsersManager.addCercle($rootScope.userConnected.$id, cerclename)
+                        return UsersManager.addCercle(SessionStorage.get(USERFIREBASEPROFILEKEY).uid, cerclename)
                     });
 
             },
@@ -131,7 +131,7 @@
 
             },
 
-            shareLien : function(shareLink, username) {
+            shareLien : function(shareLink, userConnected) {
 
                 var deferred = $q.defer();
 
@@ -146,7 +146,7 @@
                             createdOn : Firebase.ServerValue.TIMESTAMP,
                             url : shareLink.url,
                             category: shareLink.category,
-                            sharedBy: username
+                            sharedBy: userConnected.google.cachedUserProfile.name
                         };
                         cercleLinksIndex.$add(newCercle)
                             .then(function() {
