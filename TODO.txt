@@ -11,9 +11,5 @@
 - permettre d'acrter une personne d'un cercle (banir)
 - supprimer un cercle dont je suis le propriétaire
 
-
 - Avatar personne connecté
-
-
-
 - thème color

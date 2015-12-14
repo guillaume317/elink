@@ -23,16 +23,40 @@
     </md-toolbar>
 
     <md-divider></md-divider>
-
+    <div layout="row">
+        <div flex>&nbsp;</div>
+    </div>
     <form name="currentForm" layout="row">
 
-        <md-input-container flex="grow">
+        <!--md-input-container flex="grow">
             <label translate="gestion.dashboard.invite"></label>
             <input name="invite" type="text" ng-model="invitation">
-        </md-input-container>
+        </md-input-container
+
+
+
+        -->
+        <md-autocomplete
+                ng-disabled="false"
+                md-no-cache="false"
+                md-selected-item="selectedItem"
+                md-search-text-change="searchTextChange(searchText)"
+                md-search-text="searchText"
+                md-items="user in querySearch(searchText)"
+                md-selected-item-change="selectedItemChange(user)"
+                md-item-text="user.email"
+                md-min-length="0"
+                placeholder="email">
+            <md-item-template>
+                <span md-highlight-text="searchText" md-highlight-flags="^i">{{user.email}}</span>
+            </md-item-template>
+            <md-not-found>
+                Aucune correspondance trouvée pour "{{searchText}}".
+            </md-not-found>
+        </md-autocomplete>
 
         <!-- translate="gestion.action.invite" -->
-        <md-button class="md-icon-button" aria-label="{{'gestion.action.validate' | translate}}"  style="vertical-align: middle; text-align: center">
+        <md-button class="md-icon-button" aria-label="{{'gestion.action.validate' | translate}}"  style="vertical-align: middle; text-align: center" ng-click="inviter(selectedItem)">
             <ng-md-icon icon="send"  size="30"></ng-md-icon>
         </md-button>
 

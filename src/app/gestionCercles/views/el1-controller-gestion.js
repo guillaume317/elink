@@ -3,10 +3,10 @@
     angular
         .module('el1.gestion')
         .controller('gestionController', [
-            '$log', '$scope',
+            '$log', '$scope', '$q', '$timeout',
             '$translate',
             'GestionService', 'UsersManager',
-            'mesInvitations', 'personnesDuCercle', 'mesCercles',
+            'mesInvitations', 'personnesDuCercle', 'mesCercles', 'usersEmail',
             'SessionStorage', 'USERFIREBASEPROFILEKEY',
             '$mdDialog', '$mdMedia',
             GestionController
@@ -21,11 +21,48 @@
 
     /**
      */
-    function GestionController($log, $scope, $translate, GestionService, UsersManager, mesInvitations, personnesDuCercle, mesCercles, SessionStorage, USERFIREBASEPROFILEKEY, $mdDialog, $mdMedia ) {
+    function GestionController($log, $scope, $q, $timeout, $translate, GestionService, UsersManager, mesInvitations, personnesDuCercle, mesCercles, usersEmail, SessionStorage, USERFIREBASEPROFILEKEY, $mdDialog, $mdMedia ) {
 
         $scope.mesInvitations= mesInvitations;
         $scope.personnes= personnesDuCercle;
         $scope.cercles= mesCercles;
+        $scope.users = usersEmail;
+
+        $scope.selectedItemChange = selectedItemChange;
+        $scope.searchTextChange   = searchTextChange;
+        $scope.querySearch   = querySearch;
+        $scope.selectedItem = null;
+
+        //Functions utilisée par le select box autocomplete
+        function querySearch (query) {
+            var results = query ? $scope.users.filter( createFilterFor(query) ) : $scope.users,
+                deferred;
+            deferred = $q.defer();
+            $timeout(function () { deferred.resolve( results ); }, Math.random() * 1000, false);
+            return deferred.promise;
+
+        }
+
+        function createFilterFor(query) {
+            var lowercaseQuery = angular.lowercase(query);
+            return function filterFn(user) {
+                return (user.email.indexOf(lowercaseQuery) === 0);
+            };
+        }
+
+        function searchTextChange(text) {
+            $log.info('Text changed to ' + text);
+        }
+        function selectedItemChange(user) {
+            //sélection d'un élémenta dans la liste
+            $log.info('Item changed to ' + JSON.stringify(user));
+            //si l'objet a été sélectionné, il n'est pas vide
+            /**if (Object.keys(user).length > 0) {
+                $scope.selectedUser= user;
+            } else {
+                $scope.selectedUser= null;
+            }*/
+        }
 
         if (mesCercles[0]) {
             $scope.selectedCercle = mesCercles[0];
@@ -71,15 +108,19 @@
         }
 
         $scope.inviter= function(invite) {
-        //L'utilisateur connecté invite un utilisateur à rejoindre le cercle sélectionné
-            UsersManager.inviter(invite, $scope.selectedCercle.$id)
-                .then(function (username) {
-                        $scope.invitation="";
+
+            if (invite !== null) {
+                //L'utilisateur connecté invite un utilisateur à rejoindre le cercle sélectionné
+                UsersManager.inviter(invite.uid, $scope.selectedCercle.$id)
+                    .then(function (username) {
+                        $scope.selectedItem = null;
+                        $scope.searchText = null;
                         $log.info($translate.instant('gestion.message.inviter'));
-                })
-                .catch (function (error) {
+                    })
+                    .catch(function (error) {
                     $log.error(error);
                 })
+            }
         }
 
         $scope.accepterInvitation= function(invitation) {

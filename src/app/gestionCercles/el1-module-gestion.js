@@ -37,6 +37,14 @@
                             function(UsersManager, SessionStorage, USERFIREBASEPROFILEKEY) {
                               //Recherche des cercles dont je suis membre
                                 return UsersManager.findCerclesByUser(SessionStorage.get(USERFIREBASEPROFILEKEY).uid);
+                        }],
+                        usersEmail : ['UsersManager', 'SessionStorage', 'USERFIREBASEPROFILEKEY',
+                            function(UsersManager, SessionStorage, USERFIREBASEPROFILEKEY){
+                                return UsersManager.getUsersEmail(SessionStorage.get(USERFIREBASEPROFILEKEY).uid)
+                                    .then(function(users) {
+                                        return users;
+                                    })
+
                         }]
                     }
                 }
