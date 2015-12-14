@@ -67,6 +67,9 @@ angular.module('el1.login', ['el1.services.commun', 'el1.model', 'LocalStorageMo
                     return UsersManager.addUser(authData);
                 })
                 .then(function(userConnected) {
+                    return UsersManager.addUserEmail(userConnected);
+                })
+                .then(function(userConnected) {
                     $rootScope.userAuthenticated = true;
                     $rootScope.userEmail = userConnected.email;
                     return $q.when(userConnected);

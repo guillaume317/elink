@@ -39,10 +39,11 @@
             //On déplace le lien dans biblio
             //puis on le supprime dans la liste des articles du cercle
             lien.private = "biblio";
-            LiensService.createLinkForUser(lien, SessionStorage.get(USERFIREBASEPROFILEKEY).uid)
-                .then(function() {
+            LiensService.createLinkForUser(lien, SessionStorage.get(USERFIREBASEPROFILEKEY).uid);
+                //Mis en commentaire : on dublique simplement le lien !
+                /**.then(function() {
                     $scope.allLiens.$remove(lien);
-                })
+                })*/
         };
 
     }

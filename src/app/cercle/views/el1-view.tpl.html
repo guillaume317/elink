@@ -40,7 +40,11 @@
                 <div  layout="row">
                     <span flex="15"><b>{{lien.category}}</b></span>
                     <span flex="15"><ng-md-icon icon="account_child"></ng-md-icon>{{lien.sharedBy}}</span>
-                    <span flex="auto"> <a ng-href="{{lien.url}}" target="_blank">{{lien.url}}</a> </span>
+                    <div layout="row">
+                        <div hide show-gt-sm flex="3"><ng-md-icon icon="link"></ng-md-icon></div>
+                        <div flex><a ng-href="{{lien.url}}" target="_blank">{{lien.url}}</a></div>
+                    </div>
+                    <!--span flex="auto"> <a ng-href="{{lien.url}}" target="_blank">{{lien.url}}</a> </span-->
                 </div>
             </div>
             <div flex="initial" layout="row">
