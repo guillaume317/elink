@@ -26,15 +26,13 @@
     <div layout="row">
         <div flex>&nbsp;</div>
     </div>
+
     <form name="currentForm" layout="row">
 
         <!--md-input-container flex="grow">
             <label translate="gestion.dashboard.invite"></label>
             <input name="invite" type="text" ng-model="invitation">
         </md-input-container
-
-
-
         -->
         <md-autocomplete
                 ng-disabled="false"
@@ -51,7 +49,7 @@
                 <span md-highlight-text="searchText" md-highlight-flags="^i">{{user.email}}</span>
             </md-item-template>
             <md-not-found>
-                Aucune correspondance trouv�e pour "{{searchText}}".
+                Aucune correspondance trouvée pour "{{searchText}}".
             </md-not-found>
         </md-autocomplete>
 
@@ -61,7 +59,15 @@
         </md-button>
 
     </form>
-
+    <div layout="row">
+        <div flex>&nbsp;</div>
+    </div>
+    <div layout="row" ng-show="invited && invited.length>0">
+        <div flex><strong>Invitation(s) envoyée(s) à : </strong> {{invitedDisplay}}</div>
+    </div>
+    <div layout="row">
+        <div flex>&nbsp;</div>
+    </div>
     <md-divider></md-divider>
     <md-subheader><span translate="gestion.dashboard.personnes"/> {{selectedCercle.$id}}</md-subheader>
 
@@ -70,9 +76,7 @@
     <md-list>
         <md-list-item ng-repeat="personne in personnes.items | orderBy: fullname">
             <div flex="auto" class="md-list-item-text" layout="column">
-                <div layout="row">
-                    <span flex="15"><b>{{personne.fullname}} - {{personne.email}}</b></span>
-                </div>
+                    <span><b>{{personne.fullname}} ({{personne.email}})</b></span>
             </div>
         </md-list-item>
     </md-list>

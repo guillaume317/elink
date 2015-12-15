@@ -48,6 +48,7 @@
                 </div>
             </div>
             <div flex="initial" layout="row">
+                <md-button ng-disabled="isLikeDisabled" class="md-icon-button" ng-click="like(lien)" aria-label="{{'view.action.like' | translate}}"><ng-md-icon icon="favorite" size="30" ></ng-md-icon> <md-tooltip>{{'view.action.like' | translate}}</md-tooltip></md-button>
                 <md-button class="md-icon-button" ng-click="moveToBiblio(lien)" aria-label="{{'view.action.read' | translate}}"><ng-md-icon icon="archive" size="30" ></ng-md-icon> <md-tooltip>{{'view.action.read' | translate}}</md-tooltip></md-button>
             </div>
         </md-list-item>

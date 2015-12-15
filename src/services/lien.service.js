@@ -63,6 +63,7 @@
                     .then(function () {
                         deferred.resolve(userLinksRead);
                     }).catch(function (error) {
+
                         deferred.reject(error);
                     });
 
@@ -90,6 +91,56 @@
 
                 return deferred.promise;
 
+            },
+
+            addLike : function(cercleName, idLink) {
+
+
+                var deferred = $q.defer();
+
+                // a noter : idLink format K4cGFb8ts5teWMJq4PC
+                // Pour le cercle CCMT, on obtient l'identifiant CCMT-K4cGFb8ts5teWMJq4PC
+                // Le nom du cercle est nécessaire pour récupérer le détail de l'article par la suite
+                var cercleLinkLikeRef = ref.child('cercleLinksLike').child(cercleName + idLink);
+                var cercleLinkLike = $firebaseObject(cercleLinkLikeRef);
+                cercleLinkLike.$loaded()
+                    .then(function () {
+                        cercleLinkLike.$value = cercleLinkLike.$value === null ? 1 : cercleLinkLike.$value + 1;
+                        cercleLinkLike.$save();
+                        deferred.resolve(cercleLinkLike);
+                    }).catch(function (error) {
+                        deferred.reject(error);
+                    });
+
+                return deferred.promise;
+            },
+
+            findTopTenLinks : function() {
+
+                /**
+                 * ATTENTION
+                 * If you want to use orderByValue() in a production app, you should add .value to your rules at
+                 * the appropriate index. Read the documentation on the .indexOn rule for more information.
+                 */
+                var deferred = $q.defer();
+
+                //A noter : le tri est ascendant. On prend donc les 10 derniers
+                ref.child('cercleLinksLike').orderByValue().limitToLast(10).on("value", function(topTen) {
+
+                    // key[0] : nom du cercle
+                    // key[1] : identifiant de l'article'
+                    var key = topTen.key().split("-");
+
+                    // jointure avec le détail de l'article
+                    ref.child('cercleLinks').child(key[0]).child('-'+key[1]).once('value', function(lien) {
+                        var detailLien = {link : lien.val()};
+                        var cptLike = {cptLike: topTen.val()};
+                        deferred.resolve(angular.extend({}, detailLien, cptLike));
+                    })
+
+                });
+
+                return deferred.promise;
             },
 
             /* toutes les catgories */

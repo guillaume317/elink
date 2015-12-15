@@ -6,7 +6,8 @@
       "delete" : "Supprimer",
       "unread" : "Placer dans \" Non Lu \" ",
       "read" : "Placer dans \" Biblio \" ",
-      "share" : "Partager"
+      "share" : "Partager",
+      "like" : "Favori"
     },
 
     "cercle" : {
