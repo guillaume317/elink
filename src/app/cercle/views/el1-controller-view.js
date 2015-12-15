@@ -29,6 +29,7 @@
 
 
         $scope.changeCercle = function (cercle) {
+            $scope.selectedCercle =cercle;
             LiensService.findLinksByCerlceName(cercle.$id)
                 .then(function (links) {
                     $scope.allLiens = links;
@@ -48,8 +49,9 @@
         };
 
         $scope.like = function (lien) {
-            $scope.isLikeDisabled = true;
-            LiensService.addLike(lien.$id);
+            //Bloque tous les liens !
+            //$scope.isLikeDisabled = true;
+            LiensService.addLike($scope.selectedCercle.$id, lien.$id);
         };
 
     }

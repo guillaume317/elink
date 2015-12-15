@@ -32,7 +32,8 @@
         $scope.searchTextChange   = searchTextChange;
         $scope.querySearch   = querySearch;
         $scope.selectedItem = null;
-        $scopes.invited = [];
+        $scope.invited = [];
+        $scope.invitedDisplay = "";
 
         //Functions utilisée par le select box autocomplete
         function querySearch (query) {
@@ -114,7 +115,8 @@
                 //L'utilisateur connecté invite un utilisateur à rejoindre le cercle sélectionné
                 UsersManager.inviter(invite.uid, $scope.selectedCercle.$id)
                     .then(function (username) {
-                        $scope.invited.push(invite);
+                        $scope.invited.push(invite.email);
+                        $scope.invitedDisplay = $scope.invited.join(', ');
                         $scope.selectedItem = null;
                         $scope.searchText = null;
                         $log.info($translate.instant('gestion.message.inviter'));

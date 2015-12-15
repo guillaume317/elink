@@ -49,7 +49,7 @@
                 <span md-highlight-text="searchText" md-highlight-flags="^i">{{user.email}}</span>
             </md-item-template>
             <md-not-found>
-                Aucune correspondance trouvée pour "{{searchText}}".
+                Aucune correspondance trouvÃ©e pour "{{searchText}}".
             </md-not-found>
         </md-autocomplete>
 
@@ -59,8 +59,11 @@
         </md-button>
 
     </form>
+    <div layout="row">
+        <div flex>&nbsp;</div>
+    </div>
     <div layout="row" ng-show="invited && invited.length>0">
-        <div flex><strong>Invitation(s) envoyée(s) à : </strong> {{invited.join(', ')}}</div>
+        <div flex><strong>Invitation(s) envoyÃ©e(s) Ã  : </strong> {{invitedDisplay}}</div>
     </div>
     <div layout="row">
         <div flex>&nbsp;</div>
@@ -73,9 +76,7 @@
     <md-list>
         <md-list-item ng-repeat="personne in personnes.items | orderBy: fullname">
             <div flex="auto" class="md-list-item-text" layout="column">
-                <div layout="row">
-                    <span flex="15"><b>{{personne.fullname}} - {{personne.email}}</b></span>
-                </div>
+                    <span><b>{{personne.fullname}} ({{personne.email}})</b></span>
             </div>
         </md-list-item>
     </md-list>
