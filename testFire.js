@@ -70,6 +70,38 @@ app.factory("Link", ['$firebaseArray',
     }
 ]);
 
+app.factory("LikeManager", ['$q',
+    function($q) {
+
+        var ref = new Firebase("https://elink.firebaseio.com");
+
+        return {
+            topTen : function() {
+
+                var deferred = $q.defer();
+
+                //A noter : le tri est ascendant. On prend donc les 10 derniers
+                ref.child('cercleLinksLike').orderByValue().limitToLast(10).on("value", function(topTen) {
+
+                    // key[0] : nom du cercle
+                    // key[1] : identifiant de l'article'
+                    var key = topTen.key().split("-");
+
+                    // jointure avec le détail de l'article
+                    ref.child('cercleLinks').child(key[0]).child('-'+key[1]).once('value', function(lien) {
+                        var detailLien = {link : lien.val()};
+                        var cptLike = {cptLike: topTen.val()};
+                        deferred.resolve(angular.extend({}, detailLien, cptLike));
+                    })
+
+                });
+
+                return deferred.promise;
+
+            }
+        };
+    }
+]);
 
 app.factory("UsersManager", ['$firebaseObject', '$firebaseArray', '$q',
     function($firebaseObject, $firebaseArray, $q) {
@@ -361,8 +393,9 @@ app.factory("CerclesManager", ['$rootScope', '$q', '$firebaseObject', '$firebase
 ]);
 
 // !!! utilisateur connecté à poser dans $rootscope ou service
-app.controller("CerclesCtrl", ["$scope", "CerclesManager",
-    function($scope, CerclesManager) {
+app.controller("CerclesCtrl", ["$scope", "CerclesManager", "LikeManager",
+    function($scope, CerclesManager, LikeManager) {
+
 
         //Recherche des cercles
         CerclesManager.getCercles()
@@ -378,6 +411,12 @@ app.controller("CerclesCtrl", ["$scope", "CerclesManager",
 
                 $scope.cercles = cercles;
             });
+
+        $scope.likes=[];
+        LikeManager.topTen().then(function(topten) {
+           $scope.likes = topten;
+        });
+
 
         $scope.addCercle = function() {
             CerclesManager.addCercle($scope.cercle.name,$scope.cercle.description);
