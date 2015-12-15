@@ -92,6 +92,50 @@
 
             },
 
+            addLike : function(idLink) {
+
+
+                var deferred = $q.defer();
+
+                var cercleLinkLikeRef = ref.child('cercleLinksLike').child(idLink);
+                var cercleLinkLike = $firebaseArray(cercleLinkLikeRef);
+                cercleLinkLike.$loaded()
+                    .then(function () {
+                        cercleLinkLike.$value = cercleLinkLike.$value === null ? 1 : cercleLinkLike.$value + 1;
+                        cercleLinkLike.$save();
+                        deferred.resolve(cercleLinks);
+                    }).catch(function (error) {
+                        deferred.reject(error);
+                    });
+
+                return deferred.promise;
+            },
+
+            findTopTenLinks : function() {
+
+                /**
+                 * ATTENTION
+                 * If you want to use orderByValue() in a production app, you should add .value to your rules at
+                 * the appropriate index. Read the documentation on the .indexOn rule for more information.
+                 */
+                var deferred = $q.defer();
+
+                var topTenRef = ref.child('cercleLinksLike');
+
+                //A noter : le tri est ascendant. On prend donc les 10 derniers
+                topTenRef.orderByValue().limitToLast(10).on("value", function(topTen) {
+                    //TODO
+                    // jointure avec le détail de l'article
+                    var topTen = [];
+                    snapshot.forEach(function (data) {
+                        topTen.push({id: data.key(), cpt: data.val()});
+                    });
+                    deferred.resolve(topTen);
+                });
+
+                return deferred.promise;
+            },
+
             /* toutes les catgories */
             findCategories: function () {
                 if ( Env.isMock() ) {

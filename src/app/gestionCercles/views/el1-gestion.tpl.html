@@ -26,15 +26,13 @@
     <div layout="row">
         <div flex>&nbsp;</div>
     </div>
+
     <form name="currentForm" layout="row">
 
         <!--md-input-container flex="grow">
             <label translate="gestion.dashboard.invite"></label>
             <input name="invite" type="text" ng-model="invitation">
         </md-input-container
-
-
-
         -->
         <md-autocomplete
                 ng-disabled="false"
@@ -61,7 +59,12 @@
         </md-button>
 
     </form>
-
+    <div layout="row" ng-show="invited && invited.length>0">
+        <div flex><strong>Invitation(s) envoyée(s) à : </strong> {{invited.join(', ')}}</div>
+    </div>
+    <div layout="row">
+        <div flex>&nbsp;</div>
+    </div>
     <md-divider></md-divider>
     <md-subheader><span translate="gestion.dashboard.personnes"/> {{selectedCercle.$id}}</md-subheader>
 
