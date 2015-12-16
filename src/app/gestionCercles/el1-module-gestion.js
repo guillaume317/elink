@@ -21,6 +21,8 @@
                                 //Pour le premier d'entre eux, je recherche les personnes de ce cercle.
                                 return UsersManager.findCerclesByUser(SessionStorage.get(USERFIREBASEPROFILEKEY).uid)
                                     .then (function(cerclesIndex) {
+                                    console.log(cerclesIndex[0])
+                                    //return [];
                                         if (cerclesIndex && cerclesIndex.length > 0) {
                                             return GestionService.findPersonnesByCercle(cerclesIndex[0]);
                                         } else {
@@ -35,7 +37,7 @@
                         }],
                         mesCercles : ['UsersManager', 'SessionStorage', 'USERFIREBASEPROFILEKEY',
                             function(UsersManager, SessionStorage, USERFIREBASEPROFILEKEY) {
-                              //Recherche des cercles dont je suis membre
+                                //Recherche des cercles dont je suis membre
                                 return UsersManager.findCerclesByUser(SessionStorage.get(USERFIREBASEPROFILEKEY).uid);
                         }],
                         usersEmail : ['UsersManager', 'SessionStorage', 'USERFIREBASEPROFILEKEY',

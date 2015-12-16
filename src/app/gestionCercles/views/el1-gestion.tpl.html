@@ -54,6 +54,7 @@
         </md-button>
 
     </form>
+
     <div layout="row">
         <div flex>&nbsp;</div>
     </div>
@@ -67,10 +68,10 @@
     <md-divider></md-divider>
     <md-subheader><span translate="gestion.dashboard.personnes"/> {{selectedCercle.$id}}</md-subheader>
 
-    <div ng-hide="personnes.items[0]" class="errormessage warning" translate="list.empty"></div>
+    <div ng-hide="personnes[0]" class="errormessage warning" translate="list.empty"></div>
 
     <md-list>
-        <md-list-item ng-repeat="personne in personnes.items | orderBy: fullname">
+        <md-list-item ng-repeat="personne in personnes | orderBy: fullname">
             <div flex="auto" class="md-list-item-text" layout="column">
                     <span><b>{{personne.fullname}} ({{personne.email}})</b></span>
             </div>

@@ -121,7 +121,7 @@
                         return getCercleUsers(membersIndex)
                     })
                     .then(function(users) {
-                        deferred.resolve(new PersonnesModel(users));
+                        deferred.resolve(users);
                     })
                     .catch(function(error) {
                         deferred.reject(error);
