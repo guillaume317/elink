@@ -22,10 +22,16 @@
         $scope.cercles = allMyCercles;
         $scope.filter = {"category": ""};
         $scope.isLikeDisabled = false;
+        //$scope.topten = [];
 
         if (allMyCercles[0]) {
             $scope.selectedCercle = allMyCercles[0];
         }
+
+        /**LiensService.findTopTenLinks()
+            .then(function(topten){
+                $scope.topten = topten;
+            });*/
 
 
         $scope.changeCercle = function (cercle) {

@@ -2,12 +2,12 @@
     'use strict';
 
     angular.module('el1.services.commun')
-        .service('LiensService', ['$q', '$http', 'LiensModel', 'LienModel', 'commonsService', 'FBURL', '$firebaseArray', '$firebaseObject', 'Env', LiensService]);
+        .service('LiensService', ['$q', 'FBURL', '$firebaseArray', '$firebaseObject', 'Env', LiensService]);
 
     /**
      *
      */
-    function LiensService($q, $http, LiensModel, LienModel, commonsService, FBURL, $firebaseArray, $firebaseObject, Env){
+    function LiensService($q, FBURL, $firebaseArray, $firebaseObject, Env){
 
         var ref = new Firebase(FBURL);
 
@@ -93,6 +93,23 @@
 
             },
 
+            findLinksByCerlceNameAndIdLink : function(cercleName, idLink) {
+
+                var deferred = $q.defer();
+
+                var cercleLinkRef = ref.child('cercleLinks').child(cercleName).child(idLink);
+                var cercleLink = $firebaseObject(cercleLinkRef);
+                cercleLink.$loaded()
+                    .then(function () {
+                        deferred.resolve(cercleLink);
+                    }).catch(function (error) {
+                        deferred.reject(error);
+                    });
+
+                return deferred.promise;
+
+            },
+
             addLike : function(cercleName, idLink) {
 
 
@@ -117,30 +134,46 @@
 
             findTopTenLinks : function() {
 
-                /**
-                 * ATTENTION
-                 * If you want to use orderByValue() in a production app, you should add .value to your rules at
-                 * the appropriate index. Read the documentation on the .indexOn rule for more information.
-                 */
                 var deferred = $q.defer();
+                var _that = this;
+
+                var likeRef =  new Firebase(FBURL + 'cercleLinksLike');
 
                 //A noter : le tri est ascendant. On prend donc les 10 derniers
-                ref.child('cercleLinksLike').orderByValue().limitToLast(10).on("value", function(topTen) {
+                likeRef.orderByValue().limitToLast(10).on("value", function(snapshot) {
+
+                    var topTen = [];
 
                     // key[0] : nom du cercle
                     // key[1] : identifiant de l'article'
-                    var key = topTen.key().split("-");
+                    snapshot.forEach(function(data) {
 
-                    // jointure avec le détail de l'article
-                    ref.child('cercleLinks').child(key[0]).child('-'+key[1]).once('value', function(lien) {
-                        var detailLien = {link : lien.val()};
-                        var cptLike = {cptLike: topTen.val()};
-                        deferred.resolve(angular.extend({}, detailLien, cptLike));
-                    })
+                        // key[0] : nom du cercle
+                        // key[1] : identifiant de l'article
+                        var key = data.key();
+                        var keyValue = key.split('-');
+                        var cptLike = data.val();
 
+                        //jointure avec le lien pour récupérer sa description
+                        _that.findLinksByCerlceNameAndIdLink(keyValue[0], '-'+keyValue[1])
+                            .then(function(aLink){
+                                topTen.push(angular.extend({},
+                                    {
+                                        link: aLink,
+                                        cpt: cptLike,
+                                        cercleName: keyValue[0]
+                                    }
+                                ));
+                            })
+
+
+                    });
+
+                    deferred.resolve(topTen);
                 });
 
                 return deferred.promise;
+
             },
 
             /* toutes les catgories */
