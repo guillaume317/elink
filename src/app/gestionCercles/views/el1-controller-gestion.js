@@ -5,10 +5,10 @@
         .controller('gestionController', [
             '$log', '$scope', '$q', '$timeout',
             '$translate',
-            'GestionService', 'UsersManager',
+            'GestionService', 'UsersManager',  'commonsService',
             'mesInvitations', 'personnesDuCercle', 'mesCercles', 'usersEmail',
             'SessionStorage', 'USERFIREBASEPROFILEKEY',
-            '$mdDialog', '$mdMedia',
+            '$mdDialog', '$mdMedia', '$mdToast',
             GestionController
         ])
         .controller('nouveauCercleController', [
@@ -21,7 +21,7 @@
 
     /**
      */
-    function GestionController($log, $scope, $q, $timeout, $translate, GestionService, UsersManager, mesInvitations, personnesDuCercle, mesCercles, usersEmail, SessionStorage, USERFIREBASEPROFILEKEY, $mdDialog, $mdMedia ) {
+    function GestionController($log, $scope, $q, $timeout, $translate, GestionService, UsersManager, commonsService, mesInvitations, personnesDuCercle, mesCercles, usersEmail, SessionStorage, USERFIREBASEPROFILEKEY, $mdDialog, $mdMedia, $mdToast ) {
 
         $scope.mesInvitations= mesInvitations;
         $scope.personnes= personnesDuCercle;
@@ -136,6 +136,7 @@
             GestionService.accepterInvitation(SessionStorage.get(USERFIREBASEPROFILEKEY).uid, invitation.$id)
                 .then(function(cerclename) {
                     $log.info($translate.instant('gestion.message.accepterInvitation'));
+                    commonsService.showSuccessToast($mdToast, $translate.instant('gestion.message.accepterInvitation'));
                 })
                 .catch(function(error) {
                     $log.error(error);

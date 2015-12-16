@@ -4,8 +4,9 @@
         .module('el1.bibli')
         .controller('bibliController', [
             '$log', '$scope', '$state',
+            'commonsService',
             'liensNonLus', 'liensLus', 'allMyCercles', 'allCategories',
-            '$mdDialog', '$mdMedia',
+            '$mdDialog', '$mdMedia', '$mdToast',
             BibliController
             ])
         .controller('shareController', [
@@ -19,7 +20,7 @@
 
     /**
      */
-    function BibliController($log, $scope, $state, liensNonLus, liensLus, allMyCercles, allCategories, $mdDialog, $mdMedia ) {
+    function BibliController($log, $scope, $state, commonsService, liensNonLus, liensLus, allMyCercles, allCategories, $mdDialog, $mdMedia, $mdToast ) {
 
         $scope.customFullscreen = $mdMedia('sm');
         //liens : liens non lus ou biblio selon le cas
@@ -30,13 +31,18 @@
             $scope.liens = liensLus;
         }
 
+        $scope.showURL= function(lien) {
+            window.open(lien.url, '_blank');
+        }
+
         $scope.canShare= function() {
             return allMyCercles && allMyCercles[0];
         };
 
         $scope.deleteLink= function(lien) {
-            // $scope.liens est synchronisÈ avec la base
+            // $scope.liens est synchronis√© avec la base
             $scope.liens.$remove(lien);
+            commonsService.showSuccessToast($mdToast, "Le lien a √©t√© supprim√©");
         };
 
         $scope.moveTo = function(lien) {
@@ -50,8 +56,9 @@
             }
             //Suppression du lien de la liste
             $scope.deleteLink(lien);
-        };
 
+            commonsService.showSuccessToast($mdToast, "Le lien a √©t√© d√©plac√©");
+        };
 
         $scope.share= function(ev, lien) {
 
@@ -71,6 +78,7 @@
             })
                 .then(function(shareLink) {
                     // valider
+                    commonsService.showSuccessToast($mdToast, "Le lien a bien √©t√© partag√© avec le cercle " + shareLink.cercleName);
                 }, function() {
                     // cancel
                 });
@@ -93,7 +101,7 @@
         $scope.cercles= allMyCercles;
         $scope.linkToShare = linkToShare;
 
-        //Initialisation du lien ‡ basculer vers un cercle donnÈ pour une catÈgorie donnÈe
+        //Initialisation du lien √† basculer vers un cercle donn√© pour une cat√©gorie donn√©e
         $scope.shareLink=  {
             title: linkToShare.title,
             teasing: linkToShare.teasing,
@@ -113,10 +121,10 @@
         $scope.validate = function(shareLink) {
 
             if ($scope.currentForm.$valid) {
-                //Lorsque le lien est partagÈ :
-                //   il est supprimÈ de read ou notRead
-                //   il est dÈplacÈ vers le cercle cible (cercleLinks)
-                //   il est associÈ ‡ une catÈgorie (attribut category)
+                //Lorsque le lien est partag√© :
+                //   il est supprim√© de read ou notRead
+                //   il est d√©plac√© vers le cercle cible (cercleLinks)
+                //   il est associ√© √† une cat√©gorie (attribut category)
                 GestionService.shareLien(shareLink, SessionStorage.get(USERFIREBASEPROFILEKEY))
                     .then(function() {
                         listeLiens.$remove(linkToShare);

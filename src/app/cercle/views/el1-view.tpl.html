@@ -1,80 +1,61 @@
 <section class="canevas">
 
-    <md-toolbar>
-        <div class="md-toolbar-tools" layout-align="space-around center">
-
+    <div flex="auto" layout="row" layout-align="space-around center">
+        <md-input-container>
+            <label >Catégorie</label>
             <md-select ng-model="filter.category">
                 <md-option value="">{{'view.cercle.toutes' | translate}}</md-option>
                 <md-option ng-repeat="cat in categories" value="{{cat}}">
                     {{cat}}
                 </md-option>
             </md-select>
+        </md-input-container>
 
-            <md-input-container>
-                <label style="color: white">Mes cercles</label>
-                <md-select ng-model="selectedCercle" ng-change="changeCercle()"
-                           ng-model-options="{trackBy: '$value.$id'}">
-                    <md-option ng-value="cercl" ng-click="changeCercle(cercl)" ng-repeat="cercl in cercles">
-                        {{cercl.$id}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
-            <!--md-select ng-model="cercle" ng-click="changeCercle(cercle)">
-                <md-option ng-repeat="aCercle in cercles" value="{{aCercle}}">
-                    {{aCercle.$id}}
+        <md-input-container>
+            <label >Mes cercles</label>
+            <md-select ng-model="selectedCercle" ng-change="changeCercle()"
+                       ng-model-options="{trackBy: '$value.$id'}">
+                <md-option ng-value="cercl" ng-click="changeCercle(cercl)" ng-repeat="cercl in cercles">
+                    {{cercl.$id}}
                 </md-option>
-            </md-select -->
-        </div>
-      </md-toolbar>
-
+            </md-select>
+        </md-input-container>
+    </div>
 
     <md-divider></md-divider>
 
-    <div ng-hide="allLiens[0]" class="errormessage warning" translate="list.empty"></div>
+    <div ng-hide="allLiens[0]" class="errormessage warning">
+        <div style="text-align: center">
+            <h4>{{'list.empty' | translate}}</h4>
+        </div>
+    </div>
 
     <md-list>
         <md-list-item ng-repeat="lien in allLiens | filter:filter.category | orderBy: title " >
-            <div flex="auto" class="md-list-item-text" layout="column">
-                <h2>{{lien.title}}</h2>
-                {{lien.teasing}}
-                <div  layout="row">
-                    <span flex="15"><b>{{lien.category}}</b></span>
-                    <span flex="15"><ng-md-icon icon="account_child"></ng-md-icon>{{lien.sharedBy}}</span>
-                    <div layout="row">
-                        <div hide show-gt-sm flex="3"><ng-md-icon icon="link"></ng-md-icon></div>
-                        <div flex><a ng-href="{{lien.url}}" target="_blank">{{lien.url}}</a></div>
+            <md-card flex="auto" layout="row">
+                <div flex="auto" class="md-list-item-text lien-card" ng-click="showURL(lien)" layout="column">
+                    <h3>{{lien.title}}</h3>
+                    {{lien.teasing}}
+                    <br/><br/>
+                    <div  layout="row">
+                        <span flex="15"><b>{{lien.category}}</b></span>
+                        <span flex="40" layout="row"><div hide show-gt-sm flex="3"><ng-md-icon icon="account_child"></ng-md-icon></div>{{lien.sharedBy}}</span>
+                        <div flex="40" layout="row">
+                            <div hide show-gt-sm flex="3"><ng-md-icon icon="link"></ng-md-icon></div>
+                            <div class="lien" flex>{{lien.url}}</div>
+                        </div>
+                        <div>
+                             <ng-md-icon icon="thumb_up" size="15" ></ng-md-icon> {{like.cpt}}
+                        </div>
                     </div>
-                    <!--span flex="auto"> <a ng-href="{{lien.url}}" target="_blank">{{lien.url}}</a> </span-->
                 </div>
             </div>
-            <div flex="initial" layout="row">
-                <md-button ng-disabled="isLikeDisabled" class="md-icon-button" ng-click="like(lien)" aria-label="{{'view.action.like' | translate}}"><ng-md-icon icon="favorite" size="30" ></ng-md-icon> <md-tooltip>{{'view.action.like' | translate}}</md-tooltip></md-button>
-                <md-button class="md-icon-button" ng-click="moveToBiblio(lien)" aria-label="{{'view.action.read' | translate}}"><ng-md-icon icon="archive" size="30" ></ng-md-icon> <md-tooltip>{{'view.action.read' | translate}}</md-tooltip></md-button>
-            </div>
+            <div flex="initial" layout="row" layout-align="center center">
+                <md-button class="md-fab md-primary md-icon-button" ng-click="moveToBiblio(lien)" aria-label="{{'view.action.read' | translate}}"><ng-md-icon icon="archive" size="30" ></ng-md-icon> <md-tooltip>{{'view.action.read' | translate}}</md-tooltip></md-button>
+                <md-button ng-disabled="isLikeDisabled" class="md-fab md-primary md-icon-button" ng-click="like(lien)" aria-label="{{'view.action.like' | translate}}"><ng-md-icon icon="thumb_up" size="30" ></ng-md-icon> <md-tooltip>{{'view.action.like' | translate}}</md-tooltip></md-button>
+                </div>
+            </md-card>
         </md-list-item>
     </md-list>
-
-
-    <!-- md-divider></md-divider>
-    <md-list>
-        <md-list-item ng-repeat="like in topten | orderBy: '-cpt' " >
-            <div flex="auto" class="md-list-item-text" layout="column">
-                <h2>{{like.link.title}}</h2>
-                {{like.link.teasing}}
-                <div  layout="row">
-                    <span flex="15"><b>{{like.link.category}}</b></span>
-                    <span flex="15"><ng-md-icon icon="account_child"></ng-md-icon>{{like.link.sharedBy}}</span>
-                    <div layout="row">
-                        <div hide show-gt-sm flex="3"><ng-md-icon icon="link"></ng-md-icon></div>
-                        <div flex><a ng-href="{{like.link.url}}" target="_blank">{{like.link.url}}</a></div>
-                    </div>
-                </div>
-            </div>
-            <div flex="initial" layout="row">
-                {{like.cpt}} <ng-md-icon icon="favorite" size="30" ></ng-md-icon>
-            </div>
-        </md-list-item>
-    </md-list -->
-
 
 </section>

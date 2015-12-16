@@ -1,39 +1,33 @@
 <section class="canevas">
 
-    <md-toolbar>
-        <div class="md-toolbar-tools" layout-align="space-around center">
+    <div flex="auto" layout="row" layout-align="space-around center">
 
-            <md-input-container>
+        <md-input-container>
+            <label ng-show="cercles[0]">{{'gestion.message.selectbox' | translate}}</label>
+            <label ng-hide="cercles[0]">{{'gestion.message.empty' | translate}}</label>
+            <md-select ng-model="selectedCercle" ng-change="changeCercle()"
+                       ng-model-options="{trackBy: '$value.$id'}">
+                <md-option ng-value="cercl" ng-click="changeCercle(cercl)" ng-repeat="cercl in cercles">
+                    {{cercl.$id}}
+                </md-option>
+            </md-select>
+        </md-input-container>
 
-                <label ng-show="cercles[0]" style="color: white">{{'gestion.message.selectbox' | translate}}</label>
-                <label ng-hide="cercles[0]" style="color: white">{{'gestion.message.empty' | translate}}</label>
-                <md-select ng-model="selectedCercle" ng-change="changeCercle()"
-                           ng-model-options="{trackBy: '$value.$id'}">
-                    <md-option ng-value="cercl" ng-click="changeCercle(cercl)" ng-repeat="cercl in cercles">
-                        {{cercl.$id}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
+        <md-button class="md-raised md-primary" ng-click="nouveauCercle($event)"
+                   aria-label="{{'action.validate' | translate}}"
+                   translate="gestion.action.nouveauCercle"></md-button>
 
-            <md-button class="md-raised md-primary" ng-click="nouveauCercle($event)"
-                       aria-label="{{'action.validate' | translate}}"
-                       translate="gestion.action.nouveauCercle"></md-button>
-
-        </div>
-    </md-toolbar>
+    </div>
 
     <md-divider></md-divider>
+    <md-subheader><span translate="gestion.dashboard.invite"/></md-subheader>
+
     <div layout="row">
         <div flex>&nbsp;</div>
     </div>
 
     <form name="currentForm" layout="row">
 
-        <!--md-input-container flex="grow">
-            <label translate="gestion.dashboard.invite"></label>
-            <input name="invite" type="text" ng-model="invitation">
-        </md-input-container
-        -->
         <md-autocomplete
                 ng-disabled="false"
                 md-no-cache="false"
@@ -54,8 +48,9 @@
         </md-autocomplete>
 
         <!-- translate="gestion.action.invite" -->
-        <md-button class="md-icon-button" aria-label="{{'gestion.action.validate' | translate}}"  style="vertical-align: middle; text-align: center" ng-click="inviter(selectedItem)">
+        <md-button class="md-fab md-primary md-icon-button"  aria-label="{{'gestion.action.inviteTool' | translate}}"  ng-click="inviter(selectedItem)">
             <ng-md-icon icon="send"  size="30"></ng-md-icon>
+            <md-tooltip>{{'gestion.action.inviteTool' | translate}}</md-tooltip>
         </md-button>
 
     </form>
@@ -68,6 +63,7 @@
     <div layout="row">
         <div flex>&nbsp;</div>
     </div>
+
     <md-divider></md-divider>
     <md-subheader><span translate="gestion.dashboard.personnes"/> {{selectedCercle.$id}}</md-subheader>
 
@@ -88,11 +84,11 @@
 
     <md-list>
         <md-list-item ng-repeat="invitation in mesInvitations | orderBy: $id ">
-            <div flex="auto" class="md-list-item-text" layout="column">
+            <div flex="50" class="md-list-item-text" layout="column">
                 <strong>{{invitation.$id}}</strong>
             </div>
-            <div flex="initial" layout="row">
-                <md-button class="md-icon-button" ng-click="accepterInvitation(invitation)"
+            <div flex="50" layout="row">
+                <md-button class="md-fab md-primary md-icon-button" ng-click="accepterInvitation(invitation)"
                            aria-label="{{'view.action.read' | translate}}">
                     <ng-md-icon icon="thumb_up" size="30"></ng-md-icon>
                     <md-tooltip>{{'gestion.action.accept' | translate}}</md-tooltip>

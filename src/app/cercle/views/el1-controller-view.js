@@ -4,19 +4,21 @@
         .module('el1.cercle')
         .controller('cercleController', [
             '$log', '$scope',
+            'commonsService',
             'LiensService',
             'liens',
             'allCategories',
             'allMyCercles',
             'SessionStorage',
             'USERFIREBASEPROFILEKEY',
+            '$mdToast',
             CercleController
             ])
     ;
 
     /**
      */
-    function CercleController($log, $scope, LiensService, liens, allCategories, allMyCercles, SessionStorage, USERFIREBASEPROFILEKEY) {
+    function CercleController($log, $scope, commonsService, LiensService, liens, allCategories, allMyCercles, SessionStorage, USERFIREBASEPROFILEKEY, $mdToast) {
         $scope.allLiens = liens;
         $scope.categories = allCategories;
         $scope.cercles = allMyCercles;
@@ -28,11 +30,6 @@
             $scope.selectedCercle = allMyCercles[0];
         }
 
-        /**LiensService.findTopTenLinks()
-            .then(function(topten){
-                $scope.topten = topten;
-            });*/
-
 
         $scope.changeCercle = function (cercle) {
             $scope.selectedCercle =cercle;
@@ -43,21 +40,21 @@
 
         };
 
-        $scope.moveToBiblio = function (lien) {
-            //On d�place le lien dans biblio
-            //puis on le supprime dans la liste des articles du cercle
+        $scope.showURL= function(lien) {
+            window.open(lien.url, '_blank');
+        }
+
+        $scope.moveToBiblio= function(lien) {
             lien.private = "biblio";
             LiensService.createLinkForUser(lien, SessionStorage.get(USERFIREBASEPROFILEKEY).uid);
-            //Mis en commentaire : on dublique simplement le lien !
-            /**.then(function() {
-                    $scope.allLiens.$remove(lien);
-                })*/
+            commonsService.showSuccessToast($mdToast, "Le lien a été ajouté à votre biblio");
         };
 
         $scope.like = function (lien) {
             //Bloque tous les liens !
             //$scope.isLikeDisabled = true;
             LiensService.addLike($scope.selectedCercle.$id, lien.$id);
+            commonsService.showSuccessToast($mdToast, "'Like' pris en compte");
         };
 
     }

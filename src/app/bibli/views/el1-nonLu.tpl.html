@@ -1,26 +1,33 @@
 <section class="canevas">
 
-    <div ng-hide="liens[0]" class="errormessage warning" translate="list.empty"></div>
+    <div ng-hide="liens[0]" class="errormessage warning">
+        <div style="text-align: center">
+            <h4>{{'list.empty' | translate}}</h4>
+        </div>
+    </div>
 
     <md-list>
         <md-list-item ng-repeat="lien in liens | orderBy: title" >
-            <!-- img ng-src="{{item.face}}?{{$index}}" class="md-avatar" alt="{{item.who}}" / -->
-            <div flex="auto" class="md-list-item-text" layout="column">
-                <h2>{{lien.title}}</h2>
-                {{lien.teasing}}
-                <div layout="row">
-                    <div hide show-gt-sm flex="3"><ng-md-icon icon="link"></ng-md-icon></div>
-                    <div flex><a ng-href="{{lien.url}}" target="_blank">{{lien.url}}</a></div>
+            <md-card flex="auto" layout="row">
+                <!-- img ng-src="{{item.face}}?{{$index}}" class="md-avatar" alt="{{item.who}}" / -->
+                <div flex="auto" class="md-list-item-text lien-card" layout="column" ng-click="showURL(lien)">
+                    <h3>{{lien.title}}</h3>
+                    {{lien.teasing}}
+                    <br/><br/>
+                    <div layout="row">
+                        <div hide show-gt-sm flex="3"><ng-md-icon icon="link"></ng-md-icon></div>
+                        <div class="lien" flex>{{lien.url}}</div>
+                    </div>
                 </div>
-            </div>
-            <div flex="initial" layout="row">
-                <md-button class="md-icon-button" ng-click="deleteLink(lien)" aria-label="{{'view.action.delete' | translate}}"><ng-md-icon icon="delete" size="30" ></ng-md-icon> <md-tooltip>{{'view.action.delete' | translate}}</md-tooltip></md-button>
-                <md-button class="md-icon-button" ng-click="moveTo(lien)" aria-label="{{'view.action.read' | translate}}"><ng-md-icon icon="archive" size="30" ></ng-md-icon> <md-tooltip>{{'view.action.read' | translate}}</md-tooltip></md-button>
-                <md-button class="md-icon-button" ng-show="canShare()" ng-click="share($event, lien)" flex-sm="100" flex-md="100" flex-gt-md="auto" aria-label="{{'view.action.share' | translate}}"><ng-md-icon icon="share" size="30" ></ng-md-icon> <md-tooltip>{{'view.action.share' | translate}}</md-tooltip></md-button>
-            </div>
+                <div flex="initial" layout="row" layout-align="center center">
+                    <md-button class="md-fab md-primary md-icon-button" ng-click="deleteLink(lien)" aria-label="{{'view.action.delete' | translate}}"><ng-md-icon icon="delete" size="30" ></ng-md-icon> <md-tooltip>{{'view.action.delete' | translate}}</md-tooltip></md-button>
+                    <md-button class="md-fab md-primary md-icon-button" ng-click="moveTo(lien)" aria-label="{{'view.action.read' | translate}}"><ng-md-icon icon="archive" size="30" ></ng-md-icon> <md-tooltip>{{'view.action.read' | translate}}</md-tooltip></md-button>
+                    <md-button class="md-fab md-primary md-icon-button" ng-show="canShare()" ng-click="share($event, lien)" flex-sm="100" flex-md="100" flex-gt-md="auto" aria-label="{{'view.action.share' | translate}}"><ng-md-icon icon="share" size="30" ></ng-md-icon> <md-tooltip>{{'view.action.share' | translate}}</md-tooltip></md-button>
+                </div>
+            </md-card>
         </md-list-item>
     </md-list>
-    <div hide-gt-sm layout="row" layout-align="center center" flex>
+    <!--div hide-gt-sm layout="row" layout-align="center center" flex>
         <md-checkbox ng-model="customFullscreen" aria-label="Fullscreen Custom Dialog">Custom Dialog Fullscreen</md-checkbox>
-    </div>
+    </div -->
 </section>

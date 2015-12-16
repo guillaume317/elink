@@ -21,31 +21,58 @@
 
     <body ng-app="elinkApp" ng-controller="toolbarController" ng-cloak>
 
-        <div layout="row"  ng-show="userAuthenticated"  ng-cloak>
+        <md-toolbar class="md-primary">
+            <div  class="md-toolbar-tools">
+                <div flex="auto" style="-webkit-transition-duration: 0ms; transition-duration: 0ms; -webkit-transform: translate3d(0px, 0px, 0px);">eLink</div>
+                <div flex="initial" class="rigth">
+
+                    <div layout="row" ng-cloak ng-show="!userAuthenticated" layout-align="center center">
+                        <md-button aria-label="{{'menu.login' | translate}}" class=" md-primary md-icon-button" ui-sref="showLogin">
+                            <md-tooltip>{{'menu.login' | translate}}</md-tooltip>
+                            <ng-md-icon icon="login" size="20"></ng-md-icon>
+                        </md-button>
+                    </div>
+
+                    <div layout="row"  ng-cloak>
+                            {{userEmail}}
+                            <md-button aria-label="{{'menu.nouveauLien' | translate}}" ng-show="userAuthenticated" class="md-icon-button" ng-click="nouveauLien($event)">
+                                <md-tooltip>{{'menu.nouveauLien' | translate}}</md-tooltip>
+                                <ng-md-icon icon="playlist_add" size="20"></ng-md-icon>
+                            </md-button>
+                            <md-button aria-label="{{'menu.admin' | translate}}" class="md-icon-button" ng-show="userAuthenticated" ng-click="admin()">
+                                <md-tooltip>{{'menu.admin' | translate}}</md-tooltip>
+                                <ng-md-icon icon="settings_applications" size="20"></ng-md-icon>
+                            </md-button>
+                            <md-button aria-label="{{'menu.logout' | translate}}" class="md-icon-button" ng-show="userAuthenticated" ng-click="logout()">
+                                <md-tooltip>{{'menu.logout' | translate}}</md-tooltip>
+                                <ng-md-icon icon="logout" size="20"></ng-md-icon>
+                            </md-button>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </md-toolbar>
+
+        <div layout="row" ng-cloak ng-show="!userAuthenticated">
+            <md-button aria-label="{{'menu.login' | translate}}" class="md-icon-button" ui-sref="showLogin">
+                <md-tooltip>{{'menu.login' | translate}}</md-tooltip>
+                <ng-md-icon icon="login" size="30"></ng-md-icon>
+            </md-button>
+        </div>
+
+        <div layout="row"  ng-cloak>
             <div flex="auto">
-                <md-tabs md-stretch-tabs
+                <md-tabs md-stretch-tabs ng-show="userAuthenticated"
                          md-selected="selectedIndex">
                     <md-tab aria-label="{{'tab.nonLu' | translate}}" >{{'tab.nonLu' | translate}}</md-tab>
                     <md-tab aria-label="{{'tab.biblio' | translate}}">{{'tab.biblio' | translate}}</md-tab>
                     <md-tab aria-label="{{'tab.cercle' | translate}}">{{'tab.cercle' | translate}}</md-tab>
+                    <md-tab aria-label="{{'tab.icdc' | translate}}">{{'tab.icdc' | translate}}</md-tab>
                 </md-tabs>
             </div>
-            <div flex="initial" ng-cloak>
-                {{userEmail}}
-                <md-button aria-label="{{'menu.nouveauLien' | translate}}" ng-show="userAuthenticated" class="md-icon-button" ng-click="nouveauLien($event)">
-                    <md-tooltip>{{'menu.nouveauLien' | translate}}</md-tooltip>
-                    <ng-md-icon icon="playlist_add" size="30"></ng-md-icon>
-                </md-button>
-                <md-button aria-label="{{'menu.admin' | translate}}" class="md-icon-button" ng-show="userAuthenticated" ng-click="admin()">
-                    <md-tooltip>{{'menu.admin' | translate}}</md-tooltip>
-                    <ng-md-icon icon="settings_applications" size="30"></ng-md-icon>
-                </md-button>
-                <md-button aria-label="{{'menu.logout' | translate}}" class="md-icon-button" ng-show="userAuthenticated" ng-click="logout()">
-                    <md-tooltip>{{'menu.logout' | translate}}</md-tooltip>
-                    <ng-md-icon icon="logout" size="30"></ng-md-icon>
-                </md-button>
 
-            </div>
         </div>
 
         <md-content flex id="content" ui-view="main"  ng-cloak>
@@ -110,6 +137,9 @@
         <!-- onglet cercle -->
         <script src="./src/app/cercle/el1-module-cercle.js"></script>
         <script src="./src/app/cercle/views/el1-controller-view.js"></script>
+        <!-- onglet icdc -->
+        <script src="./src/app/icdc/el1-module-icdc.js"></script>
+        <script src="./src/app/icdc/views/el1-controller-view.js"></script>
         <!-- gestion cercle/equipe -->
         <script src="src/app/gestionCercles/el1-module-gestion.js"></script>
         <script src="src/app/gestionCercles/views/el1-controller-gestion.js"></script>

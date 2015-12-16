@@ -37,10 +37,47 @@ section.canevas {
     cursor: pointer;
     overflow: hidden;
 }
+/*
+ng-md-icon {
+    fill: #b71c1c
+}
+*/
+ng-md-icon {
+    fill: white
+}
+
+.lien {
+    text-decoration: underline;
+    color: #31708f;
+}
+
+.lien-card {
+    cursor: pointer;
+}
+
+.alt-color {
+    background-color: #e0e0e0;
+}
+
+md-toolbar.alt-color {
+    background-color: #e0e0e0;
+}
+
+md-list-item md-card {
+    padding: 15px;
+    background-color: #e0e0e0;
+}
+
+md-toolbar {
+    padding-top: 20px;
+    padding-left: 40px;
+}
 
 ng-md-icon {
-    fill: green
+    fill: white
 }
+
+
 
 div.login {
     padding-left: 15em;

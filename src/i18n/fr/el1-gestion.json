@@ -5,7 +5,8 @@
         "action" : {
             "nouveauCercle" : "Nouveau cercle",
             "invite" : "Lancer",
-            "accept" : "Accepter"
+            "accept" : "Accepter",
+            "inviteTool" : "Lancer une invitation"
         },
 
         "error" : {

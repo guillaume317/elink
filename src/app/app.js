@@ -1,5 +1,5 @@
 angular
-    .module('elinkApp', ['ngCookies', 'ngMessages', 'LocalStorageModule', 'ngMaterial', 'ngMdIcons',  'ui.router.state', 'ui.router', 'pascalprecht.translate', 'firebase', 'el1.model', 'el1.services.commun', 'el1.accueil', 'el1.bibli', 'el1.login', 'el1.cercle', 'el1.gestion', 'el1.error'])
+    .module('elinkApp', ['ngCookies', 'ngMessages', 'LocalStorageModule', 'ngMaterial', 'ngMdIcons',  'ui.router.state', 'ui.router', 'pascalprecht.translate', 'firebase', 'el1.model', 'el1.services.commun', 'el1.accueil', 'el1.icdc', 'el1.bibli', 'el1.login', 'el1.cercle', 'el1.gestion', 'el1.error'])
 
         .run(function ($rootScope, $location, $window, $http, $state, $translate, $cookies, Env, AuthService, UserModel, localStorageService, UsersManager) {
 
@@ -91,11 +91,18 @@ angular
         $translateProvider.useCookieStorage();
         $translateProvider.useSanitizeValueStrategy('escaped');
         $translateProvider.addInterpolation('$translateMessageFormatInterpolation');
-        
+
+
+        // Extend the red theme with a few different colors
+        var neonRedMap = $mdThemingProvider.extendPalette('red', {
+            '500': 'b71c1c'
+        });
+        // Register the new color palette map with the name <code>neonRed</code>
+        $mdThemingProvider.definePalette('neonRed', neonRedMap);
+
+
         $mdThemingProvider.theme('default')
-            .primaryPalette('teal')
-            .accentPalette('red')
-            .warnPalette('red');
+            .primaryPalette('neonRed');
         //.backgroundPalette('');
 
         $mdDateLocaleProvider.parseDate = function(dateString) {

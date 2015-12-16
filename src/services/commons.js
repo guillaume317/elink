@@ -44,7 +44,15 @@
                 }// for
 
                 return result;
-            } // flatModel
+            }, // flatModel
+            showSuccessToast : function($mdToast, message) {
+                $mdToast.show(
+                    $mdToast.simple()
+                        .textContent(message)
+                        .position('bottom right')
+                        .hideDelay(3000)
+                );
+            }
         };
 
     }

@@ -34,6 +34,9 @@
                 case 2:
                     $state.go("cercle-view");
                     break;
+                case 3:
+                    $state.go("icdc-view");
+                    break;
             }
         });
 

@@ -2,21 +2,35 @@
 
     <div class="login">
         <md-card>
-            <md-toolbar>
-                <div class="md-toolbar-tools">
-                    <h2><span translate="login.title"></span></h2>
+
+            <div layout="row" style="padding: 50px 20px 50px 20px">
+                <div flex="30" style="padding: 10px">
+                    <img src="./src/img/arton.jpg">
                 </div>
-            </md-toolbar>
+                <div flex="initial">
+                    eLink reprend le principe des applications de partage d'informations et participe à une veille collaborative.
+                    Vous pouvez partager et échanger les meilleurs articles du web et lire leur contenu sur desktop ou mobile.
+
+                    <br/><br/>
+                    Techniquement, eLink repose sur notre socle AngularJs (desktop) et Ionic (Android). Les données sont stockées
+                    dans une base noSQL temps réel, le navigateur est également synchronisé en temps réel grâce aux web sockets.<br/>
+                    La charte repose sur material design et supporte uniquement les navigateur récents (Chrome, Firefox, IE11).
+
+                    <br/><br/>
+                    Pour utiliser l'application, vous devez vous authentifier par Google via OAuth, cela nécessite la création d'un
+                    <a href="https://accounts.google.com/login?hl=fr" target="_blank">compte</a> si vous n'en avez pas.
+                </div>
+            </div>
 
             <div class="alert alert-danger" ng-show="authenticationError">
                 <strong translate="login.failed.strong"></strong> <span translate="login.failed.msg"></span>
             </div>
 
-            <form role="form" layout="column">
-                   <div layout="row" layout-sm="column" layout-align="center center" layout-wrap>
-                    <md-button class="md-raised md-primary" translate="login.validate" ng-click="login()"></md-button>
-                </div>
-            </form>
+            <div layout="row" layout-sm="column" layout-align="space-around center" layout-wrap style="margin-bottom: 15px">
+                <img flex="30" src="./src/img/android.jpg">
+                <md-button flex="50" class="md-raised md-primary"  ng-click="login()">Connectez-vous avec votre compte Google</md-button>
+            </div>
+
         </md-card>
     </div>
 

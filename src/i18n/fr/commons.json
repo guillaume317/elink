@@ -32,7 +32,8 @@
     "tab" : {
       "nonLu" : "Non lu",
       "biblio" : "Biblio",
-      "cercle" : "Cercle"
+      "cercle" : "Cercle",
+      "icdc" : "ICDC"
     },
     "menu" : {
         "title" : "Menu",
