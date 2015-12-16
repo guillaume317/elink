@@ -79,14 +79,15 @@ app.factory("LikeManager", ['$q',
             topTen : function() {
 
                 var deferred = $q.defer();
+                var likeRef = new Firebase("https://elink.firebaseio.com/cercleLinksLike");
 
                 //A noter : le tri est ascendant. On prend donc les 10 derniers
-                likeRef.orderByValue().limitToLast(10).on("value", function(snapshot) {
+                likeRef.orderByValue().limitToLast(5).on("value", function(snapshot) {
 
                     // key[0] : nom du cercle
                     // key[1] : identifiant de l'article'
                     snapshot.forEach(function(data) {
-                        console.log(data.key() + " has " + data.val() + "like(s)");
+                        console.log(data.key() + " has " + data.val() + " like(s)");
                     });
 
                 });
