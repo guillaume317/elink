@@ -9,20 +9,25 @@
     <md-list>
         <md-list-item ng-repeat="lien in liens | orderBy: title" >
             <md-card flex="auto" layout="row">
-                <!-- img ng-src="{{item.face}}?{{$index}}" class="md-avatar" alt="{{item.who}}" / -->
-                <div flex="auto" class="md-list-item-text lien-card" layout="column" ng-click="showURL(lien)">
-                    <h3>{{lien.title}}</h3>
-                    {{lien.teasing}}
-                    <br/><br/>
-                    <div layout="row">
-                        <div hide show-gt-sm flex="3"><ng-md-icon icon="link"></ng-md-icon></div>
-                        <div class="lien" flex>{{lien.url}}</div>
+                <div flex="80" class="md-list-item-text lien-card" layout="row" ng-click="showURL(lien)">
+
+                    <pict hide-md hide-sm hide-xs></pict>
+
+                    <div flex-gt-md="85" flex="50" layout="column">
+
+                        <h3>{{lien.title.substring(0, 100)}}</h3>
+                        {{lien.teasing}}
+                        <br/><br/>
+                        <div layout="row">
+                            <div hide show-gt-sm flex="3"><ng-md-icon icon="link"></ng-md-icon></div>
+                            <div class="lien" flex>{{lien.url.substring(0, 100)}}</div>
+                        </div>
                     </div>
                 </div>
-                <div flex="initial" layout="row" layout-align="center center">
+                <div flex-gt-md="20" flex="50" layout="row" layout-align="center center">
                     <md-button class="md-fab md-primary md-icon-button" ng-click="deleteLink(lien)" aria-label="{{'view.action.delete' | translate}}"><ng-md-icon icon="delete" size="30" ></ng-md-icon> <md-tooltip>{{'view.action.delete' | translate}}</md-tooltip></md-button>
                     <md-button class="md-fab md-primary md-icon-button" ng-click="moveTo(lien)" aria-label="{{'view.action.read' | translate}}"><ng-md-icon icon="archive" size="30" ></ng-md-icon> <md-tooltip>{{'view.action.read' | translate}}</md-tooltip></md-button>
-                    <md-button class="md-fab md-primary md-icon-button" ng-show="canShare()" ng-click="share($event, lien)" flex-sm="100" flex-md="100" flex-gt-md="auto" aria-label="{{'view.action.share' | translate}}"><ng-md-icon icon="share" size="30" ></ng-md-icon> <md-tooltip>{{'view.action.share' | translate}}</md-tooltip></md-button>
+                    <md-button class="md-fab md-primary md-icon-button" ng-show="canShare()" ng-click="share($event, lien)" aria-label="{{'view.action.share' | translate}}"><ng-md-icon icon="share" size="30" ></ng-md-icon> <md-tooltip>{{'view.action.share' | translate}}</md-tooltip></md-button>
                 </div>
             </md-card>
         </md-list-item>

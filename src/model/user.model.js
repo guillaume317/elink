@@ -1,6 +1,4 @@
 
-angular.module('el1.model', []);
-
 angular.module('el1.model')
 
     .factory('UserModel', function () {

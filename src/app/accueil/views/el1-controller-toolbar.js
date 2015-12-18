@@ -83,7 +83,7 @@
     /**
      */
     function NouveauLienController($log, $scope, LiensService, SessionStorage, USERFIREBASEPROFILEKEY, $mdDialog, $mdMedia) {
-        $scope.currentLien= {"url" : "", private: true};
+        $scope.currentLien= {"url" : "http://", private: true};
         $scope.alerts = [];
 
         $scope.hide = function() {

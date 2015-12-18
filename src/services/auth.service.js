@@ -1,8 +1,6 @@
 (function(){
     'use strict';
 
-    angular.module('el1.services.commun',[ 'el1.model' ] );
-
     angular.module('el1.services.commun')
         .service('AuthService', ['FBURL', AuthService]);
 

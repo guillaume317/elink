@@ -24,7 +24,6 @@
         $scope.cercles = allMyCercles;
         $scope.filter = {"category": ""};
         $scope.isLikeDisabled = false;
-        //$scope.topten = [];
 
         if (allMyCercles[0]) {
             $scope.selectedCercle = allMyCercles[0];

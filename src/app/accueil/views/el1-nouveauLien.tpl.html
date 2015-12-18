@@ -17,9 +17,16 @@
                 <div layout="row">
                     <md-input-container flex="grow">
                         <label translate="view.Lien.url"></label>
-                        <input name="url" type="url" ng-model="currentLien.url" required size="">
+                        <input name="url" type="url" ng-model="currentLien.url" required autofocus>
                         <div role="alert"><span class="error" ng-show="currentForm.url.$error.required"> <span translate="view.error.required"/></span></div>
                         <div role="alert"><span class="error" ng-show="currentForm.url.$error.url"> <span translate="view.error.url"/></span></div>
+                    </md-input-container>
+                </div>
+
+                <div layout="row">
+                    <md-input-container flex="grow">
+                        <label translate="view.Lien.title"></label>
+                        <input name="text" type="text" ng-model="currentLien.title" maxlength="100">
                     </md-input-container>
                 </div>
 

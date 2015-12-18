@@ -2,16 +2,41 @@
     'use strict';
 
     angular.module('el1.services.commun')
-        .service('LiensService', ['$q', 'FBURL', '$firebaseArray', '$firebaseObject', 'Env', LiensService]);
+        .service('LiensService', ['$log', '$q', 'FBURL', '$firebaseArray', '$firebaseObject', 'Env', LiensService]);
 
     /**
      *
      */
-    function LiensService($q, FBURL, $firebaseArray, $firebaseObject, Env){
+    function LiensService($log, $q, FBURL, $firebaseArray, $firebaseObject, Env){
 
         var ref = new Firebase(FBURL);
 
         return {
+
+            findLinkScreen : function(lien) {
+                var deferred = $q.defer();
+                // le screenschot est enregistre au moment de la creation du lien
+                // puis on ne change pas cette clef, même si le lien se déplace (lu/nonLu) ou se duplique (partage)
+                // dans ces derniers cas, l'id original du lien est stocké dans keyOri
+                // afin de retrouver la clef du screenshot
+                var screenKey= lien.$id;
+                if (lien.keyOri) {
+                    screenKey= lien.keyOri;
+                }
+
+                var linkScreens = ref.child('linkScreens').child(screenKey);
+                linkScreens.once('value', function(snap) {
+                    var payload = snap.val();
+                    if (payload != null) {
+                        deferred.resolve(payload);
+                    } else {
+                        $log.info("image introuvable")
+                        deferred.resolve(undefined);
+                    }
+                });
+
+                return deferred.promise;
+            },
 
             createLinkForUser : function(lien, username) {
                 var deferred = $q.defer();
@@ -27,11 +52,37 @@
                     .then(function () {
                         var newLink = {};
                         newLink.createdOn = Firebase.ServerValue.TIMESTAMP;
-                        newLink.title = lien.title ? lien.title : "Titre à récupérer";
-                        newLink.teasing = lien.teasing ? lien.teasing : "Teasing à récupérer !";
+                        newLink.title = lien.title ? lien.title : lien.url.substring(0, 100);
                         newLink.url = lien.url;
-                        userLinks.$add(newLink);
+                        newLink.teasing = "";
+
+                        userLinks.$add(newLink).then(function (addMe) {
+                            $log.info("push image " +addMe.key())
+
+                            $.ajax({
+                                url: 'https://www.googleapis.com/pagespeedonline/v1/runPagespeed?url=' + newLink.url + '&screenshot=true',
+                                context: this,
+                                type: 'GET',
+                                dataType: 'json',
+                                success: function(data) {
+                                    if (data && data.screenshot && data.screenshot.data) {
+                                        var linkScreens = ref.child('linkScreens').child(addMe.key());
+                                        var filePayload = data.screenshot.data.replace(/_/g, '/').replace(/-/g, '+');
+                                        linkScreens.set(filePayload, function () {
+                                            //$log.info("recup ok");
+                                        });
+                                    } else
+                                        $log.info("erreur lors de la recuperation du screen");
+                                }
+                            });
+
+                        }).catch(function (error) {
+                            // pas tres grave, on se passera de l'image
+                            $log.info("erreur lors de la recuperation du screen");
+                        });
+                        // on attends pas le resultat de la recup du screen
                         deferred.resolve(newLink);
+
                     }).catch(function (error) {
                         deferred.reject(error);
                     });
@@ -178,68 +229,55 @@
 
             /* toutes les catgories */
             findCategories: function () {
-                if ( Env.isMock() ) {
+                // features/feature-01-oauth
+                var deferred = $q.defer();
 
-                    /**var array = ['devops', 'java', 'veille', 'divers'];
-                    return array;*/
-                    // features/feature-01-oauth
-                    var deferred = $q.defer();
+                //TODO Once() function
+                var ref = new Firebase(Env.backendfirebase() + "categories");
+                var categories = $firebaseArray(ref);
 
-                    //TODO Once() function
-                    var ref = new Firebase(Env.backendfirebase() + "categories");
-                    var categories = $firebaseArray(ref);
+                categories.$loaded().then(
+                    function() {
+                        //obtention d'un tableau d'objet
+                        // [Object
+                        //      $id: "0"
+                        //      $priority: null
+                        //      $value: "devops"
+                        //On itere sur ce dernier pour recuperer la liste
+                        var array = [];
+                        categories.forEach(function(obj) {
+                            array.push(obj.$value);
+                        })
+                        deferred.resolve(array);
+                    }).catch(function(error) {
+                        deferred.reject(error);
+                    });
 
-                    categories.$loaded().then(
-                        function() {
-                            //obtention d'un tableau d'objet
-                            // [Object
-                            //      $id: "0"
-                            //      $priority: null
-                            //      $value: "devops"
-                            //On it�re sur ce dernier pour r�cup�rer la liste
-                            var array = [];
-                            categories.forEach(function(obj) {
-                                array.push(obj.$value);
-                            })
-                            deferred.resolve(array);
-                        }).catch(function(error) {
-                            deferred.reject(error);
-                        });
-
-                    return deferred.promise;
-                }
-
+                return deferred.promise;
             },
             /* toutes les cercles auquels le user appaertient */
             findMyCercles: function () {
-                if ( Env.isMock() ) {
+                // features/feature-01-oauth
+                var deferred = $q.defer();
 
-                    /**
-                    var array = ['CCMT', 'DevOps'];
-                    return array;*/
-                    // features/feature-01-oauth
-                    var deferred = $q.defer();
+                var ref = new Firebase(Env.backendfirebase() + "cercles");
+                var cercles = $firebaseArray(ref);
+                cercles.$loaded().then(
+                    function() {
+                        //obtention d'un tableau d'objet
+                        // [Object
+                        //      $id: "CCMT"
+                        //On itere sur ce dernier pour recuperer la liste
+                        var array = [];
+                        cercles.forEach(function(obj) {
+                            array.push(obj.$id);
+                        })
+                        deferred.resolve(array);
+                    }).catch(function(error) {
+                        deferred.reject(error);
+                    });
 
-                    var ref = new Firebase(Env.backendfirebase() + "cercles");
-                    var cercles = $firebaseArray(ref);
-                    cercles.$loaded().then(
-                        function() {
-                            //obtention d'un tableau d'objet
-                            // [Object
-                            //      $id: "CCMT"
-                            //On it�re sur ce dernier pour r�cup�rer la liste
-                            var array = [];
-                            cercles.forEach(function(obj) {
-                                array.push(obj.$id);
-                            })
-                            deferred.resolve(array);
-                        }).catch(function(error) {
-                            deferred.reject(error);
-                        });
-
-                    return deferred.promise;
-                }
-
+                return deferred.promise;
             }
 
         };

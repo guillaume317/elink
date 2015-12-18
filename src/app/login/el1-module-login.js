@@ -1,4 +1,4 @@
-angular.module('el1.login', ['el1.services.commun', 'el1.model', 'LocalStorageModule'])
+angular.module('el1.login', ['el1.services.commun', 'el1.model', 'ngCookies'])
     .config(function ($stateProvider) {
 
         $stateProvider.state('showLogin', {
@@ -21,7 +21,7 @@ angular.module('el1.login', ['el1.services.commun', 'el1.model', 'LocalStorageMo
 
 
     })
-    .controller('LoginCtrl', function($q, $state, $rootScope, $scope, $log, FBURL, $firebaseAuth, GOOGLEAUTHSCOPE, UsersManager) {
+    .controller('LoginCtrl', function($q, $state, $rootScope, $scope, $log, FBURL, $cookieStore, $firebaseAuth, GOOGLEAUTHSCOPE, UsersManager) {
 
         var ref = new Firebase(FBURL);
         var auth = $firebaseAuth(ref);
@@ -71,6 +71,7 @@ angular.module('el1.login', ['el1.services.commun', 'el1.model', 'LocalStorageMo
                 })
                 .then(function(userConnected) {
                     $rootScope.userAuthenticated = true;
+                    $cookieStore.put('user', userConnected);
                     $rootScope.userEmail = userConnected.email;
                     return $q.when(userConnected);
                 })

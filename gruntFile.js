@@ -11,7 +11,6 @@ module.exports = function ( grunt ) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('icdc-grunt-gitflow');
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-ngmin');
     grunt.loadNpmTasks('grunt-html2js');
@@ -445,7 +444,7 @@ module.exports = function ( grunt ) {
      */
     grunt.registerTask( 'package', [
         'clean:build', 'clean:static_dist_dir',
-        'copy:build_app_js', 'copy:build_jsunit', 'copy:build_mock_json',
+        'copy:build_app_js',
         'html2js',
         'ngmin',
         'concat',

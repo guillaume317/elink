@@ -3,7 +3,7 @@
     angular
         .module('el1.icdc')
         .controller('icdcController', [
-            '$log', '$scope',
+            '$log', '$scope', '$mdToast', 'commonsService',
             'LiensService',
             'allCategories',
             'topTen',
@@ -15,7 +15,7 @@
 
     /**
      */
-    function ICDCController($log, $scope, LiensService, allCategories, topTen, SessionStorage, USERFIREBASEPROFILEKEY) {
+    function ICDCController($log, $scope, $mdToast, commonsService, LiensService, allCategories, topTen, SessionStorage, USERFIREBASEPROFILEKEY) {
         $scope.topTen= topTen;
         $scope.categories= allCategories;
         $scope.filter= { "category" : "" };
@@ -28,6 +28,7 @@
             //On duplique le lien dans biblio
             lien.private = "biblio";
             LiensService.createLinkForUser(lien, SessionStorage.get(USERFIREBASEPROFILEKEY).uid);
+            commonsService.showSuccessToast($mdToast, "Le lien a été ajouté à votre biblio");
         };
 
     }

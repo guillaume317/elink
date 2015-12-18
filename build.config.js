@@ -45,13 +45,25 @@ module.exports = {
     // declaration des fichiers js et css des librairies à importer dans la page principale
     vendor_files: {
         js: [
+            './bower_components/jquery/dist/jquery.min.js',
             './bower_components/angular/angular.js',
+            './bower_components/angular-animate/angular-animate.js',
             './bower_components/angular-aria/angular-aria.js',
+            './bower_components/angular-cookies/angular-cookies.js',
+            './bower_components/angular-local-storage/dist/angular-local-storage.js',
+            './bower_components/angular-messages/angular-messages.js',
+            './bower_components/angular-translate/angular-translate.js',
+            './bower_components/messageformat/messageformat.js',
+            './bower_components/messageformat/locale/fr.js',
+            './bower_components/angular-translate-interpolation-messageformat/angular-translate-interpolation-messageformat.js',
+            './bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js',
+            './bower_components/angular-translate-loader-partial/angular-translate-loader-partial.js',
             './bower_components/angular-ui-router/release/angular-ui-router.js',
-            './bower_components/angular-bootstrap/ui-bootstrap.min.js',
-            './bower_components/ng-browser-info/dist/ngBrowserInfo.js',
-            './bower_components/ngstorage/ngStorage.js',
-            './bower_components/angular-fwk-dei/angular-fwk-dei.js'
+            './bower_components/firebase/firebase.js',
+            './bower_components/angularfire/dist/angularfire.js',
+            './bower_components/angular-material/angular-material.js',
+            './bower_components/angular-material-icons/angular-material-icons.js'
+
         ],
         css: [
             './bower_components/bootstrap/dist/css/bootstrap.css'

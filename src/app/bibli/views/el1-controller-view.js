@@ -46,6 +46,10 @@
         };
 
         $scope.moveTo = function(lien) {
+            // on conserve l'id original du lien dans keyOri
+            if (!lien.keyOri)
+                lien.keyOri= lien.$id;
+
             //cas des liens non lus
             if ($state.current.name === 'bibli-nonLu') {
                 //Ajout dans biblio
@@ -101,6 +105,12 @@
         $scope.cercles= allMyCercles;
         $scope.linkToShare = linkToShare;
 
+        // on trace l'id original
+        var keyOri;
+        if (linkToShare.keyOri)
+            keyOri= linkToShare.keyOri;
+        else keyOri= linkToShare.$id;
+
         //Initialisation du lien à basculer vers un cercle donné pour une catégorie donnée
         $scope.shareLink=  {
             title: linkToShare.title,
@@ -108,7 +118,8 @@
             createdOn : linkToShare.createdOn,
             url : linkToShare.url,
             cercleName: allMyCercles[0].$id,
-            category: allCategories[0]
+            category: allCategories[0],
+            keyOri: keyOri
         }
 
         $scope.hide = function() {

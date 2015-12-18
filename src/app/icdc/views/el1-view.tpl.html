@@ -23,24 +23,29 @@
 
     <md-list>
         <md-list-item ng-repeat="like in topTen | filter:filter.category | orderBy: '-cpt' " >
-            <md-card flex="auto" layout="row">
-                <div flex="auto" class="md-list-item-text lien-card" ng-click="showURL(like.link)" layout="column">
-                    <h3>{{like.link.title}}</h3>
-                    {{like.link.teasing}}
-                    <br/><br/>
-                    <div  layout="row">
-                        <span flex="15"><b>{{like.link.category}}</b></span>
-                        <span flex="40" layout="row"><div hide show-gt-sm flex="3"><ng-md-icon icon="account_child"></ng-md-icon></div>{{like.link.sharedBy}}</span>
-                        <div flex="40" layout="row">
-                            <div hide show-gt-sm flex="3"><ng-md-icon icon="link"></ng-md-icon></div>
-                            <div class="lien" flex>{{like.link.url}}</div>
-                        </div>
-                        <div>
-                            <ng-md-icon icon="thumb_up" size="15" ></ng-md-icon> {{like.cpt}}
+            <md-card flex="auto" layout="row" ng-init="lien= like.link">
+                <div flex="80" class="md-list-item-text lien-card" ng-click="showURL(like.link)" layout="row">
+
+                    <pict hide-md hide-sm hide-xs></pict>
+
+                    <div flex-gt-md="85" flex="50" layout="column">
+                        <h3>{{like.link.title}}</h3>
+                        {{like.link.teasing}}
+                        <br/><br/>
+                        <div  layout="row">
+                            <span flex="15"><b>{{like.link.category}}</b></span>
+                            <span flex="30" layout="row"><div hide show-gt-sm flex="3"><ng-md-icon icon="account_child"></ng-md-icon></div>{{like.link.sharedBy}}</span>
+                            <div flex="40" layout="row">
+                                <div hide show-gt-sm flex="3"><ng-md-icon icon="link"></ng-md-icon></div>
+                                <div class="lien" flex>{{like.link.url.substring(0, 30)}}</div>
+                            </div>
+                            <div>
+                                <ng-md-icon icon="thumb_up" size="15" ></ng-md-icon> {{like.cpt}}
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div flex="initial" layout="row" layout-align="center center">
+                <div flex-gt-md="20" flex="50" layout="row" layout-align="center center">
                     <md-button class="md-fab md-primary md-icon-button" ng-click="moveToBiblio(like.link)" aria-label="{{'view.action.read' | translate}}"><ng-md-icon icon="archive" size="30" ></ng-md-icon> <md-tooltip>{{'view.action.read' | translate}}</md-tooltip></md-button>
                 </div>
             </md-card>

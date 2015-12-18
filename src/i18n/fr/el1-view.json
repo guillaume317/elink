@@ -36,6 +36,7 @@
     },
 
     "Lien" : {
+      "title" : "Titre",
       "nonLu" : "Non lu",
       "biblio" : "Biblio",
       "lu" : "lu",

@@ -1,7 +1,11 @@
-angular
-    .module('elinkApp', ['ngCookies', 'ngMessages', 'LocalStorageModule', 'ngMaterial', 'ngMdIcons',  'ui.router.state', 'ui.router', 'pascalprecht.translate', 'firebase', 'el1.model', 'el1.services.commun', 'el1.accueil', 'el1.icdc', 'el1.bibli', 'el1.login', 'el1.cercle', 'el1.gestion', 'el1.error'])
+angular.module('el1.model', []);
 
-        .run(function ($rootScope, $location, $window, $http, $state, $translate, $cookies, Env, AuthService, UserModel, localStorageService, UsersManager) {
+angular.module('el1.services.commun',[ 'el1.model' ] );
+
+angular
+    .module('elinkApp', ['ngCookies', 'ngMessages', 'ngMaterial', 'ngMdIcons',  'ui.router.state', 'ui.router', 'pascalprecht.translate', 'firebase', 'el1.model', 'el1.services.commun', 'el1.accueil', 'el1.icdc', 'el1.bibli', 'el1.login', 'el1.cercle', 'el1.gestion', 'el1.error'])
+
+        .run(function ($rootScope, $location, $window, $http, $state, $translate, Env, AuthService, UserModel, $cookieStore, UsersManager) {
 
             $rootScope.userAuthenticated = false;
 
@@ -50,14 +54,17 @@ angular
             });
 
 
-            // En cas de F5, stocker / replace les élements entre les scopes et le localstorage
+            // En cas de F5, stocker / replace les élements entre les scopes
             if (Env.isMock()) {
                 var mockUser= new UserModel();
                 $rootScope.user = mockUser;
                 Env.setUser(mockUser);
             } else {
-                $rootScope.user = localStorageService.get('user');
-                Env.setUser(localStorageService.get('user'));
+                $rootScope.user =$cookieStore.get('user');
+                if ($rootScope.user) {
+                    $rootScope.userAuthenticated = true;
+                    Env.setUser($rootScope.user);
+                }
             }
 
     })
@@ -74,7 +81,7 @@ angular
 
         // URL par défaut
 
-        $urlRouterProvider.otherwise('/home');
+        $urlRouterProvider.otherwise('/showLogin');
 
         // positionnement des intercepteurs
 

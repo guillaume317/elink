@@ -28,7 +28,7 @@ angular.module('el1.model')
                 return _user !== null && _user.admin;
             },
             isMock: function() {
-                return true;
+                return false;
             }
         };
 
