@@ -10,7 +10,7 @@
             BibliController
             ])
         .controller('shareController', [
-            '$log', '$scope',
+            '$log', '$scope', '$cookieStore',
             'GestionService',
             'linkToShare', 'allCategories', 'allMyCercles', 'listeLiens',
             'SessionStorage', 'USERFIREBASEPROFILEKEY',
@@ -99,7 +99,7 @@
 
     /**
      */
-    function ShareController($log, $scope, GestionService, linkToShare, allCategories, allMyCercles, listeLiens, SessionStorage, USERFIREBASEPROFILEKEY, $mdDialog, $mdMedia ) {
+    function ShareController($log, $scope, $cookieStore, GestionService, linkToShare, allCategories, allMyCercles, listeLiens, SessionStorage, USERFIREBASEPROFILEKEY, $mdDialog, $mdMedia ) {
 
         $scope.categories= allCategories;
         $scope.cercles= allMyCercles;
@@ -111,14 +111,23 @@
             keyOri= linkToShare.keyOri;
         else keyOri= linkToShare.$id;
 
+        var cercleName= allMyCercles[0].$id;
+        var category= allCategories[0];
+        if ($cookieStore.get('selectedCategory')) {
+            category= $cookieStore.get('selectedCategory');
+        }
+        if ($cookieStore.get('selectedCercle')) {
+            cercleName=$cookieStore.get('selectedCercle').$id;
+        }
+
         //Initialisation du lien à basculer vers un cercle donné pour une catégorie donnée
         $scope.shareLink=  {
             title: linkToShare.title,
             teasing: linkToShare.teasing,
             createdOn : linkToShare.createdOn,
             url : linkToShare.url,
-            cercleName: allMyCercles[0].$id,
-            category: allCategories[0],
+            cercleName: cercleName,
+            category: category,
             keyOri: keyOri
         }
 

@@ -3,7 +3,7 @@
     angular
         .module('el1.cercle')
         .controller('cercleController', [
-            '$log', '$scope',
+            '$log', '$scope', '$cookieStore',
             'commonsService',
             'LiensService',
             'liens',
@@ -18,17 +18,31 @@
 
     /**
      */
-    function CercleController($log, $scope, commonsService, LiensService, liens, allCategories, allMyCercles, SessionStorage, USERFIREBASEPROFILEKEY, $mdToast) {
+    function CercleController($log, $scope, $cookieStore, commonsService, LiensService, liens, allCategories, allMyCercles, SessionStorage, USERFIREBASEPROFILEKEY, $mdToast) {
         $scope.allLiens = liens;
         $scope.categories = allCategories;
         $scope.cercles = allMyCercles;
         $scope.filter = {"category": ""};
         $scope.isLikeDisabled = false;
 
-        if (allMyCercles[0]) {
+        if ($cookieStore.get('selectedCategory')) {
+            $scope.filter.category= $cookieStore.get('selectedCategory');
+        } else {
+            $scope.filter.category = "";
+        }
+
+        if ($cookieStore.get('selectedCercle')) {
+            $log.info("cercle cercle " + $cookieStore.get('selectedCercle')  + $cookieStore.get('selectedCercle').$id)
+            $scope.selectedCercle= $cookieStore.get('selectedCercle');
+        } else if (allMyCercles[0]) {
             $scope.selectedCercle = allMyCercles[0];
         }
 
+        $scope.changeCategory = function (category) {
+            $log.info("change " + category );
+            $scope.filter.category= category;
+            $cookieStore.put('selectedCategory', category);
+        }
 
         $scope.changeCercle = function (cercle) {
             $scope.selectedCercle =cercle;
@@ -36,7 +50,7 @@
                 .then(function (links) {
                     $scope.allLiens = links;
                 });
-
+            $cookieStore.put('selectedCercle', cercle);
         };
 
         $scope.showURL= function(lien) {

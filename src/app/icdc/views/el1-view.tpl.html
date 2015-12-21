@@ -4,8 +4,8 @@
         <md-input-container>
             <label >Catégorie</label>
             <md-select ng-model="filter.category">
-                <md-option value="">{{'view.cercle.toutes' | translate}}</md-option>
-                <md-option ng-repeat="cat in categories" value="{{cat}}">
+                <md-option value="" ng-click="changeCategory('')">{{'view.cercle.toutes' | translate}}</md-option>
+                <md-option ng-repeat="cat in categories" value="{{cat}}" ng-click="changeCategory(cat)">
                     {{cat}}
                 </md-option>
             </md-select>

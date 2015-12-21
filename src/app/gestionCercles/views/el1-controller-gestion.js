@@ -3,7 +3,7 @@
     angular
         .module('el1.gestion')
         .controller('gestionController', [
-            '$log', '$scope', '$q', '$timeout',
+            '$log', '$scope', '$cookieStore', '$q', '$timeout',
             '$translate',
             'GestionService', 'UsersManager',  'commonsService',
             'mesInvitations', 'personnesDuCercle', 'mesCercles', 'usersEmail',
@@ -21,7 +21,7 @@
 
     /**
      */
-    function GestionController($log, $scope, $q, $timeout, $translate, GestionService, UsersManager, commonsService, mesInvitations, personnesDuCercle, mesCercles, usersEmail, SessionStorage, USERFIREBASEPROFILEKEY, $mdDialog, $mdMedia, $mdToast ) {
+    function GestionController($log, $scope, $cookieStore, $q, $timeout, $translate, GestionService, UsersManager, commonsService, mesInvitations, personnesDuCercle, mesCercles, usersEmail, SessionStorage, USERFIREBASEPROFILEKEY, $mdDialog, $mdMedia, $mdToast ) {
 
         $scope.mesInvitations= mesInvitations;
         $scope.personnes= personnesDuCercle;
@@ -34,6 +34,13 @@
         $scope.selectedItem = null;
         $scope.invited = [];
         $scope.invitedDisplay = "";
+
+        if ($cookieStore.get('selectedCercle')) {
+            $log.info("gestion cercle " + $cookieStore.get('selectedCercle') + $cookieStore.get('selectedCercle').$id )
+            $scope.selectedCercle= $cookieStore.get('selectedCercle');
+        } else if (mesCercles[0]) {
+            $scope.selectedCercle = mesCercles[0];
+        }
 
         //Functions utilisée par le select box autocomplete
         function querySearch (query) {
@@ -64,10 +71,6 @@
             } else {
                 $scope.selectedUser= null;
             }*/
-        }
-
-        if (mesCercles[0]) {
-            $scope.selectedCercle = mesCercles[0];
         }
 
         $scope.nouveauCercle = function(ev) {
@@ -107,6 +110,8 @@
                 .catch(function (error) {
                     $log.error(error);
                 })
+
+            $cookieStore.put('selectedCercle', cercleSelected);
         }
 
         $scope.inviter= function(invite) {

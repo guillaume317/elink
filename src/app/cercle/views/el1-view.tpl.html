@@ -4,8 +4,8 @@
         <md-input-container>
             <label >Catégorie</label>
             <md-select ng-model="filter.category">
-                <md-option value="">{{'view.cercle.toutes' | translate}}</md-option>
-                <md-option ng-repeat="cat in categories" value="{{cat}}">
+                <md-option value="" ng-click="changeCategory('')">{{'view.cercle.toutes' | translate}}</md-option>
+                <md-option  ng-repeat="cat in categories" value="{{cat}}" ng-click="changeCategory(cat)">
                     {{cat}}
                 </md-option>
             </md-select>
@@ -13,6 +13,7 @@
 
         <md-input-container>
             <label >Mes cercles</label>
+            <label ng-hide="cercles[0]">{{'gestion.message.empty' | translate}}</label>
             <md-select ng-model="selectedCercle" ng-change="changeCercle()"
                        ng-model-options="{trackBy: '$value.$id'}">
                 <md-option ng-value="cercl" ng-click="changeCercle(cercl)" ng-repeat="cercl in cercles">
@@ -45,7 +46,7 @@
                             <span flex="40" layout="row"><div hide show-gt-sm flex="3"><ng-md-icon icon="account_child"></ng-md-icon></div>{{lien.sharedBy}}</span>
                             <div flex="40" layout="row">
                                 <div hide show-gt-sm flex="3"><ng-md-icon icon="link"></ng-md-icon></div>
-                                <div class="lien" flex>{{lien.url.substring(0, 60)}}</div>
+                                <div class="lien" flex>{{lien.url.substring(0, 30)}}<md-tooltip>{{lien.url}}</md-tooltip></div>
                             </div>
                             <div>
                                  <ng-md-icon icon="thumb_up" size="15" ></ng-md-icon> {{like.cpt}}
