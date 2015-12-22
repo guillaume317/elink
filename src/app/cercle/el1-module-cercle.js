@@ -13,23 +13,28 @@
             views: {
                 "main": {
                     controller: 'cercleController',
-                    templateUrl: 'src/app/cercle/views/el1-view.tpl.html',
+                    templateProvider: function($templateCache){
+                        return $templateCache.get('app/cercle/views/el1-view.tpl.html');
+                    },
+                    //templateUrl: 'src/app/cercle/views/el1-view.tpl.html',
                     resolve: {
                         liens : ['$log', '$cookieStore', 'LiensService', 'UsersManager', 'SessionStorage', 'USERFIREBASEPROFILEKEY',
                             function($log, $cookieStore, LiensService, UsersManager, SessionStorage, USERFIREBASEPROFILEKEY) {
                                 if ($cookieStore.get('selectedCercle')) {
-                                    var cercleName= $cookieStore.get('selectedCercle');
-                                    return LiensService.findLinksByCerlceName(cercleName.$id);
-                                } else {
-                                    return UsersManager.findCerclesByUser(SessionStorage.get(USERFIREBASEPROFILEKEY).uid)
-                                        .then(function (cercles) {
-                                            if (cercles.length > 0) {
-                                                return LiensService.findLinksByCerlceName(cercles[0].$id);
-                                            } else {
-                                                return [];
-                                            }
-                                        });
+                                    var cercleName = $cookieStore.get('selectedCercle');
+                                    if (cercleName.$id)
+                                        return LiensService.findLinksByCerlceName(cercleName.$id);
                                 }
+
+                                // sinon on prend le premier
+                                return UsersManager.findCerclesByUser(SessionStorage.get(USERFIREBASEPROFILEKEY).uid)
+                                    .then(function (cercles) {
+                                        if (cercles.length > 0) {
+                                            return LiensService.findLinksByCerlceName(cercles[0].$id);
+                                        } else {
+                                            return [];
+                                        }
+                                    });
                         }],
                         allMyCercles :  ['UsersManager', 'SessionStorage', 'USERFIREBASEPROFILEKEY',
                             function(UsersManager, SessionStorage, USERFIREBASEPROFILEKEY) {

@@ -36,7 +36,6 @@
         $scope.invitedDisplay = "";
 
         if ($cookieStore.get('selectedCercle')) {
-            $log.info("gestion cercle " + $cookieStore.get('selectedCercle') + $cookieStore.get('selectedCercle').$id )
             $scope.selectedCercle= $cookieStore.get('selectedCercle');
         } else if (mesCercles[0]) {
             $scope.selectedCercle = mesCercles[0];
@@ -85,8 +84,9 @@
                 clickOutsideToClose:true,
                 fullscreen: $mdMedia('sm') && $scope.customFullscreen
             })
-                .then(function(buttonNumber) {
+                .then(function(cercle) {
                     // valider
+                    $scope.changeCercle(cercle)
                 }, function() {
                     // cancel
                 });
@@ -124,11 +124,10 @@
                         $scope.invitedDisplay = $scope.invited.join(', ');
                         $scope.selectedItem = null;
                         $scope.searchText = null;
-                        $log.info($translate.instant('gestion.message.inviter'));
                     })
                     .catch(function (error) {
-                    $log.error(error);
-                })
+                        $log.error(error);
+                    })
             }
         }
 
@@ -140,7 +139,6 @@
             // ==> Recharcher la liste ?
             GestionService.accepterInvitation(SessionStorage.get(USERFIREBASEPROFILEKEY).uid, invitation.$id)
                 .then(function(cerclename) {
-                    $log.info($translate.instant('gestion.message.accepterInvitation'));
                     commonsService.showSuccessToast($mdToast, $translate.instant('gestion.message.accepterInvitation'));
                 })
                 .catch(function(error) {
@@ -166,8 +164,9 @@
         $scope.validate= function(currentCercle) {
             if ($scope.currentForm.$valid) {
                 GestionService.createCercle(currentCercle).then(
-                    function (cerclename) {
-                        $mdDialog.hide("0");
+                    function (ref) {
+                        currentCercle.$id= ref;
+                        $mdDialog.hide(currentCercle);
                     }, function (error) {
                         $log.error(error);
                     }

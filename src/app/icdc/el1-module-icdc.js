@@ -13,7 +13,10 @@
             views: {
                 "main": {
                     controller: 'icdcController',
-                    templateUrl: 'src/app/icdc/views/el1-view.tpl.html',
+                    templateProvider: function($templateCache){
+                        return $templateCache.get('app/icdc/views/el1-view.tpl.html');
+                    },
+                    //templateUrl: 'src/app/icdc/views/el1-view.tpl.html',
                     resolve: {
                         allCategories : ['LiensService', function(LiensService) {
                             return LiensService.findCategories();

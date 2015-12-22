@@ -180,8 +180,8 @@
                 userCercles.$loaded()
                     .then(function () {
                         userCercles.$value = true;
-                        userCercles.$save().then(function () {
-                            deferred.resolve(cerclename);
+                        userCercles.$save().then(function (ref) {
+                            deferred.resolve(ref.key());
                         })
                     }).catch(function (error) {
                         deferred.reject(error);

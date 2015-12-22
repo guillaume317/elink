@@ -11,7 +11,10 @@
             views: {
                 "main": {
                     controller: 'bibliController',
-                    templateUrl: 'src/app/bibli/views/el1-nonLu.tpl.html',
+                    templateProvider: function($templateCache){
+                        return $templateCache.get('app/bibli/views/el1-nonLu.tpl.html');
+                    },
+                    //templateUrl: 'src/app/bibli/views/el1-nonLu.tpl.html',
                     resolve: {
                         liensNonLus : ['$rootScope', 'LiensService', 'SessionStorage', 'USERFIREBASEPROFILEKEY',
                             function($rootScope, LiensService,  SessionStorage ,USERFIREBASEPROFILEKEY) {
@@ -51,7 +54,10 @@
             views: {
                 "main": {
                     controller: 'bibliController',
-                    templateUrl: 'src/app/bibli/views/el1-lu.tpl.html',
+                    templateProvider: function($templateCache){
+                        return $templateCache.get('app/bibli/views/el1-lu.tpl.html');
+                    },
+                    //templateUrl: 'src/app/bibli/views/el1-lu.tpl.html',
                     resolve: {
                         liensNonLus : ['$rootScope', 'LiensService', 'SessionStorage', 'USERFIREBASEPROFILEKEY',
                             function($rootScope, LiensService,  SessionStorage ,USERFIREBASEPROFILEKEY) {

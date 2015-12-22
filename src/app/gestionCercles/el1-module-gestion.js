@@ -13,7 +13,10 @@
             views: {
                 "main": {
                     controller: 'gestionController',
-                    templateUrl: 'src/app/gestionCercles/views/el1-gestion.tpl.html',
+                    templateProvider: function($templateCache){
+                        return $templateCache.get('app/gestionCercles/views/el1-gestion.tpl.html');
+                    },
+                    //templateUrl: 'src/app/gestionCercles/views/el1-gestion.tpl.html',
                     resolve: {
                         personnesDuCercle : ['GestionService', 'UsersManager', 'SessionStorage', 'USERFIREBASEPROFILEKEY',
                             function(GestionService, UsersManager, SessionStorage, USERFIREBASEPROFILEKEY) {

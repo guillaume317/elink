@@ -6,7 +6,7 @@ angular.module('elinkApp')
             restrict: 'E',
 
             template:
-				'<div flex="15"><img src="{{ imgsrc }}" data-url="{{ lien.url }}" style="width:450%" ></div>'
+				'<div flex="15"><img ng-src="{{ imgsrc }}" style="width:450%" ></div>'
 			,
 
 			controller: ['$scope', 'LiensService',

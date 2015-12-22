@@ -7,7 +7,10 @@ angular.module('el1.login', ['el1.services.commun', 'el1.model', 'ngCookies'])
             views: {
                 "main": {
                     controller: 'LoginCtrl',
-                    templateUrl: 'src/app/login/login.tpl.html'
+                    templateProvider: function($templateCache){
+                        return $templateCache.get('app/login/login.tpl.html');
+                    }
+                    //templateUrl: 'src/app/login/login.tpl.html'
                 }
             },
             resolve: {

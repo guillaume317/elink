@@ -3,7 +3,7 @@ angular.module('el1.model', []);
 angular.module('el1.services.commun',[ 'el1.model' ] );
 
 angular
-    .module('elinkApp', ['ngCookies', 'ngMessages', 'ngMaterial', 'ngMdIcons',  'ui.router.state', 'ui.router', 'pascalprecht.translate', 'firebase', 'el1.model', 'el1.services.commun', 'el1.accueil', 'el1.icdc', 'el1.bibli', 'el1.login', 'el1.cercle', 'el1.gestion', 'el1.error'])
+    .module('elinkApp', ['templates-app', 'ngCookies', 'ngMessages', 'ngMaterial', 'ngMdIcons',  'ui.router.state', 'ui.router', 'pascalprecht.translate', 'firebase', 'el1.model', 'el1.services.commun', 'el1.accueil', 'el1.icdc', 'el1.bibli', 'el1.login', 'el1.cercle', 'el1.gestion', 'el1.error'])
 
         .run(function ($rootScope, $location, $window, $http, $state, $translate, Env, AuthService, UserModel, $cookieStore, UsersManager) {
             $rootScope.images= [];

@@ -4,7 +4,7 @@
         .module('el1.bibli')
         .controller('bibliController', [
             '$log', '$scope', '$state',
-            'commonsService',
+            'commonsService', 'LiensService',
             'liensNonLus', 'liensLus', 'allMyCercles', 'allCategories',
             '$mdDialog', '$mdMedia', '$mdToast',
             BibliController
@@ -20,7 +20,7 @@
 
     /**
      */
-    function BibliController($log, $scope, $state, commonsService, liensNonLus, liensLus, allMyCercles, allCategories, $mdDialog, $mdMedia, $mdToast ) {
+    function BibliController($log, $scope, $state, commonsService, LiensService, liensNonLus, liensLus, allMyCercles, allCategories, $mdDialog, $mdMedia, $mdToast ) {
 
         $scope.customFullscreen = $mdMedia('sm');
         //liens : liens non lus ou biblio selon le cas
@@ -41,6 +41,7 @@
 
         $scope.deleteLink= function(lien) {
             // $scope.liens est synchronisé avec la base
+            LiensService.deleteLinkScreen(lien);
             $scope.liens.$remove(lien);
             commonsService.showSuccessToast($mdToast, "Le lien a été supprimé");
         };

@@ -7,7 +7,10 @@ angular.module('el1.accueil', [  'ngMaterial', 'ui.router', 'el1.services.commun
             views: {
                 "main": {
                     controller: 'toolbarController',
-                    templateUrl: 'src/app/accueil/accueil.tpl.html'
+                    templateProvider: function($templateCache){
+                        return $templateCache.get('app/accueil/accueil.tpl.html');
+                    },
+                    //templateUrl: 'src/app/accueil/accueil.tpl.html'
                 }
             },
             resolve: {

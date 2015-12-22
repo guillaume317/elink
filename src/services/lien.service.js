@@ -84,6 +84,20 @@
                 return deferred.promise;
             },
 
+            deleteLinkScreen: function(link){
+                var linkScreenId;
+                if (link.keyOri)
+                    linkScreenId= link.keyOri;
+                else
+                    linkScreenId= link.$id;
+
+                if (linkScreenId) {
+                    var linkScreenRef = ref.child('linkScreens').child(linkScreenId);
+                    if (linkScreenRef)
+                        linkScreenRef.remove();
+                }
+            },
+
             createLinkForUser : function(lien, username) {
                 var deferred = $q.defer();
 

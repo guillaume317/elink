@@ -12,7 +12,10 @@ angular.module('el1.accueil', [  'ngMaterial', 'ui.router', 'el1.services.commun
             views: {
                 "main": {
                     controller: 'toolbarController',
-                    templateUrl: 'src/app/accueil/accueil.tpl.html'
+                    templateProvider: function($templateCache){
+                        return $templateCache.get('app/accueil/accueil.tpl.html');
+                    },
+                    //templateUrl: 'src/app/accueil/accueil.tpl.html'
                 }
             },
             resolve: {
@@ -156,7 +159,7 @@ angular.module('el1.model', []);
 angular.module('el1.services.commun',[ 'el1.model' ] );
 
 angular
-    .module('elinkApp', ['ngCookies', 'ngMessages', 'ngMaterial', 'ngMdIcons',  'ui.router.state', 'ui.router', 'pascalprecht.translate', 'firebase', 'el1.model', 'el1.services.commun', 'el1.accueil', 'el1.icdc', 'el1.bibli', 'el1.login', 'el1.cercle', 'el1.gestion', 'el1.error'])
+    .module('elinkApp', ['templates-app', 'ngCookies', 'ngMessages', 'ngMaterial', 'ngMdIcons',  'ui.router.state', 'ui.router', 'pascalprecht.translate', 'firebase', 'el1.model', 'el1.services.commun', 'el1.accueil', 'el1.icdc', 'el1.bibli', 'el1.login', 'el1.cercle', 'el1.gestion', 'el1.error'])
 
         .run(function ($rootScope, $location, $window, $http, $state, $translate, Env, AuthService, UserModel, $cookieStore, UsersManager) {
             $rootScope.images= [];
@@ -294,7 +297,10 @@ angular
             views: {
                 "main": {
                     controller: 'bibliController',
-                    templateUrl: 'src/app/bibli/views/el1-nonLu.tpl.html',
+                    templateProvider: function($templateCache){
+                        return $templateCache.get('app/bibli/views/el1-nonLu.tpl.html');
+                    },
+                    //templateUrl: 'src/app/bibli/views/el1-nonLu.tpl.html',
                     resolve: {
                         liensNonLus : ['$rootScope', 'LiensService', 'SessionStorage', 'USERFIREBASEPROFILEKEY',
                             function($rootScope, LiensService,  SessionStorage ,USERFIREBASEPROFILEKEY) {
@@ -334,7 +340,10 @@ angular
             views: {
                 "main": {
                     controller: 'bibliController',
-                    templateUrl: 'src/app/bibli/views/el1-lu.tpl.html',
+                    templateProvider: function($templateCache){
+                        return $templateCache.get('app/bibli/views/el1-lu.tpl.html');
+                    },
+                    //templateUrl: 'src/app/bibli/views/el1-lu.tpl.html',
                     resolve: {
                         liensNonLus : ['$rootScope', 'LiensService', 'SessionStorage', 'USERFIREBASEPROFILEKEY',
                             function($rootScope, LiensService,  SessionStorage ,USERFIREBASEPROFILEKEY) {
@@ -379,7 +388,7 @@ angular
         .module('el1.bibli')
         .controller('bibliController', [
             '$log', '$scope', '$state',
-            'commonsService',
+            'commonsService', 'LiensService',
             'liensNonLus', 'liensLus', 'allMyCercles', 'allCategories',
             '$mdDialog', '$mdMedia', '$mdToast',
             BibliController
@@ -395,7 +404,7 @@ angular
 
     /**
      */
-    function BibliController($log, $scope, $state, commonsService, liensNonLus, liensLus, allMyCercles, allCategories, $mdDialog, $mdMedia, $mdToast ) {
+    function BibliController($log, $scope, $state, commonsService, LiensService, liensNonLus, liensLus, allMyCercles, allCategories, $mdDialog, $mdMedia, $mdToast ) {
 
         $scope.customFullscreen = $mdMedia('sm');
         //liens : liens non lus ou biblio selon le cas
@@ -416,6 +425,7 @@ angular
 
         $scope.deleteLink= function(lien) {
             // $scope.liens est synchronisé avec la base
+            LiensService.deleteLinkScreen(lien);
             $scope.liens.$remove(lien);
             commonsService.showSuccessToast($mdToast, "Le lien a été supprimé");
         };
@@ -548,23 +558,28 @@ angular
             views: {
                 "main": {
                     controller: 'cercleController',
-                    templateUrl: 'src/app/cercle/views/el1-view.tpl.html',
+                    templateProvider: function($templateCache){
+                        return $templateCache.get('app/cercle/views/el1-view.tpl.html');
+                    },
+                    //templateUrl: 'src/app/cercle/views/el1-view.tpl.html',
                     resolve: {
                         liens : ['$log', '$cookieStore', 'LiensService', 'UsersManager', 'SessionStorage', 'USERFIREBASEPROFILEKEY',
                             function($log, $cookieStore, LiensService, UsersManager, SessionStorage, USERFIREBASEPROFILEKEY) {
                                 if ($cookieStore.get('selectedCercle')) {
-                                    var cercleName= $cookieStore.get('selectedCercle');
-                                    return LiensService.findLinksByCerlceName(cercleName.$id);
-                                } else {
-                                    return UsersManager.findCerclesByUser(SessionStorage.get(USERFIREBASEPROFILEKEY).uid)
-                                        .then(function (cercles) {
-                                            if (cercles.length > 0) {
-                                                return LiensService.findLinksByCerlceName(cercles[0].$id);
-                                            } else {
-                                                return [];
-                                            }
-                                        });
+                                    var cercleName = $cookieStore.get('selectedCercle');
+                                    if (cercleName.$id)
+                                        return LiensService.findLinksByCerlceName(cercleName.$id);
                                 }
+
+                                // sinon on prend le premier
+                                return UsersManager.findCerclesByUser(SessionStorage.get(USERFIREBASEPROFILEKEY).uid)
+                                    .then(function (cercles) {
+                                        if (cercles.length > 0) {
+                                            return LiensService.findLinksByCerlceName(cercles[0].$id);
+                                        } else {
+                                            return [];
+                                        }
+                                    });
                         }],
                         allMyCercles :  ['UsersManager', 'SessionStorage', 'USERFIREBASEPROFILEKEY',
                             function(UsersManager, SessionStorage, USERFIREBASEPROFILEKEY) {
@@ -668,23 +683,6 @@ angular
 
     }
 })();
-$(window).load(function() {
-
-    $('img[data-url]').each(function() {
-        $.ajax({
-        	url: 'https://www.googleapis.com/pagespeedonline/v1/runPagespeed?url=' + $(this).data('url') + '&screenshot=true',
-        	context: this,
-        	type: 'GET',
-        	dataType: 'json',
-        	success: function(data) {
-           		data = data.screenshot.data.replace(/_/g, '/').replace(/-/g, '+');
-            	$(this).attr('src', 'data:image/jpeg;base64,' + data);
-            }
-        });
-    });
-
-
-});
 angular.module('el1.error', [ 'ui.router' ])
     .config(function ($stateProvider) {
 
@@ -717,7 +715,10 @@ angular.module('el1.error', [ 'ui.router' ])
             views: {
                 "main": {
                     controller: 'gestionController',
-                    templateUrl: 'src/app/gestionCercles/views/el1-gestion.tpl.html',
+                    templateProvider: function($templateCache){
+                        return $templateCache.get('app/gestionCercles/views/el1-gestion.tpl.html');
+                    },
+                    //templateUrl: 'src/app/gestionCercles/views/el1-gestion.tpl.html',
                     resolve: {
                         personnesDuCercle : ['GestionService', 'UsersManager', 'SessionStorage', 'USERFIREBASEPROFILEKEY',
                             function(GestionService, UsersManager, SessionStorage, USERFIREBASEPROFILEKEY) {
@@ -810,7 +811,6 @@ angular.module('el1.error', [ 'ui.router' ])
         $scope.invitedDisplay = "";
 
         if ($cookieStore.get('selectedCercle')) {
-            $log.info("gestion cercle " + $cookieStore.get('selectedCercle') + $cookieStore.get('selectedCercle').$id )
             $scope.selectedCercle= $cookieStore.get('selectedCercle');
         } else if (mesCercles[0]) {
             $scope.selectedCercle = mesCercles[0];
@@ -859,8 +859,9 @@ angular.module('el1.error', [ 'ui.router' ])
                 clickOutsideToClose:true,
                 fullscreen: $mdMedia('sm') && $scope.customFullscreen
             })
-                .then(function(buttonNumber) {
+                .then(function(cercle) {
                     // valider
+                    $scope.changeCercle(cercle)
                 }, function() {
                     // cancel
                 });
@@ -898,11 +899,10 @@ angular.module('el1.error', [ 'ui.router' ])
                         $scope.invitedDisplay = $scope.invited.join(', ');
                         $scope.selectedItem = null;
                         $scope.searchText = null;
-                        $log.info($translate.instant('gestion.message.inviter'));
                     })
                     .catch(function (error) {
-                    $log.error(error);
-                })
+                        $log.error(error);
+                    })
             }
         }
 
@@ -914,7 +914,6 @@ angular.module('el1.error', [ 'ui.router' ])
             // ==> Recharcher la liste ?
             GestionService.accepterInvitation(SessionStorage.get(USERFIREBASEPROFILEKEY).uid, invitation.$id)
                 .then(function(cerclename) {
-                    $log.info($translate.instant('gestion.message.accepterInvitation'));
                     commonsService.showSuccessToast($mdToast, $translate.instant('gestion.message.accepterInvitation'));
                 })
                 .catch(function(error) {
@@ -940,8 +939,9 @@ angular.module('el1.error', [ 'ui.router' ])
         $scope.validate= function(currentCercle) {
             if ($scope.currentForm.$valid) {
                 GestionService.createCercle(currentCercle).then(
-                    function (cerclename) {
-                        $mdDialog.hide("0");
+                    function (ref) {
+                        currentCercle.$id= ref;
+                        $mdDialog.hide(currentCercle);
                     }, function (error) {
                         $log.error(error);
                     }
@@ -973,7 +973,10 @@ angular.module('el1.error', [ 'ui.router' ])
             views: {
                 "main": {
                     controller: 'icdcController',
-                    templateUrl: 'src/app/icdc/views/el1-view.tpl.html',
+                    templateProvider: function($templateCache){
+                        return $templateCache.get('app/icdc/views/el1-view.tpl.html');
+                    },
+                    //templateUrl: 'src/app/icdc/views/el1-view.tpl.html',
                     resolve: {
                         allCategories : ['LiensService', function(LiensService) {
                             return LiensService.findCategories();
@@ -1059,7 +1062,10 @@ angular.module('el1.login', ['el1.services.commun', 'el1.model', 'ngCookies'])
             views: {
                 "main": {
                     controller: 'LoginCtrl',
-                    templateUrl: 'src/app/login/login.tpl.html'
+                    templateProvider: function($templateCache){
+                        return $templateCache.get('app/login/login.tpl.html');
+                    }
+                    //templateUrl: 'src/app/login/login.tpl.html'
                 }
             },
             resolve: {
@@ -1355,7 +1361,7 @@ angular.module('elinkApp')
             restrict: 'E',
 
             template:
-				'<div flex="15"><img src="{{ imgsrc }}" data-url="{{ lien.url }}" style="width:450%" ></div>'
+				'<div flex="15"><img ng-src="{{ imgsrc }}" style="width:450%" ></div>'
 			,
 
 			controller: ['$scope', 'LiensService',
@@ -1994,6 +2000,20 @@ Date.prototype.formatDate = function (format) {
                 return deferred.promise;
             },
 
+            deleteLinkScreen: function(link){
+                var linkScreenId;
+                if (link.keyOri)
+                    linkScreenId= link.keyOri;
+                else
+                    linkScreenId= link.$id;
+
+                if (linkScreenId) {
+                    var linkScreenRef = ref.child('linkScreens').child(linkScreenId);
+                    if (linkScreenRef)
+                        linkScreenRef.remove();
+                }
+            },
+
             createLinkForUser : function(lien, username) {
                 var deferred = $q.defer();
 
@@ -2403,8 +2423,8 @@ Date.prototype.formatDate = function (format) {
                 userCercles.$loaded()
                     .then(function () {
                         userCercles.$value = true;
-                        userCercles.$save().then(function () {
-                            deferred.resolve(cerclename);
+                        userCercles.$save().then(function (ref) {
+                            deferred.resolve(ref.key());
                         })
                     }).catch(function (error) {
                         deferred.reject(error);

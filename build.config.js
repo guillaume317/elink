@@ -45,7 +45,6 @@ module.exports = {
     // declaration des fichiers js et css des librairies à importer dans la page principale
     vendor_files: {
         js: [
-            './bower_components/jquery/dist/jquery.min.js',
             './bower_components/angular/angular.js',
             './bower_components/angular-animate/angular-animate.js',
             './bower_components/angular-aria/angular-aria.js',
