@@ -84,7 +84,7 @@ angular.module("app/bibli/views/el1-lu.tpl.html", []).run(["$templateCache", fun
     "                        <br/><br/>\n" +
     "                        <div layout=\"row\">\n" +
     "                            <div hide show-gt-sm  flex=\"3\"><ng-md-icon icon=\"link\"></ng-md-icon></div>\n" +
-    "                            <div class=\"lien\" flex>{{lien.url}}</div>\n" +
+    "                            <div class=\"lien\" flex>{{lien.url.substring(0, 60)}}<md-tooltip>{{lien.url}}</md-tooltip></div>\n" +
     "                        </div>\n" +
     "                    </div>\n" +
     "                </div>\n" +
@@ -125,7 +125,7 @@ angular.module("app/bibli/views/el1-nonLu.tpl.html", []).run(["$templateCache", 
     "                        <br/><br/>\n" +
     "                        <div layout=\"row\">\n" +
     "                            <div hide show-gt-sm flex=\"3\"><ng-md-icon icon=\"link\"></ng-md-icon></div>\n" +
-    "                            <div class=\"lien\" flex>{{lien.url.substring(0, 100)}}</div>\n" +
+    "                            <div class=\"lien\" flex>{{lien.url.substring(0, 60)}}<md-tooltip>{{lien.url}}</md-tooltip></div>\n" +
     "                        </div>\n" +
     "                    </div>\n" +
     "                </div>\n" +
@@ -137,9 +137,7 @@ angular.module("app/bibli/views/el1-nonLu.tpl.html", []).run(["$templateCache", 
     "            </md-card>\n" +
     "        </md-list-item>\n" +
     "    </md-list>\n" +
-    "    <!--div hide-gt-sm layout=\"row\" layout-align=\"center center\" flex>\n" +
-    "        <md-checkbox ng-model=\"customFullscreen\" aria-label=\"Fullscreen Custom Dialog\">Custom Dialog Fullscreen</md-checkbox>\n" +
-    "    </div -->\n" +
+    "\n" +
     "</section>\n" +
     "");
 }]);
@@ -198,18 +196,6 @@ angular.module("app/bibli/views/el1-share.tpl.html", []).run(["$templateCache", 
     "                    </md-input-container>\n" +
     "                </div>\n" +
     "\n" +
-    "                <!-- si on a le temps de faire le partage global\n" +
-    "                <div layout=\"row\">\n" +
-    "                    <label translate=\"view.Lien.private\" flex=\"10\"></label>\n" +
-    "                    <md-input-container flex>\n" +
-    "                        <md-radio-group ng-model=\"currentLien.private\" layout=\"row\" layout-align=\"start center\">\n" +
-    "                            <md-radio-button value=\"true\"> <span translate=\"boolean.true\"/> </md-radio-button>\n" +
-    "                            <md-radio-button value=\"false\"> <span translate=\"boolean.false\"/> </md-radio-button>\n" +
-    "                        </md-radio-group>\n" +
-    "                    </md-input-container>\n" +
-    "                </div>\n" +
-    "                -->\n" +
-    "\n" +
     "            </div>\n" +
     "        </md-dialog-content>\n" +
     "\n" +
@@ -233,8 +219,8 @@ angular.module("app/cercle/views/el1-view.tpl.html", []).run(["$templateCache", 
     "        <md-input-container>\n" +
     "            <label >Catégorie</label>\n" +
     "            <md-select ng-model=\"filter.category\">\n" +
-    "                <md-option value=\"\">{{'view.cercle.toutes' | translate}}</md-option>\n" +
-    "                <md-option ng-repeat=\"cat in categories\" value=\"{{cat}}\">\n" +
+    "                <md-option value=\"\" ng-click=\"changeCategory('')\">{{'view.cercle.toutes' | translate}}</md-option>\n" +
+    "                <md-option  ng-repeat=\"cat in categories\" value=\"{{cat}}\" ng-click=\"changeCategory(cat)\">\n" +
     "                    {{cat}}\n" +
     "                </md-option>\n" +
     "            </md-select>\n" +
@@ -242,6 +228,7 @@ angular.module("app/cercle/views/el1-view.tpl.html", []).run(["$templateCache", 
     "\n" +
     "        <md-input-container>\n" +
     "            <label >Mes cercles</label>\n" +
+    "            <label ng-hide=\"cercles[0]\">{{'gestion.message.empty' | translate}}</label>\n" +
     "            <md-select ng-model=\"selectedCercle\" ng-change=\"changeCercle()\"\n" +
     "                       ng-model-options=\"{trackBy: '$value.$id'}\">\n" +
     "                <md-option ng-value=\"cercl\" ng-click=\"changeCercle(cercl)\" ng-repeat=\"cercl in cercles\">\n" +
@@ -274,7 +261,7 @@ angular.module("app/cercle/views/el1-view.tpl.html", []).run(["$templateCache", 
     "                            <span flex=\"40\" layout=\"row\"><div hide show-gt-sm flex=\"3\"><ng-md-icon icon=\"account_child\"></ng-md-icon></div>{{lien.sharedBy}}</span>\n" +
     "                            <div flex=\"40\" layout=\"row\">\n" +
     "                                <div hide show-gt-sm flex=\"3\"><ng-md-icon icon=\"link\"></ng-md-icon></div>\n" +
-    "                                <div class=\"lien\" flex>{{lien.url.substring(0, 60)}}</div>\n" +
+    "                                <div class=\"lien\" flex>{{lien.url.substring(0, 30)}}<md-tooltip>{{lien.url}}</md-tooltip></div>\n" +
     "                            </div>\n" +
     "                            <div>\n" +
     "                                 <ng-md-icon icon=\"thumb_up\" size=\"15\" ></ng-md-icon> {{like.cpt}}\n" +
@@ -470,8 +457,8 @@ angular.module("app/icdc/views/el1-view.tpl.html", []).run(["$templateCache", fu
     "        <md-input-container>\n" +
     "            <label >Catégorie</label>\n" +
     "            <md-select ng-model=\"filter.category\">\n" +
-    "                <md-option value=\"\">{{'view.cercle.toutes' | translate}}</md-option>\n" +
-    "                <md-option ng-repeat=\"cat in categories\" value=\"{{cat}}\">\n" +
+    "                <md-option value=\"\" ng-click=\"changeCategory('')\">{{'view.cercle.toutes' | translate}}</md-option>\n" +
+    "                <md-option ng-repeat=\"cat in categories\" value=\"{{cat}}\" ng-click=\"changeCategory(cat)\">\n" +
     "                    {{cat}}\n" +
     "                </md-option>\n" +
     "            </md-select>\n" +

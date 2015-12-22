@@ -1,5 +1,5 @@
 /**
- * elink - v0.1.0-0 - 2015-12-18
+ * elink - v0.1.0-0 - 2015-12-22
  *
  * Copyright (c) 2015 ICDC
  */
@@ -39,7 +39,7 @@ angular.module('el1.accueil', [  'ngMaterial', 'ui.router', 'el1.services.commun
             ToolbarController
         ])
         .controller('nouveauLienController', [
-            '$log', '$scope',
+            '$log', '$scope', '$rootScope',
             'LiensService', 'SessionStorage', 'USERFIREBASEPROFILEKEY',
             '$mdDialog', '$mdMedia',
             NouveauLienController
@@ -112,8 +112,8 @@ angular.module('el1.accueil', [  'ngMaterial', 'ui.router', 'el1.services.commun
 
     /**
      */
-    function NouveauLienController($log, $scope, LiensService, SessionStorage, USERFIREBASEPROFILEKEY, $mdDialog, $mdMedia) {
-        $scope.currentLien= {"url" : "http://", private: true};
+    function NouveauLienController($log, $scope, $rootScope, LiensService, SessionStorage, USERFIREBASEPROFILEKEY, $mdDialog, $mdMedia) {
+        $scope.currentLien= {"url" : "http://", private: "nonlu"};
         $scope.alerts = [];
 
         $scope.hide = function() {
@@ -127,6 +127,13 @@ angular.module('el1.accueil', [  'ngMaterial', 'ui.router', 'el1.services.commun
             if ($scope.currentForm.$valid) {
                 LiensService.createLinkForUser($scope.currentLien, SessionStorage.get(USERFIREBASEPROFILEKEY).uid)
                     .then(function (newLink) {
+                        LiensService.screenshotAndStore(newLink).then(function (linkScreen) {
+                            var anId= newLink.$id;
+                            $rootScope.images[anId]= linkScreen;
+                        }, function (error) {
+                            $log.error(error);
+                        });
+
                         $mdDialog.hide(newLink);
                     }, function (error) {
                         $log.error(error);
@@ -152,7 +159,7 @@ angular
     .module('elinkApp', ['ngCookies', 'ngMessages', 'ngMaterial', 'ngMdIcons',  'ui.router.state', 'ui.router', 'pascalprecht.translate', 'firebase', 'el1.model', 'el1.services.commun', 'el1.accueil', 'el1.icdc', 'el1.bibli', 'el1.login', 'el1.cercle', 'el1.gestion', 'el1.error'])
 
         .run(function ($rootScope, $location, $window, $http, $state, $translate, Env, AuthService, UserModel, $cookieStore, UsersManager) {
-
+            $rootScope.images= [];
             $rootScope.userAuthenticated = false;
 
             $rootScope.$on('$stateChangeError',
@@ -378,7 +385,7 @@ angular
             BibliController
             ])
         .controller('shareController', [
-            '$log', '$scope',
+            '$log', '$scope', '$cookieStore',
             'GestionService',
             'linkToShare', 'allCategories', 'allMyCercles', 'listeLiens',
             'SessionStorage', 'USERFIREBASEPROFILEKEY',
@@ -467,7 +474,7 @@ angular
 
     /**
      */
-    function ShareController($log, $scope, GestionService, linkToShare, allCategories, allMyCercles, listeLiens, SessionStorage, USERFIREBASEPROFILEKEY, $mdDialog, $mdMedia ) {
+    function ShareController($log, $scope, $cookieStore, GestionService, linkToShare, allCategories, allMyCercles, listeLiens, SessionStorage, USERFIREBASEPROFILEKEY, $mdDialog, $mdMedia ) {
 
         $scope.categories= allCategories;
         $scope.cercles= allMyCercles;
@@ -479,14 +486,23 @@ angular
             keyOri= linkToShare.keyOri;
         else keyOri= linkToShare.$id;
 
+        var cercleName= allMyCercles[0].$id;
+        var category= allCategories[0];
+        if ($cookieStore.get('selectedCategory')) {
+            category= $cookieStore.get('selectedCategory');
+        }
+        if ($cookieStore.get('selectedCercle')) {
+            cercleName=$cookieStore.get('selectedCercle').$id;
+        }
+
         //Initialisation du lien à basculer vers un cercle donné pour une catégorie donnée
         $scope.shareLink=  {
             title: linkToShare.title,
             teasing: linkToShare.teasing,
             createdOn : linkToShare.createdOn,
             url : linkToShare.url,
-            cercleName: allMyCercles[0].$id,
-            category: allCategories[0],
+            cercleName: cercleName,
+            category: category,
             keyOri: keyOri
         }
 
@@ -579,7 +595,7 @@ angular
     angular
         .module('el1.cercle')
         .controller('cercleController', [
-            '$log', '$scope',
+            '$log', '$scope', '$cookieStore',
             'commonsService',
             'LiensService',
             'liens',
@@ -594,17 +610,31 @@ angular
 
     /**
      */
-    function CercleController($log, $scope, commonsService, LiensService, liens, allCategories, allMyCercles, SessionStorage, USERFIREBASEPROFILEKEY, $mdToast) {
+    function CercleController($log, $scope, $cookieStore, commonsService, LiensService, liens, allCategories, allMyCercles, SessionStorage, USERFIREBASEPROFILEKEY, $mdToast) {
         $scope.allLiens = liens;
         $scope.categories = allCategories;
         $scope.cercles = allMyCercles;
         $scope.filter = {"category": ""};
         $scope.isLikeDisabled = false;
 
-        if (allMyCercles[0]) {
+        if ($cookieStore.get('selectedCategory')) {
+            $scope.filter.category= $cookieStore.get('selectedCategory');
+        } else {
+            $scope.filter.category = "";
+        }
+
+        if ($cookieStore.get('selectedCercle')) {
+            $log.info("cercle cercle " + $cookieStore.get('selectedCercle')  + $cookieStore.get('selectedCercle').$id)
+            $scope.selectedCercle= $cookieStore.get('selectedCercle');
+        } else if (allMyCercles[0]) {
             $scope.selectedCercle = allMyCercles[0];
         }
 
+        $scope.changeCategory = function (category) {
+            $log.info("change " + category );
+            $scope.filter.category= category;
+            $cookieStore.put('selectedCategory', category);
+        }
 
         $scope.changeCercle = function (cercle) {
             $scope.selectedCercle =cercle;
@@ -612,7 +642,7 @@ angular
                 .then(function (links) {
                     $scope.allLiens = links;
                 });
-
+            $cookieStore.put('selectedCercle', cercle);
         };
 
         $scope.showURL= function(lien) {
@@ -691,7 +721,6 @@ angular.module('el1.error', [ 'ui.router' ])
                                 //Pour le premier d'entre eux, je recherche les personnes de ce cercle.
                                 return UsersManager.findCerclesByUser(SessionStorage.get(USERFIREBASEPROFILEKEY).uid)
                                     .then (function(cerclesIndex) {
-                                    console.log(cerclesIndex[0])
                                     //return [];
                                         if (cerclesIndex && cerclesIndex.length > 0) {
                                             return GestionService.findPersonnesByCercle(cerclesIndex[0]);
@@ -744,7 +773,7 @@ angular.module('el1.error', [ 'ui.router' ])
     angular
         .module('el1.gestion')
         .controller('gestionController', [
-            '$log', '$scope', '$q', '$timeout',
+            '$log', '$scope', '$cookieStore', '$q', '$timeout',
             '$translate',
             'GestionService', 'UsersManager',  'commonsService',
             'mesInvitations', 'personnesDuCercle', 'mesCercles', 'usersEmail',
@@ -762,7 +791,7 @@ angular.module('el1.error', [ 'ui.router' ])
 
     /**
      */
-    function GestionController($log, $scope, $q, $timeout, $translate, GestionService, UsersManager, commonsService, mesInvitations, personnesDuCercle, mesCercles, usersEmail, SessionStorage, USERFIREBASEPROFILEKEY, $mdDialog, $mdMedia, $mdToast ) {
+    function GestionController($log, $scope, $cookieStore, $q, $timeout, $translate, GestionService, UsersManager, commonsService, mesInvitations, personnesDuCercle, mesCercles, usersEmail, SessionStorage, USERFIREBASEPROFILEKEY, $mdDialog, $mdMedia, $mdToast ) {
 
         $scope.mesInvitations= mesInvitations;
         $scope.personnes= personnesDuCercle;
@@ -775,6 +804,13 @@ angular.module('el1.error', [ 'ui.router' ])
         $scope.selectedItem = null;
         $scope.invited = [];
         $scope.invitedDisplay = "";
+
+        if ($cookieStore.get('selectedCercle')) {
+            $log.info("gestion cercle " + $cookieStore.get('selectedCercle') + $cookieStore.get('selectedCercle').$id )
+            $scope.selectedCercle= $cookieStore.get('selectedCercle');
+        } else if (mesCercles[0]) {
+            $scope.selectedCercle = mesCercles[0];
+        }
 
         //Functions utilis�e par le select box autocomplete
         function querySearch (query) {
@@ -805,10 +841,6 @@ angular.module('el1.error', [ 'ui.router' ])
             } else {
                 $scope.selectedUser= null;
             }*/
-        }
-
-        if (mesCercles[0]) {
-            $scope.selectedCercle = mesCercles[0];
         }
 
         $scope.nouveauCercle = function(ev) {
@@ -848,6 +880,8 @@ angular.module('el1.error', [ 'ui.router' ])
                 .catch(function (error) {
                     $log.error(error);
                 })
+
+            $cookieStore.put('selectedCercle', cercleSelected);
         }
 
         $scope.inviter= function(invite) {
@@ -970,7 +1004,7 @@ angular.module('el1.error', [ 'ui.router' ])
     angular
         .module('el1.icdc')
         .controller('icdcController', [
-            '$log', '$scope', '$mdToast', 'commonsService',
+            '$log', '$scope', '$cookieStore', '$mdToast', 'commonsService',
             'LiensService',
             'allCategories',
             'topTen',
@@ -982,13 +1016,24 @@ angular.module('el1.error', [ 'ui.router' ])
 
     /**
      */
-    function ICDCController($log, $scope, $mdToast, commonsService, LiensService, allCategories, topTen, SessionStorage, USERFIREBASEPROFILEKEY) {
+    function ICDCController($log, $scope, $cookieStore, $mdToast, commonsService, LiensService, allCategories, topTen, SessionStorage, USERFIREBASEPROFILEKEY) {
         $scope.topTen= topTen;
         $scope.categories= allCategories;
         $scope.filter= { "category" : "" };
 
+        if ($cookieStore.get('selectedCategory')) {
+            $scope.filter.category= $cookieStore.get('selectedCategory');
+        } else {
+            $scope.filter.category = "";
+        }
+
         $scope.showURL= function(lien) {
             window.open(lien.url, '_blank');
+        }
+
+        $scope.changeCategory = function (category) {
+            $scope.filter.category= category;
+            $cookieStore.put('selectedCategory', category);
         }
 
         $scope.moveToBiblio= function(lien) {
@@ -1112,7 +1157,6 @@ angular.module('elinkApp')
 					var cleanHttpErrorListener = $rootScope.$on('httpError', function (event, httpResponse) {
 					    var i;
 					    event.stopPropagation();
-						console.log(httpResponse.status)
 					    switch (httpResponse.status) {
 					        // connection refused, server not reachable
 					        case -1:
@@ -1313,8 +1357,25 @@ angular.module('elinkApp')
 			controller: ['$scope', 'LiensService',
 	            function($scope, LiensService) {
 					LiensService.findLinkScreen($scope.lien).then(function (payload) {
-						if (payload)
-							$scope.imgsrc= 'data:image/jpeg;base64,' + payload;
+						if (payload) {
+							$scope.imgsrc = 'data:image/jpeg;base64,' + payload;
+						} else {
+
+							var unregister= $scope.$watch(function() {
+								var anId= $scope.lien.$id;
+								return $rootScope.images[anId];
+							}, function() {
+								var anId= $scope.lien.$id;
+								var linkScreen= $rootScope.images[anId]
+								if (linkScreen) {
+									if (linkScreen.$value) {
+										$scope.imgsrc = 'data:image/jpeg;base64,' + linkScreen.$value;
+										unregister();
+									}
+								}
+							});
+
+						}
 					}, function (error) {
 						// pas grave
 					});
@@ -1847,12 +1908,12 @@ Date.prototype.formatDate = function (format) {
     'use strict';
 
     angular.module('el1.services.commun')
-        .service('LiensService', ['$log', '$q', 'FBURL', '$firebaseArray', '$firebaseObject', 'Env', LiensService]);
+        .service('LiensService', ['$log', '$q', '$http', 'FBURL', '$firebaseArray', '$firebaseObject', 'Env', LiensService]);
 
     /**
      *
      */
-    function LiensService($log, $q, FBURL, $firebaseArray, $firebaseObject, Env){
+    function LiensService($log, $q, $http, FBURL, $firebaseArray, $firebaseObject, Env){
 
         var ref = new Firebase(FBURL);
 
@@ -1883,6 +1944,52 @@ Date.prototype.formatDate = function (format) {
                 return deferred.promise;
             },
 
+            screenshotAndStore : function (lien) {
+
+                var deferred = $q.defer();
+                var _that = this;
+                var config={};
+                config.headers = config.headers || {};
+                config.headers.Accept = 'application/json';
+
+                $http.get('https://www.googleapis.com/pagespeedonline/v1/runPagespeed?url=' + lien.url + '&screenshot=true', config)
+                    .then(
+                    function(response) {
+                        var data= response.data;
+                        _that.addLinkScreen(lien.$id, data)
+                            .then(function(linkScreen) {
+                                deferred.resolve(linkScreen);
+                            })
+                            .catch (function(error) {
+                                deferred.reject(error);
+                            })
+                    },
+                    function(error) {
+                        deferred.reject(error);
+                    }
+                );
+
+                return deferred.promise;
+
+            },
+
+            addLinkScreen: function(linkId, dataScreen){
+                var deferred = $q.defer();
+
+                var linkScreenRef = ref.child('linkScreens').child(linkId);
+                var linkScreen = $firebaseObject(linkScreenRef);
+                linkScreen.$loaded()
+                    .then(function () {
+                        linkScreen.$value = dataScreen.screenshot.data.replace(/_/g, '/').replace(/-/g, '+');
+                        linkScreen.$save();
+                        deferred.resolve(linkScreen);
+                    }).catch(function (error) {
+                        deferred.reject(error);
+                    });
+
+                return deferred.promise;
+            },
+
             createLinkForUser : function(lien, username) {
                 var deferred = $q.defer();
 
@@ -1901,32 +2008,11 @@ Date.prototype.formatDate = function (format) {
                         newLink.url = lien.url;
                         newLink.teasing = "";
 
-                        userLinks.$add(newLink).then(function (addMe) {
-                            $log.info("push image " +addMe.key())
-
-                            $.ajax({
-                                url: 'https://www.googleapis.com/pagespeedonline/v1/runPagespeed?url=' + newLink.url + '&screenshot=true',
-                                context: this,
-                                type: 'GET',
-                                dataType: 'json',
-                                success: function(data) {
-                                    if (data && data.screenshot && data.screenshot.data) {
-                                        var linkScreens = ref.child('linkScreens').child(addMe.key());
-                                        var filePayload = data.screenshot.data.replace(/_/g, '/').replace(/-/g, '+');
-                                        linkScreens.set(filePayload, function () {
-                                            //$log.info("recup ok");
-                                        });
-                                    } else
-                                        $log.info("erreur lors de la recuperation du screen");
-                                }
+                        userLinks.$add(newLink)
+                            .then(function (linkAdded) {
+                                newLink.$id= linkAdded.key();
+                                deferred.resolve(newLink);
                             });
-
-                        }).catch(function (error) {
-                            // pas tres grave, on se passera de l'image
-                            $log.info("erreur lors de la recuperation du screen");
-                        });
-                        // on attends pas le resultat de la recup du screen
-                        deferred.resolve(newLink);
 
                     }).catch(function (error) {
                         deferred.reject(error);
