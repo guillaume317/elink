@@ -5,7 +5,7 @@
         <md-input-container>
             <label ng-show="cercles[0]">{{'gestion.message.selectbox' | translate}}</label>
             <label ng-hide="cercles[0]">{{'gestion.message.empty' | translate}}</label>
-            <md-select ng-model="selectedCercle" ng-change="changeCercle()"
+            <md-select ng-model="selectedCercle"
                        ng-model-options="{trackBy: '$value.$id'}">
                 <md-option ng-value="cercl" ng-click="changeCercle(cercl)" ng-repeat="cercl in cercles">
                     {{cercl.$id}}

@@ -70,10 +70,10 @@
                 return deferred.promise;
             },
 
-            addUserEmail : function(userEmail) {
+            addUserEmail : function(userRef) {
                 var deferred = $q.defer();
 
-                var userEmailRef = ref.child('usersEmail').child(EscapeUtils.escapeEmail(userEmail.email));
+                var userEmailRef = ref.child('usersEmail').child(EscapeUtils.escapeEmail(userRef.email));
                 var userEmail = $firebaseObject(userEmailRef);
 
                 userEmail.$loaded()
@@ -81,7 +81,7 @@
                         if (userEmail.$value) {
                             deferred.resolve(userEmail);
                         } else {
-                            userEmail.$value = userEmail.$id;
+                            userEmail.$value = userRef.uid;
                             userEmail.$save()
                                 .then(function () {
                                     deferred.resolve(userEmail);

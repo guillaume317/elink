@@ -41,7 +41,7 @@
             $scope.selectedCercle = mesCercles[0];
         }
 
-        //Functions utilisée par le select box autocomplete
+        //Functions utilisÃ©e par le select box autocomplete
         function querySearch (query) {
             var results = query ? $scope.users.filter( createFilterFor(query) ) : $scope.users,
                 deferred;
@@ -62,9 +62,9 @@
             $log.info('Text changed to ' + text);
         }
         function selectedItemChange(user) {
-            //sélection d'un élémenta dans la liste
+            //sÃ©lection d'un Ã©lÃ©menta dans la liste
             $log.info('Item changed to ' + JSON.stringify(user));
-            //si l'objet a été sélectionné, il n'est pas vide
+            //si l'objet a Ã©tÃ© sÃ©lectionnÃ©, il n'est pas vide
             /**if (Object.keys(user).length > 0) {
                 $scope.selectedUser= user;
             } else {
@@ -101,7 +101,7 @@
 
         $scope.changeCercle= function(cercleSelected) {
             //Changement de cercle
-            //==> récupération des personnes du cercle choisi
+            //==> rÃ©cupÃ©ration des personnes du cercle choisi
             GestionService.findPersonnesByCercle(cercleSelected)
                 .then(function (personnes) {
                     $scope.selectedCercle = cercleSelected;
@@ -115,9 +115,13 @@
         }
 
         $scope.inviter= function(invite) {
-
+            console.log("invite " + invite);
             if (invite !== null) {
-                //L'utilisateur connecté invite un utilisateur à rejoindre le cercle sélectionné
+                console.log("invite " + invite);
+                console.log("invite uid" + invite.uid);
+
+
+                //L'utilisateur connectÃ© invite un utilisateur Ã  rejoindre le cercle sÃ©lectionnÃ©
                 UsersManager.inviter(invite.uid, $scope.selectedCercle.$id)
                     .then(function (username) {
                         $scope.invited.push(invite.email);
@@ -132,7 +136,7 @@
         }
 
         $scope.accepterInvitation= function(invitation) {
-            // Si l'utilisateur connecté accepte l'invitation
+            // Si l'utilisateur connectÃ© accepte l'invitation
             // ==> Ajout du cercle au niveau du user.
             // ==> Ajout de l'utilisateur au niveau des membres du cercle
             // ==> Suppression de l'invitation en attente

@@ -444,7 +444,7 @@ angular
                 liensNonLus.$add(lien);
             }
             //Suppression du lien de la liste
-            $scope.deleteLink(lien);
+            $scope.liens.$remove(lien);
 
             commonsService.showSuccessToast($mdToast, "Le lien a été déplacé");
         };
@@ -650,18 +650,19 @@ angular
         }
 
         $scope.changeCategory = function (category) {
-            $log.info("change " + category );
             $scope.filter.category= category;
             $cookieStore.put('selectedCategory', category);
         }
 
         $scope.changeCercle = function (cercle) {
-            $scope.selectedCercle =cercle;
-            LiensService.findLinksByCerlceName(cercle.$id)
-                .then(function (links) {
-                    $scope.allLiens = links;
-                });
-            $cookieStore.put('selectedCercle', cercle);
+            $scope.selectedCercle = cercle;
+            if (cercle.$id) {
+                LiensService.findLinksByCerlceName(cercle.$id)
+                    .then(function (links) {
+                        $scope.allLiens = links;
+                    });
+                $cookieStore.put('selectedCercle', cercle);
+            }
         };
 
         $scope.showURL= function(lien) {
@@ -816,7 +817,7 @@ angular.module('el1.error', [ 'ui.router' ])
             $scope.selectedCercle = mesCercles[0];
         }
 
-        //Functions utilis�e par le select box autocomplete
+        //Functions utilisée par le select box autocomplete
         function querySearch (query) {
             var results = query ? $scope.users.filter( createFilterFor(query) ) : $scope.users,
                 deferred;
@@ -837,9 +838,9 @@ angular.module('el1.error', [ 'ui.router' ])
             $log.info('Text changed to ' + text);
         }
         function selectedItemChange(user) {
-            //s�lection d'un �l�menta dans la liste
+            //sélection d'un élémenta dans la liste
             $log.info('Item changed to ' + JSON.stringify(user));
-            //si l'objet a �t� s�lectionn�, il n'est pas vide
+            //si l'objet a été sélectionné, il n'est pas vide
             /**if (Object.keys(user).length > 0) {
                 $scope.selectedUser= user;
             } else {
@@ -876,7 +877,7 @@ angular.module('el1.error', [ 'ui.router' ])
 
         $scope.changeCercle= function(cercleSelected) {
             //Changement de cercle
-            //==> r�cup�ration des personnes du cercle choisi
+            //==> récupération des personnes du cercle choisi
             GestionService.findPersonnesByCercle(cercleSelected)
                 .then(function (personnes) {
                     $scope.selectedCercle = cercleSelected;
@@ -890,9 +891,13 @@ angular.module('el1.error', [ 'ui.router' ])
         }
 
         $scope.inviter= function(invite) {
-
+            console.log("invite " + invite);
             if (invite !== null) {
-                //L'utilisateur connect� invite un utilisateur � rejoindre le cercle s�lectionn�
+                console.log("invite " + invite);
+                console.log("invite uid" + invite.uid);
+
+
+                //L'utilisateur connecté invite un utilisateur à rejoindre le cercle sélectionné
                 UsersManager.inviter(invite.uid, $scope.selectedCercle.$id)
                     .then(function (username) {
                         $scope.invited.push(invite.email);
@@ -907,7 +912,7 @@ angular.module('el1.error', [ 'ui.router' ])
         }
 
         $scope.accepterInvitation= function(invitation) {
-            // Si l'utilisateur connect� accepte l'invitation
+            // Si l'utilisateur connecté accepte l'invitation
             // ==> Ajout du cercle au niveau du user.
             // ==> Ajout de l'utilisateur au niveau des membres du cercle
             // ==> Suppression de l'invitation en attente
@@ -2313,10 +2318,10 @@ Date.prototype.formatDate = function (format) {
                 return deferred.promise;
             },
 
-            addUserEmail : function(userEmail) {
+            addUserEmail : function(userRef) {
                 var deferred = $q.defer();
 
-                var userEmailRef = ref.child('usersEmail').child(EscapeUtils.escapeEmail(userEmail.email));
+                var userEmailRef = ref.child('usersEmail').child(EscapeUtils.escapeEmail(userRef.email));
                 var userEmail = $firebaseObject(userEmailRef);
 
                 userEmail.$loaded()
@@ -2324,7 +2329,7 @@ Date.prototype.formatDate = function (format) {
                         if (userEmail.$value) {
                             deferred.resolve(userEmail);
                         } else {
-                            userEmail.$value = userEmail.$id;
+                            userEmail.$value = userRef.uid;
                             userEmail.$save()
                                 .then(function () {
                                     deferred.resolve(userEmail);

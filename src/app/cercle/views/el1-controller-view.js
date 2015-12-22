@@ -38,18 +38,19 @@
         }
 
         $scope.changeCategory = function (category) {
-            $log.info("change " + category );
             $scope.filter.category= category;
             $cookieStore.put('selectedCategory', category);
         }
 
         $scope.changeCercle = function (cercle) {
-            $scope.selectedCercle =cercle;
-            LiensService.findLinksByCerlceName(cercle.$id)
-                .then(function (links) {
-                    $scope.allLiens = links;
-                });
-            $cookieStore.put('selectedCercle', cercle);
+            $scope.selectedCercle = cercle;
+            if (cercle.$id) {
+                LiensService.findLinksByCerlceName(cercle.$id)
+                    .then(function (links) {
+                        $scope.allLiens = links;
+                    });
+                $cookieStore.put('selectedCercle', cercle);
+            }
         };
 
         $scope.showURL= function(lien) {

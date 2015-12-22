@@ -227,9 +227,9 @@ angular.module("app/cercle/views/el1-view.tpl.html", []).run(["$templateCache", 
     "        </md-input-container>\n" +
     "\n" +
     "        <md-input-container>\n" +
-    "            <label >Mes cercles</label>\n" +
+    "            <label ng-show=\"cercles[0]\">Mes cercles</label>\n" +
     "            <label ng-hide=\"cercles[0]\">{{'gestion.message.empty' | translate}}</label>\n" +
-    "            <md-select ng-model=\"selectedCercle\" ng-change=\"changeCercle()\"\n" +
+    "            <md-select ng-model=\"selectedCercle\"\n" +
     "                       ng-model-options=\"{trackBy: '$value.$id'}\">\n" +
     "                <md-option ng-value=\"cercl\" ng-click=\"changeCercle(cercl)\" ng-repeat=\"cercl in cercles\">\n" +
     "                    {{cercl.$id}}\n" +
@@ -308,7 +308,7 @@ angular.module("app/gestionCercles/views/el1-gestion.tpl.html", []).run(["$templ
     "        <md-input-container>\n" +
     "            <label ng-show=\"cercles[0]\">{{'gestion.message.selectbox' | translate}}</label>\n" +
     "            <label ng-hide=\"cercles[0]\">{{'gestion.message.empty' | translate}}</label>\n" +
-    "            <md-select ng-model=\"selectedCercle\" ng-change=\"changeCercle()\"\n" +
+    "            <md-select ng-model=\"selectedCercle\"\n" +
     "                       ng-model-options=\"{trackBy: '$value.$id'}\">\n" +
     "                <md-option ng-value=\"cercl\" ng-click=\"changeCercle(cercl)\" ng-repeat=\"cercl in cercles\">\n" +
     "                    {{cercl.$id}}\n" +

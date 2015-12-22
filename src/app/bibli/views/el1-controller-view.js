@@ -60,7 +60,7 @@
                 liensNonLus.$add(lien);
             }
             //Suppression du lien de la liste
-            $scope.deleteLink(lien);
+            $scope.liens.$remove(lien);
 
             commonsService.showSuccessToast($mdToast, "Le lien a été déplacé");
         };
