@@ -15,16 +15,21 @@
                     controller: 'cercleController',
                     templateUrl: 'src/app/cercle/views/el1-view.tpl.html',
                     resolve: {
-                        liens : ['$log', 'LiensService', 'UsersManager', 'SessionStorage', 'USERFIREBASEPROFILEKEY',
-                            function($log, LiensService, UsersManager, SessionStorage, USERFIREBASEPROFILEKEY) {
-                                return UsersManager.findCerclesByUser(SessionStorage.get(USERFIREBASEPROFILEKEY).uid)
-                                    .then(function (cercles) {
-                                        if (cercles.length > 0) {
-                                            return LiensService.findLinksByCerlceName(cercles[0].$id);
-                                        } else {
-                                            return [];
-                                        }
-                                    })
+                        liens : ['$log', '$cookieStore', 'LiensService', 'UsersManager', 'SessionStorage', 'USERFIREBASEPROFILEKEY',
+                            function($log, $cookieStore, LiensService, UsersManager, SessionStorage, USERFIREBASEPROFILEKEY) {
+                                if ($cookieStore.get('selectedCercle')) {
+                                    var cercleName= $cookieStore.get('selectedCercle');
+                                    return LiensService.findLinksByCerlceName(cercleName.$id);
+                                } else {
+                                    return UsersManager.findCerclesByUser(SessionStorage.get(USERFIREBASEPROFILEKEY).uid)
+                                        .then(function (cercles) {
+                                            if (cercles.length > 0) {
+                                                return LiensService.findLinksByCerlceName(cercles[0].$id);
+                                            } else {
+                                                return [];
+                                            }
+                                        });
+                                }
                         }],
                         allMyCercles :  ['UsersManager', 'SessionStorage', 'USERFIREBASEPROFILEKEY',
                             function(UsersManager, SessionStorage, USERFIREBASEPROFILEKEY) {

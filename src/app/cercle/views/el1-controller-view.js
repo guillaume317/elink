@@ -32,7 +32,6 @@
         }
 
         if ($cookieStore.get('selectedCercle')) {
-            $log.info("cercle cercle " + $cookieStore.get('selectedCercle')  + $cookieStore.get('selectedCercle').$id)
             $scope.selectedCercle= $cookieStore.get('selectedCercle');
         } else if (allMyCercles[0]) {
             $scope.selectedCercle = allMyCercles[0];
