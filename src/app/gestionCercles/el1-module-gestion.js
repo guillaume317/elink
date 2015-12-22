@@ -21,7 +21,6 @@
                                 //Pour le premier d'entre eux, je recherche les personnes de ce cercle.
                                 return UsersManager.findCerclesByUser(SessionStorage.get(USERFIREBASEPROFILEKEY).uid)
                                     .then (function(cerclesIndex) {
-                                    console.log(cerclesIndex[0])
                                     //return [];
                                         if (cerclesIndex && cerclesIndex.length > 0) {
                                             return GestionService.findPersonnesByCercle(cerclesIndex[0]);

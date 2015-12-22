@@ -9,7 +9,7 @@
             ToolbarController
         ])
         .controller('nouveauLienController', [
-            '$log', '$scope',
+            '$log', '$scope', '$rootScope',
             'LiensService', 'SessionStorage', 'USERFIREBASEPROFILEKEY',
             '$mdDialog', '$mdMedia',
             NouveauLienController
@@ -82,8 +82,8 @@
 
     /**
      */
-    function NouveauLienController($log, $scope, LiensService, SessionStorage, USERFIREBASEPROFILEKEY, $mdDialog, $mdMedia) {
-        $scope.currentLien= {"url" : "http://", private: true};
+    function NouveauLienController($log, $scope, $rootScope, LiensService, SessionStorage, USERFIREBASEPROFILEKEY, $mdDialog, $mdMedia) {
+        $scope.currentLien= {"url" : "http://", private: "nonlu"};
         $scope.alerts = [];
 
         $scope.hide = function() {
@@ -97,6 +97,13 @@
             if ($scope.currentForm.$valid) {
                 LiensService.createLinkForUser($scope.currentLien, SessionStorage.get(USERFIREBASEPROFILEKEY).uid)
                     .then(function (newLink) {
+                        LiensService.screenshotAndStore(newLink).then(function (linkScreen) {
+                            var anId= newLink.$id;
+                            $rootScope.images[anId]= linkScreen;
+                        }, function (error) {
+                            $log.error(error);
+                        });
+
                         $mdDialog.hide(newLink);
                     }, function (error) {
                         $log.error(error);
