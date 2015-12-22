@@ -209,6 +209,14 @@ module.exports = function ( grunt ) {
                 files: {
                     '<%= static_dist_dir %>/<%= pkg.name %>.min.js': '<%= concat.compile_app_js.dest %>'
                 }
+            },
+            compile_vendor: {
+                options: {
+                    mangle: false
+                },
+                files: {
+                    '<%= static_dist_dir %>/elink-vendor.min.js': '<%= concat.compile_vendor_js.dest %>'
+                }
             }
 
         },
