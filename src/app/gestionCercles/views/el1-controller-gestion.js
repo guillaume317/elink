@@ -115,12 +115,7 @@
         }
 
         $scope.inviter= function(invite) {
-            console.log("invite " + invite);
             if (invite !== null) {
-                console.log("invite " + invite);
-                console.log("invite uid" + invite.uid);
-
-
                 //L'utilisateur connecté invite un utilisateur à rejoindre le cercle sélectionné
                 UsersManager.inviter(invite.uid, $scope.selectedCercle.$id)
                     .then(function (username) {

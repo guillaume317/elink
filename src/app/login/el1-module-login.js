@@ -79,7 +79,7 @@ angular.module('el1.login', ['el1.services.commun', 'el1.model', 'ngCookies'])
                     return $q.when(userConnected);
                 })
                 .then (function(userConnected) {
-                    $state.go('home');
+                    $state.go('bibli-nonLu');
                 })
                 .catch(function (error) {
                     $log.info("Authentication failed:", error);

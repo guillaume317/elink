@@ -891,12 +891,7 @@ angular.module('el1.error', [ 'ui.router' ])
         }
 
         $scope.inviter= function(invite) {
-            console.log("invite " + invite);
             if (invite !== null) {
-                console.log("invite " + invite);
-                console.log("invite uid" + invite.uid);
-
-
                 //L'utilisateur connecté invite un utilisateur à rejoindre le cercle sélectionné
                 UsersManager.inviter(invite.uid, $scope.selectedCercle.$id)
                     .then(function (username) {
@@ -1139,7 +1134,7 @@ angular.module('el1.login', ['el1.services.commun', 'el1.model', 'ngCookies'])
                     return $q.when(userConnected);
                 })
                 .then (function(userConnected) {
-                    $state.go('home');
+                    $state.go('bibli-nonLu');
                 })
                 .catch(function (error) {
                     $log.info("Authentication failed:", error);
@@ -2036,6 +2031,11 @@ Date.prototype.formatDate = function (format) {
                         newLink.title = lien.title ? lien.title : lien.url.substring(0, 100);
                         newLink.url = lien.url;
                         newLink.teasing = "";
+
+                        if (lien.keyOri)
+                            newLink.keyOri= lien.keyOri;
+                        else if (lien.$id)
+                            newLink.keyOri= lien.$id;
 
                         userLinks.$add(newLink)
                             .then(function (linkAdded) {

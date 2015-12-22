@@ -116,6 +116,11 @@
                         newLink.url = lien.url;
                         newLink.teasing = "";
 
+                        if (lien.keyOri)
+                            newLink.keyOri= lien.keyOri;
+                        else if (lien.$id)
+                            newLink.keyOri= lien.$id;
+
                         userLinks.$add(newLink)
                             .then(function (linkAdded) {
                                 newLink.$id= linkAdded.key();
