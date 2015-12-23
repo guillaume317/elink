@@ -86,6 +86,11 @@
 
             deleteLinkScreen: function(link){
                 var linkScreenId;
+                // on ne supprime pas l'image si c'est un clone
+                // car les images ne sont pas dupliquées
+                if (link.clone)
+                    return;
+
                 if (link.keyOri)
                     linkScreenId= link.keyOri;
                 else
@@ -116,10 +121,13 @@
                         newLink.url = lien.url;
                         newLink.teasing = "";
 
-                        if (lien.keyOri)
-                            newLink.keyOri= lien.keyOri;
-                        else if (lien.$id)
-                            newLink.keyOri= lien.$id;
+                        if (lien.keyOri) {
+                            newLink.keyOri = lien.keyOri;
+                            newLink.clone= "true";
+                        } else if (lien.$id) {
+                            newLink.keyOri = lien.$id;
+                            newLink.clone= "true";
+                        }
 
                         userLinks.$add(newLink)
                             .then(function (linkAdded) {
@@ -202,13 +210,11 @@
                     });
 
                 return deferred.promise;
-
             },
 
-            addLike : function(cercleName, idLink) {
-
-
+            addLike : function(cercleName, lien, liens) {
                 var deferred = $q.defer();
+                var idLink= lien.$id;
 
                 // a noter : idLink format K4cGFb8ts5teWMJq4PC
                 // Pour le cercle CCMT, on obtient l'identifiant CCMT-K4cGFb8ts5teWMJq4PC
@@ -217,9 +223,15 @@
                 var cercleLinkLike = $firebaseObject(cercleLinkLikeRef);
                 cercleLinkLike.$loaded()
                     .then(function () {
-                        cercleLinkLike.$value = cercleLinkLike.$value === null ? 1 : cercleLinkLike.$value + 1;
+                        var like= cercleLinkLike.$value === null ? 1 : cercleLinkLike.$value + 1;
+                        cercleLinkLike.$value = like;
                         cercleLinkLike.$save();
-                        deferred.resolve(cercleLinkLike);
+                        lien.like= like;
+                        liens.$save(lien).then(function () {
+                            deferred.resolve(cercleLinkLike);
+                        }).catch(function (error) {
+                            deferred.reject(error);
+                        });
                     }).catch(function (error) {
                         deferred.reject(error);
                     });
@@ -239,28 +251,29 @@
 
                     var topTen = [];
 
-                    // key[0] : nom du cercle
-                    // key[1] : identifiant de l'article'
                     snapshot.forEach(function(data) {
 
                         // key[0] : nom du cercle
                         // key[1] : identifiant de l'article
+                        // BUG : identifiant de l'article peut contenir un '-'
                         var key = data.key();
-                        var keyValue = key.split('-');
                         var cptLike = data.val();
 
+                        var index= key.indexOf("-");
+                        var cercleId= key.substring(0, index);
+                        var linkId= key.substring(index);
+
                         //jointure avec le lien pour récupérer sa description
-                        _that.findLinksByCerlceNameAndIdLink(keyValue[0], '-'+keyValue[1])
+                        _that.findLinksByCerlceNameAndIdLink(cercleId, linkId)
                             .then(function(aLink){
                                 topTen.push(angular.extend({},
                                     {
                                         link: aLink,
                                         cpt: cptLike,
-                                        cercleName: keyValue[0]
+                                        cercleName: cercleId
                                     }
                                 ));
                             })
-
 
                     });
 

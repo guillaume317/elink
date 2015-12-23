@@ -73,9 +73,12 @@ angular.module('el1.login', ['el1.services.commun', 'el1.model', 'ngCookies'])
                     return UsersManager.addUserEmail(userConnected);
                 })
                 .then(function(userConnected) {
+                    return UsersManager.getUser(userConnected.$value);
+                })
+                .then(function(userConnected) {
                     $rootScope.userAuthenticated = true;
                     $cookieStore.put('user', userConnected);
-                    $rootScope.userEmail = userConnected.email;
+                    $rootScope.user = userConnected;
                     return $q.when(userConnected);
                 })
                 .then (function(userConnected) {

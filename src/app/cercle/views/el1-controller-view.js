@@ -66,7 +66,7 @@
         $scope.like = function (lien) {
             //Bloque tous les liens !
             //$scope.isLikeDisabled = true;
-            LiensService.addLike($scope.selectedCercle.$id, lien.$id);
+            LiensService.addLike($scope.selectedCercle.$id, lien, liens);
             commonsService.showSuccessToast($mdToast, "'Like' pris en compte");
         };
 

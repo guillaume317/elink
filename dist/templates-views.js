@@ -228,7 +228,7 @@ angular.module("app/cercle/views/el1-view.tpl.html", []).run(["$templateCache", 
     "\n" +
     "        <md-input-container>\n" +
     "            <label ng-show=\"cercles[0]\">Mes cercles</label>\n" +
-    "            <label ng-hide=\"cercles[0]\">{{'gestion.message.empty' | translate}}</label>\n" +
+    "            <label ng-hide=\"cercles[0]\">{{'view.message.empty' | translate}}</label>\n" +
     "            <md-select ng-model=\"selectedCercle\"\n" +
     "                       ng-model-options=\"{trackBy: '$value.$id'}\">\n" +
     "                <md-option ng-value=\"cercl\" ng-click=\"changeCercle(cercl)\" ng-repeat=\"cercl in cercles\">\n" +
@@ -256,15 +256,15 @@ angular.module("app/cercle/views/el1-view.tpl.html", []).run(["$templateCache", 
     "                        <h3>{{lien.title}}</h3>\n" +
     "                        {{lien.teasing}}\n" +
     "                        <br/><br/>\n" +
-    "                        <div  layout=\"row\">\n" +
+    "                        <div  layout=\"row\" layout-sm=\"column\" layout-xs=\"column\" layout-md=\"column\">\n" +
     "                            <span flex=\"15\"><b>{{lien.category}}</b></span>\n" +
-    "                            <span flex=\"40\" layout=\"row\"><div hide show-gt-sm flex=\"3\"><ng-md-icon icon=\"account_child\"></ng-md-icon></div>{{lien.sharedBy}}</span>\n" +
+    "                            <span flex=\"30\" layout=\"row\"><div hide show-gt-md flex=\"3\"><div class=\"profil-share-img\" ng-style=\"{'background-image': 'url(' + lien.sharedByPicture + ')'}\"></div></div>{{lien.sharedBy}}</span>\n" +
     "                            <div flex=\"40\" layout=\"row\">\n" +
-    "                                <div hide show-gt-sm flex=\"3\"><ng-md-icon icon=\"link\"></ng-md-icon></div>\n" +
+    "                                <div hide show-gt-md flex=\"3\"><ng-md-icon icon=\"link\"></ng-md-icon></div>\n" +
     "                                <div class=\"lien\" flex>{{lien.url.substring(0, 30)}}<md-tooltip>{{lien.url}}</md-tooltip></div>\n" +
     "                            </div>\n" +
-    "                            <div>\n" +
-    "                                 <ng-md-icon icon=\"thumb_up\" size=\"15\" ></ng-md-icon> {{like.cpt}}\n" +
+    "                            <div flex=\"initial\">\n" +
+    "                                 <ng-md-icon icon=\"thumb_up\" size=\"20\" ></ng-md-icon> {{lien.like}}\n" +
     "                            </div>\n" +
     "                        </div>\n" +
     "                    </div>\n" +
@@ -369,7 +369,7 @@ angular.module("app/gestionCercles/views/el1-gestion.tpl.html", []).run(["$templ
     "    </div>\n" +
     "\n" +
     "    <md-divider></md-divider>\n" +
-    "    <md-subheader><span translate=\"gestion.dashboard.personnes\"/> {{selectedCercle.$id}}</md-subheader>\n" +
+    "    <md-subheader><span translate=\"gestion.dashboard.personnes\"></span> {{selectedCercle.$id}}</md-subheader>\n" +
     "\n" +
     "    <div ng-hide=\"personnes[0]\" class=\"errormessage warning\" translate=\"list.empty\"></div>\n" +
     "\n" +
@@ -485,15 +485,15 @@ angular.module("app/icdc/views/el1-view.tpl.html", []).run(["$templateCache", fu
     "                        <h3>{{like.link.title}}</h3>\n" +
     "                        {{like.link.teasing}}\n" +
     "                        <br/><br/>\n" +
-    "                        <div  layout=\"row\">\n" +
+    "                        <div  layout=\"row\" layout-sm=\"column\" layout-xs=\"column\" layout-md=\"column\">\n" +
     "                            <span flex=\"15\"><b>{{like.link.category}}</b></span>\n" +
-    "                            <span flex=\"30\" layout=\"row\"><div hide show-gt-sm flex=\"3\"><ng-md-icon icon=\"account_child\"></ng-md-icon></div>{{like.link.sharedBy}}</span>\n" +
+    "                            <span flex=\"30\" layout=\"row\"><div hide show-gt-md flex=\"3\"><div class=\"profil-share-img\" ng-style=\"{'background-image': 'url(' + like.link.sharedByPicture + ')'}\"></div></div>{{like.link.sharedBy}}</span>\n" +
     "                            <div flex=\"40\" layout=\"row\">\n" +
-    "                                <div hide show-gt-sm flex=\"3\"><ng-md-icon icon=\"link\"></ng-md-icon></div>\n" +
+    "                                <div hide show-gt-md flex=\"3\"><ng-md-icon icon=\"link\"></ng-md-icon></div>\n" +
     "                                <div class=\"lien\" flex>{{like.link.url.substring(0, 30)}}</div>\n" +
     "                            </div>\n" +
     "                            <div>\n" +
-    "                                <ng-md-icon icon=\"thumb_up\" size=\"15\" ></ng-md-icon> {{like.cpt}}\n" +
+    "                                <ng-md-icon icon=\"thumb_up\" size=\"20\" ></ng-md-icon> {{like.cpt}}\n" +
     "                            </div>\n" +
     "                        </div>\n" +
     "                    </div>\n" +
@@ -526,7 +526,7 @@ angular.module("app/login/login.tpl.html", []).run(["$templateCache", function($
     "                    <br/><br/>\n" +
     "                    Techniquement, eLink repose sur notre socle AngularJs (desktop) et Ionic (Android). Les données sont stockées\n" +
     "                    dans une base noSQL temps réel, le navigateur est également synchronisé en temps réel grâce aux web sockets.<br/>\n" +
-    "                    La charte repose sur material design et supporte uniquement les navigateur récents (Chrome, Firefox, IE11).\n" +
+    "                    La charte repose sur <a href=\"https://www.google.com/design/spec/material-design/introduction.html\" target=\"_blank\">material design</a> et supporte uniquement les navigateurs récents (Chrome, Firefox, IE11, Edge).\n" +
     "\n" +
     "                    <br/><br/>\n" +
     "                    Pour utiliser l'application, vous devez vous authentifier par Google via OAuth, cela nécessite la création d'un\n" +
@@ -540,7 +540,7 @@ angular.module("app/login/login.tpl.html", []).run(["$templateCache", function($
     "\n" +
     "            <div layout=\"row\" layout-sm=\"column\" layout-align=\"space-around center\" layout-wrap style=\"margin-bottom: 15px\">\n" +
     "                <img flex=\"30\" src=\"./src/img/android.jpg\">\n" +
-    "                <md-button flex=\"50\" class=\"md-raised md-primary\"  ng-click=\"login()\">Connectez-vous avec votre compte Google</md-button>\n" +
+    "                <md-button aria-label=\"{{'login.valider' | translate}}\" flex=\"30\" style=\"line-height: 5em\" class=\"md-raised md-primary \" ng-click=\"login()\"><ng-md-icon icon=\"google-plus\" size=\"20\"></ng-md-icon> <span translate=\"login.valider\"></span></md-button>\n" +
     "            </div>\n" +
     "\n" +
     "        </md-card>\n" +

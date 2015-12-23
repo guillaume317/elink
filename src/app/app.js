@@ -60,7 +60,7 @@ angular
                 $rootScope.user = mockUser;
                 Env.setUser(mockUser);
             } else {
-                $rootScope.user =$cookieStore.get('user');
+                $rootScope.user= $cookieStore.get('user');
                 if ($rootScope.user) {
                     $rootScope.userAuthenticated = true;
                     Env.setUser($rootScope.user);

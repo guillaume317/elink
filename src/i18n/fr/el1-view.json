@@ -15,7 +15,8 @@
     },
 
     "message" : {
-        "shareLink" : "Lien partagé !"
+        "shareLink" : "Lien partagé !",
+        "empty" : "Pas de cercle"
     },
 
     "error" : {

@@ -1,5 +1,5 @@
 /**
- * elink - v0.1.0-0 - 2015-12-22
+ * elink - v0.1.0-0 - 2015-12-23
  *
  * Copyright (c) 2015 ICDC
  */
@@ -51,9 +51,9 @@ angular.module('el1.accueil', [  'ngMaterial', 'ui.router', 'el1.services.commun
     /**
      */
     function ToolbarController($log, $scope, $rootScope, $state, AuthService, $mdDialog, $mdMedia ) {
-
+        var selected = null,
+            previous = null;
         $scope.selectedIndex=0;
-
         $scope.isAdmin= true;
 
         $scope.$watch('selectedIndex', function(current, old) {
@@ -216,7 +216,7 @@ angular
                 $rootScope.user = mockUser;
                 Env.setUser(mockUser);
             } else {
-                $rootScope.user =$cookieStore.get('user');
+                $rootScope.user= $cookieStore.get('user');
                 if ($rootScope.user) {
                     $rootScope.userAuthenticated = true;
                     Env.setUser($rootScope.user);
@@ -678,7 +678,7 @@ angular
         $scope.like = function (lien) {
             //Bloque tous les liens !
             //$scope.isLikeDisabled = true;
-            LiensService.addLike($scope.selectedCercle.$id, lien.$id);
+            LiensService.addLike($scope.selectedCercle.$id, lien, liens);
             commonsService.showSuccessToast($mdToast, "'Like' pris en compte");
         };
 
@@ -1128,9 +1128,12 @@ angular.module('el1.login', ['el1.services.commun', 'el1.model', 'ngCookies'])
                     return UsersManager.addUserEmail(userConnected);
                 })
                 .then(function(userConnected) {
+                    return UsersManager.getUser(userConnected.$value);
+                })
+                .then(function(userConnected) {
                     $rootScope.userAuthenticated = true;
                     $cookieStore.put('user', userConnected);
-                    $rootScope.userEmail = userConnected.email;
+                    $rootScope.user = userConnected;
                     return $q.when(userConnected);
                 })
                 .then (function(userConnected) {
@@ -1768,9 +1771,7 @@ Date.prototype.formatDate = function (format) {
                     if (cercle.$value !== null) {
                         deferred.reject(new Error("le cercle existe d�j� !"));
                     } else {
-
                         cercle.user = username;
-                        //cercle.created = new Date().getTime();
                         cercle.created = Firebase.ServerValue.TIMESTAMP;
                         cercle.description = cercleDescription;
 
@@ -1813,11 +1814,9 @@ Date.prototype.formatDate = function (format) {
                 });
 
             return deferred.promise;
-
         }
 
         function getCercleUsers(usersIndex) {
-
             var promises = [];
 
             angular.forEach(usersIndex,  function(userIndex, index) {
@@ -1826,8 +1825,6 @@ Date.prototype.formatDate = function (format) {
 
             return $q.all(promises);
         }
-
-
 
         return {
             createCercle : function (aCercleModel) {
@@ -1873,7 +1870,6 @@ Date.prototype.formatDate = function (format) {
                     });
 
                 return deferred.promise;
-
             },
 
             shareLien : function(shareLink, userConnected) {
@@ -1893,6 +1889,7 @@ Date.prototype.formatDate = function (format) {
                             url : shareLink.url,
                             category: shareLink.category,
                             sharedBy: userConnected.google.cachedUserProfile.name,
+                            sharedByPicture: userConnected.google.cachedUserProfile.picture,
                             keyOri: shareLink.keyOri
                         };
                         cercleLinksIndex.$add(newCercle)
@@ -2002,6 +1999,11 @@ Date.prototype.formatDate = function (format) {
 
             deleteLinkScreen: function(link){
                 var linkScreenId;
+                // on ne supprime pas l'image si c'est un clone
+                // car les images ne sont pas dupliquées
+                if (link.clone)
+                    return;
+
                 if (link.keyOri)
                     linkScreenId= link.keyOri;
                 else
@@ -2032,10 +2034,13 @@ Date.prototype.formatDate = function (format) {
                         newLink.url = lien.url;
                         newLink.teasing = "";
 
-                        if (lien.keyOri)
-                            newLink.keyOri= lien.keyOri;
-                        else if (lien.$id)
-                            newLink.keyOri= lien.$id;
+                        if (lien.keyOri) {
+                            newLink.keyOri = lien.keyOri;
+                            newLink.clone= "true";
+                        } else if (lien.$id) {
+                            newLink.keyOri = lien.$id;
+                            newLink.clone= "true";
+                        }
 
                         userLinks.$add(newLink)
                             .then(function (linkAdded) {
@@ -2118,13 +2123,11 @@ Date.prototype.formatDate = function (format) {
                     });
 
                 return deferred.promise;
-
             },
 
-            addLike : function(cercleName, idLink) {
-
-
+            addLike : function(cercleName, lien, liens) {
                 var deferred = $q.defer();
+                var idLink= lien.$id;
 
                 // a noter : idLink format K4cGFb8ts5teWMJq4PC
                 // Pour le cercle CCMT, on obtient l'identifiant CCMT-K4cGFb8ts5teWMJq4PC
@@ -2133,9 +2136,15 @@ Date.prototype.formatDate = function (format) {
                 var cercleLinkLike = $firebaseObject(cercleLinkLikeRef);
                 cercleLinkLike.$loaded()
                     .then(function () {
-                        cercleLinkLike.$value = cercleLinkLike.$value === null ? 1 : cercleLinkLike.$value + 1;
+                        var like= cercleLinkLike.$value === null ? 1 : cercleLinkLike.$value + 1;
+                        cercleLinkLike.$value = like;
                         cercleLinkLike.$save();
-                        deferred.resolve(cercleLinkLike);
+                        lien.like= like;
+                        liens.$save(lien).then(function () {
+                            deferred.resolve(cercleLinkLike);
+                        }).catch(function (error) {
+                            deferred.reject(error);
+                        });
                     }).catch(function (error) {
                         deferred.reject(error);
                     });
@@ -2155,28 +2164,29 @@ Date.prototype.formatDate = function (format) {
 
                     var topTen = [];
 
-                    // key[0] : nom du cercle
-                    // key[1] : identifiant de l'article'
                     snapshot.forEach(function(data) {
 
                         // key[0] : nom du cercle
                         // key[1] : identifiant de l'article
+                        // BUG : identifiant de l'article peut contenir un '-'
                         var key = data.key();
-                        var keyValue = key.split('-');
                         var cptLike = data.val();
 
+                        var index= key.indexOf("-");
+                        var cercleId= key.substring(0, index);
+                        var linkId= key.substring(index);
+
                         //jointure avec le lien pour récupérer sa description
-                        _that.findLinksByCerlceNameAndIdLink(keyValue[0], '-'+keyValue[1])
+                        _that.findLinksByCerlceNameAndIdLink(cercleId, linkId)
                             .then(function(aLink){
                                 topTen.push(angular.extend({},
                                     {
                                         link: aLink,
                                         cpt: cptLike,
-                                        cercleName: keyValue[0]
+                                        cercleName: cercleId
                                     }
                                 ));
                             })
-
 
                     });
 

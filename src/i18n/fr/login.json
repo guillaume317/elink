@@ -7,6 +7,7 @@
         },
         "username" : "Login",
         "password" : "Mot de passe",
+        "valider" : "  Se connecter avec Google",
         "validate" : "S'authentifier maintenant !"
     }
 }

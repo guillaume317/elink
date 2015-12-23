@@ -1,42 +1,30 @@
 <!DOCTYPE html>
 <html lang="fr" >
     <head>
-        <title>elink</title>
-
+        <title>eLink</title>
         <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta http-equiv="content-language" content="fr">
-        <meta name="description" content="">
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-
         <link rel="icon" href="elink.ico" />
         <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
-
-        <!-- charte -->
-        
         <link rel="stylesheet" href="./bower_components/angular-material/angular-material.min.css"/>
-
         <link rel="stylesheet" href="./dist/elink.css"/>
     </head>
-
     <body ng-app="elinkApp" ng-controller="toolbarController" ng-cloak>
-
         <md-toolbar class="md-primary">
             <div  class="md-toolbar-tools">
-                <div flex="33" style="-webkit-transition-duration: 0ms; transition-duration: 0ms; -webkit-transform: translate3d(0px, 0px, 0px);"><img style="height:60px;" ng-src="./src/img/elink-3.png"/></div>
-                <div flex="auto" style="-webkit-transition-duration: 0ms; transition-duration: 0ms; -webkit-transform: translate3d(0px, 0px, 0px); text-align: center"> eLink</div>
+                <div flex="33"><img style="height:60px;" ng-src="./src/img/elink-3.png"/></div>
+                <div flex="auto" style="text-align: center">eLink</div>
                 <div flex="initial" class="rigth">
-
                     <div layout="row" ng-cloak ng-show="!userAuthenticated" layout-align="center center">
                         <md-button aria-label="{{'menu.login' | translate}}" class=" md-primary md-icon-button" ui-sref="showLogin">
                             <md-tooltip>{{'menu.login' | translate}}</md-tooltip>
                             <ng-md-icon icon="login" size="20"></ng-md-icon>
                         </md-button>
                     </div>
-
-                    <div layout="row"  ng-cloak>
-                            {{userEmail}}
+                    <div layout="row" ng-cloak>
                             <md-button aria-label="{{'menu.nouveauLien' | translate}}" ng-show="userAuthenticated" class="md-icon-button" ng-click="nouveauLien($event)">
                                 <md-tooltip>{{'menu.nouveauLien' | translate}}</md-tooltip>
                                 <ng-md-icon icon="playlist_add" size="20"></ng-md-icon>
@@ -45,46 +33,37 @@
                                 <md-tooltip>{{'menu.admin' | translate}}</md-tooltip>
                                 <ng-md-icon icon="settings_applications" size="20"></ng-md-icon>
                             </md-button>
-                            <md-button aria-label="{{'menu.logout' | translate}}" class="md-icon-button" ng-show="userAuthenticated" ng-click="logout()">
+                            <div class="profil" aria-label="{{'menu.logout' | translate}}" ng-show="userAuthenticated" ng-click="logout()" layout="column" layout-align="center center">
+                                <div class="profil-img" ng-style="{'background-image': 'url(' + user.picture + ')'}"></div>
+                                <div class="profil-name">{{ user.fullname  }}</div>
                                 <md-tooltip>{{'menu.logout' | translate}}</md-tooltip>
-                                <ng-md-icon icon="logout" size="20"></ng-md-icon>
-                            </md-button>
+                            </div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </md-toolbar>
-
         <div layout="row" ng-cloak ng-show="!userAuthenticated">
             <md-button aria-label="{{'menu.login' | translate}}" class="md-icon-button" ui-sref="showLogin">
                 <md-tooltip>{{'menu.login' | translate}}</md-tooltip>
                 <ng-md-icon icon="login" size="30"></ng-md-icon>
             </md-button>
         </div>
-
-        <div layout="row"  ng-cloak>
+        <div layout="row" ng-cloak>
             <div flex="auto">
                 <md-tabs md-stretch-tabs ng-show="userAuthenticated"
-                         md-selected="selectedIndex">
+                         md-selected="selectedIndex" md-autoselect>
                     <md-tab aria-label="{{'tab.nonLu' | translate}}" >{{'tab.nonLu' | translate}}</md-tab>
                     <md-tab aria-label="{{'tab.biblio' | translate}}">{{'tab.biblio' | translate}}</md-tab>
                     <md-tab aria-label="{{'tab.cercle' | translate}}">{{'tab.cercle' | translate}}</md-tab>
                     <md-tab aria-label="{{'tab.icdc' | translate}}">{{'tab.icdc' | translate}}</md-tab>
                 </md-tabs>
             </div>
-
         </div>
-
-        <md-content flex id="content" ui-view="main"  ng-cloak>
+        <md-content flex id="content" ui-view="main" ng-cloak>
         </md-content>
-
-        <!-- third party -->
-
         <script src="./dist/elink-vendor.min.js"></script>
         <script src="./dist/elink.min.js"></script>
         <script src="./dist/templates-views.js"></script>
-
     </body>
 </html>

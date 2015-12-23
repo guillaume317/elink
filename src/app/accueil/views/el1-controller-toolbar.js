@@ -18,9 +18,9 @@
     /**
      */
     function ToolbarController($log, $scope, $rootScope, $state, AuthService, $mdDialog, $mdMedia ) {
-
+        var selected = null,
+            previous = null;
         $scope.selectedIndex=0;
-
         $scope.isAdmin= true;
 
         $scope.$watch('selectedIndex', function(current, old) {
