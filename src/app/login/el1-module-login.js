@@ -29,6 +29,10 @@ angular.module('el1.login', ['el1.services.commun', 'el1.model', 'ngCookies'])
         var ref = new Firebase(FBURL);
         var auth = $firebaseAuth(ref);
 
+        $scope.android = function () {
+            window.open('https://play.google.com/store/apps/details?id=fr.icdc.dei.cmmt.elink', '_blank');
+        }
+
         $scope.login = function () {
 
             // login with Google

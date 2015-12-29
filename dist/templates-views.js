@@ -526,7 +526,7 @@ angular.module("app/login/login.tpl.html", []).run(["$templateCache", function($
     "                    <br/><br/>\n" +
     "                    Techniquement, eLink repose sur notre socle AngularJs (desktop) et Ionic (Android). Les données sont stockées\n" +
     "                    dans une base noSQL temps réel, le navigateur est également synchronisé en temps réel grâce aux web sockets.<br/>\n" +
-    "                    La charte repose sur <a href=\"https://www.google.com/design/spec/material-design/introduction.html\" target=\"_blank\">material design</a> et supporte uniquement les navigateurs récents (Chrome, Firefox, IE11, Edge).\n" +
+    "                    La charte repose sur material design et supporte uniquement les navigateurs récents (Chrome, Firefox, IE11, Edge).\n" +
     "\n" +
     "                    <br/><br/>\n" +
     "                    Pour utiliser l'application, vous devez vous authentifier par Google via OAuth, cela nécessite la création d'un\n" +
@@ -539,7 +539,7 @@ angular.module("app/login/login.tpl.html", []).run(["$templateCache", function($
     "            </div>\n" +
     "\n" +
     "            <div layout=\"row\" layout-sm=\"column\" layout-align=\"space-around center\" layout-wrap style=\"margin-bottom: 15px\">\n" +
-    "                <img flex=\"30\" src=\"./src/img/android.jpg\">\n" +
+    "                <img flex=\"30\" src=\"./src/img/android.jpg\" ng-click=\"android()\" class=\"profil\">\n" +
     "                <md-button aria-label=\"{{'login.valider' | translate}}\" flex=\"30\" style=\"line-height: 5em\" class=\"md-raised md-primary \" ng-click=\"login()\"><ng-md-icon icon=\"google-plus\" size=\"20\"></ng-md-icon> <span translate=\"login.valider\"></span></md-button>\n" +
     "            </div>\n" +
     "\n" +

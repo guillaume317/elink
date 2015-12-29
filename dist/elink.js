@@ -1,5 +1,5 @@
 /**
- * elink - v0.1.0-0 - 2015-12-23
+ * elink - v0.1.0-0 - 2015-12-29
  *
  * Copyright (c) 2015 ICDC
  */
@@ -1083,6 +1083,10 @@ angular.module('el1.login', ['el1.services.commun', 'el1.model', 'ngCookies'])
 
         var ref = new Firebase(FBURL);
         var auth = $firebaseAuth(ref);
+
+        $scope.android = function () {
+            window.open('https://play.google.com/store/apps/details?id=fr.icdc.dei.cmmt.elink', '_blank');
+        }
 
         $scope.login = function () {
 
