@@ -12,11 +12,11 @@
     function EscapeUtils() {
 
         this.escapeEmail = function (email) {
-            return (email || '').replace('.', ',');
+            return (email || '').replace(/\./g,',');
         }
 
         this.unescapeEmail = function (email) {
-            return (email || '').replace(',', '.');
+            return (email || '').replace(/,/g, '.');
         }
     }
 
