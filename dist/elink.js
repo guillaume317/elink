@@ -1,7 +1,7 @@
 /**
- * elink - v0.1.0-0 - 2015-12-29
+ * elink - v0.1.0-0 - 2016-01-07
  *
- * Copyright (c) 2015 ICDC
+ * Copyright (c) 2016 ICDC
  */
 angular.module('el1.accueil', [  'ngMaterial', 'ui.router', 'el1.services.commun', 'el1.model' ])
     .config(function ($stateProvider) {
@@ -1601,11 +1601,11 @@ angular.module('el1.model')
     function EscapeUtils() {
 
         this.escapeEmail = function (email) {
-            return (email || '').replace('.', ',');
+            return (email || '').replace(/\./g,',');
         }
 
         this.unescapeEmail = function (email) {
-            return (email || '').replace(',', '.');
+            return (email || '').replace(/,/g, '.');
         }
     }
 
